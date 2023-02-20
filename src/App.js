@@ -1,7 +1,27 @@
 import './App.css';
 import * as React from 'react';
 
+
 import Button from '@mui/material/Button';
+
+import DoneIcon from '@mui/icons-material/Done';
+import ClearIcon from '@mui/icons-material/Clear';
+
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+
+import TodayIcon from '@mui/icons-material/Today';
+import UpcomingIcon from '@mui/icons-material/Upcoming';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+
+import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
+import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
+import SaveIcon from '@mui/icons-material/Save';
+import PrintIcon from '@mui/icons-material/Print';
+import ShareIcon from '@mui/icons-material/Share';
+
+
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -19,7 +39,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 import Paper from '@mui/material/Paper';
 import { Box } from '@mui/system';
-import { styled, useTheme,alpha } from '@mui/material/styles';
+import { styled, useTheme, alpha } from '@mui/material/styles';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar from '@mui/material/AppBar';
@@ -41,9 +61,9 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import InputBase from '@mui/material/InputBase';
+import { Stack } from '@mui/material';
 
 function GetTodoListView() {
-  const [open, setOpen] = React.useState(false);
   const [dialogText, setDialogText] = React.useState('');
   const [todoCol, settodoCol] = React.useState([]);
   const [checked, setChecked] = React.useState([0]);
@@ -60,69 +80,86 @@ function GetTodoListView() {
 
     setChecked(newChecked);
   };
-
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
+  
   const handleCancel = () => {
-    setOpen(false);
+    setDialogText("")    
   };
 
-  const handleClose = () => {
+  const handleAdd = () => {
 
     if (dialogText == '')
       return;
-
-    setOpen(false);
-
     settodoCol([...todoCol, dialogText])
     setDialogText("")
-
   };
 
   const handleDialogText = (e) => {
     setDialogText(e.target.value);
   };
 
+  const commonStyles = {
+    bgcolor: 'background.paper',
+    borderColor: 'text.primary',
+    m: 10,
+    border: 1,
+    width: '35rem',
+    height: '11rem',
+    padding: '1rem'
+  };
+
+  
 
   console.log(todoCol)
   return (
     <div>
-      
-        
-          <List sx={{
-            width: '100%', maxWidth: 360,
-            bgcolor: 'background.paper'
-          }}>
-            {todoCol.map((value) => {
-              const labelId = `checkbox-list-label-${value}`;
 
-              return (
-                <ListItem
-                  key={value}
 
-                  disablePadding
-                >
-                  <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
-                    <ListItemIcon>
-                      <Checkbox
-                        edge="start"
-                        checked={checked.indexOf(value) !== -1}
-                        tabIndex={-1}
-                        disableRipple
-                        inputProps={{ 'aria-labelledby': labelId }}
-                      />
-                    </ListItemIcon>
-                    <ListItemText id={labelId} primary={value} />
-                  </ListItemButton>
-                </ListItem>
-              );
-            })}
-          </List>
-        
-        
+      <List sx={{
+        width: '100%', maxWidth: 360,
+        bgcolor: 'background.paper'
+      }}>
+        {todoCol.map((value) => {
+          const labelId = `checkbox-list-label-${value}`;
+
+          return (
+            <ListItem
+              key={value}
+
+              disablePadding
+            >
+              <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
+                <ListItemIcon>
+                  <Checkbox
+                    edge="start"
+                    checked={checked.indexOf(value) !== -1}
+                    tabIndex={-1}
+                    disableRipple
+                    inputProps={{ 'aria-labelledby': labelId }}
+                  />
+                </ListItemIcon>
+                <ListItemText id={labelId} primary={value} />
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
+      </List>
+
+      <Box>
+        <Box sx={{ ...commonStyles, borderRadius: '16px' }} >
+          <TextField
+            value={dialogText}
+            onChange={handleDialogText}
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Task name"
+            type="email"
+            fullWidth
+            variant="standard"
+            size="small"
+
+
+          />
           <Box>
             <TextField
               value={dialogText}
@@ -130,18 +167,48 @@ function GetTodoListView() {
               autoFocus
               margin="dense"
               id="name"
-              label="Task name"
+              label="Description"
               type="email"
               fullWidth
               variant="standard"
-
+              size="small"
             />
-            <Button onClick={handleCancel}>Cancel</Button>
-            <Button onClick={handleClose}>Add</Button>
+            <Stack direction="row-reverse" spacing={1} margin-top={1} height= "4vh">
+             
+                <Button
+                  style={{
+                    borderRadius: 35,
+                    fontSize: 10,
+                  }}
+                  onClick={handleCancel}
+                  startIcon={<ClearIcon />}
+                  variant="outlined"
+                >Cancel</Button>
+              
+
+
+             
+                <Button
+                  style={{
+                    borderRadius: 35,
+                    fontSize: 10,
+                  }}
+                  onClick={handleAdd}
+                  endIcon={<DoneIcon />}
+                  variant="outlined"
+                >Add</Button>
+             
+            </Stack>
           </Box>
+        </Box>
+      </Box>
+
     </div>
+
   );
 }
+
+
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -227,14 +294,14 @@ function App() {
   }));
 
 
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-  justifyContent: 'flex-end',
-}));
+  const DrawerHeader = styled('div')(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-end',
+  }));
 
 
   const handleDrawerOpen = () => {
@@ -247,7 +314,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const menuId = 'primary-search-account-menu';
 
-const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
@@ -270,6 +337,13 @@ const [anchorEl, setAnchorEl] = React.useState(null);
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const actions = [
+    { icon: <FileCopyIcon />, name: 'Copy' },
+    { icon: <SaveIcon />, name: 'Save' },
+    { icon: <PrintIcon />, name: 'Print' },
+    { icon: <ShareIcon />, name: 'Share' },
+  ];
+  
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -285,7 +359,7 @@ const [anchorEl, setAnchorEl] = React.useState(null);
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Persistent drawer
+            Schedule 
           </Typography>
           <Search>
             <SearchIconWrapper>
@@ -360,24 +434,24 @@ const [anchorEl, setAnchorEl] = React.useState(null);
         <Divider />
 
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          {['Today', 'Upcoming'].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {index === 0 ? <TodayIcon /> : <UpcomingIcon />}
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
-        <Divider />
+        {/* <Divider /> */}
         <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
+          {['Calendar View', 'Board View'].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {index % 2 === 0 ? <CalendarMonthIcon /> : <DashboardIcon />}
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
@@ -386,17 +460,47 @@ const [anchorEl, setAnchorEl] = React.useState(null);
         </List>
       </Drawer>
 
+      <Box sx={{ height: 320, transform: 'translateZ(0px)', flexGrow: 1 }}>
+      <SpeedDial
+        ariaLabel="SpeedDial basic example"
+        sx={{ position: 'absolute', bottom: -350, right: 160 }}
+        icon={<SpeedDialIcon />}
+      >
+        {actions.map((action) => (
+          <SpeedDialAction
+            key={action.name}
+            icon={action.icon}
+            tooltipTitle={action.name}
+          />
+        ))}
+      </SpeedDial>
+    {/* </Box><Box sx={{ height: 320, transform: 'translateZ(0px)', flexGrow: 1 }}>
+      <SpeedDial
+        ariaLabel="SpeedDial basic example"
+        sx={{ position: 'absolute', bottom: 16, right: 16 }}
+        icon={<SpeedDialIcon />}
+      >
+        {actions.map((action) => (
+          <SpeedDialAction
+            key={action.name}
+            icon={action.icon}
+            tooltipTitle={action.name}
+          />
+        ))}
+      </SpeedDial>
+    </Box> */}
+
       <Main open={open}>
         <DrawerHeader />
-      <Grid
-        container
-        sx={{ flexGrow: 1 }}
-      >
-        <Grid item xs={3}>
-          <GetTodoListView> </GetTodoListView>
-        </Grid>
+        <Grid
+          container
+          sx={{ flexGrow: 1 }}
+        >
+          <Grid item xs={3}>
+            <GetTodoListView> </GetTodoListView>
+          </Grid>
 
-        {/* <Grid item xs={12}>
+          {/* <Grid item xs={12}>
           <Grid container justifyContent="center" spacing={2}>
             {[0, 1, 2].map((value) => (
               <Grid key={value} item>
@@ -414,8 +518,9 @@ const [anchorEl, setAnchorEl] = React.useState(null);
             ))}
           </Grid>
         </Grid> */}
-      </Grid>
+        </Grid>
       </Main>
+    </Box>
     </Box>
   );
 }
