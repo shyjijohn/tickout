@@ -90,8 +90,8 @@ function GetTodoListView() {
   console.log(todoCol)
   return (
     <div>
-      <Card sx={{ minWidth: 500 }}>
-        <CardContent>
+      
+        
           <List sx={{
             width: '100%', maxWidth: 360,
             bgcolor: 'background.paper'
@@ -121,8 +121,8 @@ function GetTodoListView() {
               );
             })}
           </List>
-        </CardContent>
-        <CardActions>
+        
+        
           <Box>
             <TextField
               value={dialogText}
@@ -130,7 +130,7 @@ function GetTodoListView() {
               autoFocus
               margin="dense"
               id="name"
-              label="Add task"
+              label="Task name"
               type="email"
               fullWidth
               variant="standard"
@@ -139,8 +139,6 @@ function GetTodoListView() {
             <Button onClick={handleCancel}>Cancel</Button>
             <Button onClick={handleClose}>Add</Button>
           </Box>
-        </CardActions>
-      </Card>
     </div>
   );
 }
@@ -249,7 +247,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const menuId = 'primary-search-account-menu';
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
