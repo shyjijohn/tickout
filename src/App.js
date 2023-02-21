@@ -48,6 +48,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import InputBase from '@mui/material/InputBase';
 import GetTodoListView from './TodoListView';
+import AddTask from './AddTask';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -111,7 +112,15 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
 );
 
 const drawerWidth = 240;
+
 function App() {
+
+  const [todoCol, settodoCol] = React.useState([{}]);
+
+  const appendTask = (t) => {
+    settodoCol([...todoCol, t])
+  };
+
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -276,13 +285,13 @@ function App() {
             <ListItem key={text} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
-                <AccountTreeIcon />
+                  <AccountTreeIcon />
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
               <ListItemButton>
                 <ListItemIcon>
-                <AddIcon />
+                  <AddIcon />
                 </ListItemIcon>
                 <ListItemText secondary={text} />
               </ListItemButton>
@@ -353,7 +362,8 @@ function App() {
             <Grid
               item
               xs={12}>
-              <GetTodoListView> </GetTodoListView>
+              <GetTodoListView items={todoCol}>  </GetTodoListView>
+              <AddTask appendTaskFn={appendTask}></AddTask>
             </Grid>
 
             {/* <Grid item xs={12}>
