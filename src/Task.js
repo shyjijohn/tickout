@@ -9,5 +9,6 @@ export class Task
         this.date = date;
         this.priority = priority;
         this.isDone = false;
+        this.project = "";
     }
 }
