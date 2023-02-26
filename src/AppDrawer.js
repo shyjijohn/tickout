@@ -97,9 +97,8 @@ export default function AppDrawer({drawerWidth, open,handleDrawerClose, theme})
               </ListItemButton>
               <ListItemButton>
                 <ListItemIcon>
-                  <AddIcon />
+               <AddCircleIcon />
                 </ListItemIcon>
-                <ListItemText secondary={text} />
               </ListItemButton>
             </ListItem>
           ))}

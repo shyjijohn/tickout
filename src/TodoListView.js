@@ -22,7 +22,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Checkbox from '@mui/material/Checkbox';
+import Radio from '@mui/material/Radio';
 import { Box } from '@mui/system';
 
 import { Stack } from '@mui/material';
@@ -61,7 +61,7 @@ export default function GetTodoListView({ items }) {
             >
               <ListItemButton role={undefined} onClick={handleToggle(value.name)} dense>
                 <ListItemIcon>
-                  <Checkbox
+                  <Radio
                     edge="start"
                     checked={checked.indexOf(value.name) !== -1}
                     tabIndex={-1}

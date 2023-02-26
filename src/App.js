@@ -19,7 +19,9 @@ import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
-import AddIcon from '@mui/icons-material/Add';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import CommentIcon from '@mui/icons-material/Comment';
+import GridViewIcon from '@mui/icons-material/GridView';
 
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
@@ -121,9 +123,9 @@ function App() {
   };
 
   const actions = [
-    { icon: <FileCopyIcon />, name: 'Copy' },
+    { icon: <CommentIcon />, name: 'Comment' },
     { icon: <SaveIcon />, name: 'Save' },
-    { icon: <PrintIcon />, name: 'Print' },
+    { icon: <GridViewIcon />, name: 'View' },
     { icon: <ShareIcon />, name: 'Share' },
   ];
 
