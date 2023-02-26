@@ -80,7 +80,7 @@ const drawerWidth = 240;
 
 function App() {
 
-  const [todoCol, settodoCol] = React.useState([]);
+  const [todoCol, settodoCol] = React.useState([[]]);
 
   const appendTask = (t) => {
     settodoCol([...todoCol, t])
@@ -96,32 +96,7 @@ function App() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const menuId = 'primary-search-account-menu';
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-
+ 
   const actions = [
     { icon: <CommentIcon />, name: 'Comment' },
     { icon: <SaveIcon />, name: 'Save' },
