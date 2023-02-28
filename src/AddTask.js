@@ -383,7 +383,7 @@ export default function AddTask({ appendTaskFn }) {
                     </Grid>
                     <Divider />
 
-                    <Grid item xs={6} md={8.5}>
+                    <Grid item xs={5.5} md={7.5}>
 
                         {/* Home / Inspiration */}
                         <Select
@@ -420,15 +420,15 @@ export default function AddTask({ appendTaskFn }) {
                     {/* <Stack direction="row-reverse" spacing={1}
                         paddingTop={5}> */}
 
-                    <Grid item xs={1} md={1.5}>
+                    <Grid item xs={2.5} md={1.7}>
 
                         <Button
                             sx={{
                                 margin: theme.spacing(1),
                                 [theme.breakpoints.down("sm")]: {
                                     minWidth: 32,
-                                    paddingLeft: 8,
-                                    paddingRight: 8,
+                                    paddingLeft: 0,
+                                    paddingRight: 0,
                                     "& .MuiButton-startIcon": {
                                         margin: 0
                                     }
@@ -451,16 +451,19 @@ export default function AddTask({ appendTaskFn }) {
 
                     </Grid>
 
-                    <Grid item xs={1} md={2}>
+                    <Grid item xs={4} md={2.5}>
 
                         <Button
                             style={{
-                                borderRadius: 5,
-                                fontSize: 10,
-                                alignItems: 'flex-end',
-                                justifyContent: 'flex-end',
-                                Direction: 'row'
-
+                                margin: theme.spacing(1),
+                                [theme.breakpoints.down("sm")]: {
+                                    minWidth: 32,
+                                    paddingLeft: 0,
+                                    paddingRight: 0,
+                                    "& .MuiButton-startIcon": {
+                                        margin: 0
+                                    }
+                                }
                             }}
                             sx={{
                                 bgcolor: 'red'
