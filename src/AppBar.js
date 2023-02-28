@@ -19,7 +19,7 @@ import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
-import AddIcon from '@mui/icons-material/Add';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';

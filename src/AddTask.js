@@ -1,6 +1,9 @@
 
 import * as React from 'react';
 
+import { createTheme } from "@mui/material/styles";
+
+
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 
@@ -9,7 +12,7 @@ import Tooltip from '@mui/material/Tooltip';
 import DoneIcon from '@mui/icons-material/Done';
 import ClearIcon from '@mui/icons-material/Clear';
 
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
@@ -20,8 +23,23 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 import Grid from '@mui/material/Grid';
-import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
+
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+
+import EmojiFlagsIcon from '@mui/icons-material/EmojiFlags';
+import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+
+
+
+// import FormLabel from '@mui/material/FormLabel';
+// import FormControlLabel from '@mui/material/FormControlLabel';
+// import HighlightedCode from 'docs/src/modules/components/HighlightedCode';
+// import RadioGroup from '@mui/material/RadioGroup';
+// import Radio from '@mui/material/Radio';
 
 
 
@@ -33,10 +51,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { Box } from '@mui/system';
 
-import { Stack } from '@mui/material';
+import { Divider, Stack } from '@mui/material';
 import { Task } from './Task';
-
-
 
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -44,9 +60,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import OutlinedInput from '@mui/material/OutlinedInput';
-import { Height } from '@mui/icons-material';
+import { Directions, Height } from '@mui/icons-material';
 
-
+import { styled,useTheme } from '@mui/material/styles';
 
 
 
@@ -54,11 +70,14 @@ import { Height } from '@mui/icons-material';
 
 export default function AddTask({ appendTaskFn }) {
 
+
+
+
     //class - object
     //    const [item, setItem] = React.useState({});
     //class - object array
     //    const [itemCol, setItemCol] = React.useState([{}]);
-
+    const theme = useTheme();
     const [dialogTaskName, setDialogTaskName] = React.useState('');
     const [dialogTaskDescription, setDialogTaskDescription] = React.useState('');
     const [dateInput, setDateInput] = React.useState(dayjs('2014-08-18T21:11:54'));
@@ -69,12 +88,29 @@ export default function AddTask({ appendTaskFn }) {
     // const [Extra, setExtra] = React.useState('');
     // const [HomeInspiration, setHomeInspiration] = React.useState('');
 
+    const [open, setOpen] = React.useState(false);
+    const [age, setAge] = React.useState('');
+
+    const handleChange = (event) => {
+        setAge(Number(event.target.value) || '');
+    };
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason !== 'backdropClick') {
+            setOpen(false);
+        }
+    };
 
 
     const handleCancel = () => {
         setDialogTaskName("")
         setDialogTaskDescription("")
     };
+
 
     const handleAdd = () => {
         // if (dialogTaskName == dialogTaskName && dialogTaskDescription == dialogTaskDescription)
@@ -116,7 +152,7 @@ export default function AddTask({ appendTaskFn }) {
         borderColor: 'text.primary',
         m: 0.25,
         border: 1,
-        maxWidth: 810,
+        maxWidth: 800,
         // display:"flex",
         // width: '35rem',
         // height: '11rem',
@@ -136,34 +172,31 @@ export default function AddTask({ appendTaskFn }) {
 
     }));
 
+    // const useStyles = makeStyles(theme => ({
+    //     button: {
+    //         margin: theme.spacing(1),
+    //         [theme.breakpoints.down("sm")]: {
+    //             minWidth: 32,
+    //             paddingLeft: 8,
+    //             paddingRight: 8,
 
+    //         },
+    //         buttonText: {
+    //             [theme.breakpoints.down("sm")]: {
+    //                 display: "none"
+    //             }
+    //         }
+    //     }
+    // }));
 
-    const [open, setOpen] = React.useState(false);
-    const [age, setAge] = React.useState('');
-
-    const handleChange = (event) => {
-        setAge(Number(event.target.value) || '');
-    };
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = (event, reason) => {
-        if (reason !== 'backdropClick') {
-            setOpen(false);
-        }
-    };
-
-
-
+    // const classes = useStyles();
 
     return (
         <Box sx={{ ...styleForM, borderRadius: '16px', minwidth: 120 }} margin="0"
             padding="0">
 
-            <FormControl sx={{ m: 1, minWidth: 120 }}  >
-                <Grid container spacing={1}  >
+            <FormControl sx={{ m: 1, minWidth: 420, minHeight: 136 }}  >
+                <Grid container spacing={0.5} columns={12}  >
                     <Grid item xs={12}>
 
                         <TextField
@@ -173,8 +206,9 @@ export default function AddTask({ appendTaskFn }) {
                             label="Task name"
                             type="email"
                             fullWidth
-                            variant="outlined"
+                            variant="standard"
                             size="small"
+                            InputProps={{ disableUnderline: true }}
                         />
 
                     </Grid>
@@ -190,132 +224,182 @@ export default function AddTask({ appendTaskFn }) {
                             type="email"
                             margin="none"
                             fullWidth
-                            variant="outlined"
+                            variant="standard"
                             size="small"
+                            InputProps={{ disableUnderline: true }}
                         />
 
                     </Grid>
 
-                    <Grid item xs={6} md={3}>
+                    <Grid item xs={4} md={1.7}>
+
 
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DateTimePicker
+                            <DesktopDatePicker
                                 style={{
-                                    minwidth: 190,
-                                    minHeight: 30,
-                                    fontSize: 6
+                                    minheught: '4',
+                                    color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' },
+
                                 }}
-
+                                padding={0}
                                 margin="none"
-
+                                inputFormat="MM/DD/YYYY"
                                 variant="outlined"
                                 size="small"
-                                label="Date&Time picker"
+                                label="Due date"
                                 value={dateInput}
                                 onChange={handleDateTimePickerChange}
                                 renderInput={(params) => <TextField {...params} />}
+                                sx={{ color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' }, }}
+
                             />
                         </LocalizationProvider>
-
                     </Grid>
 
-                    <Grid item xs={6} md={3} bgcolor="blue" aria-hidden="false"  >
+
+
+
+                    <Grid item xs={4} md={1.73} aria-hidden="false"  >
                         {/* <InputLabel id="demo-simple-select-label">Age</InputLabel> */}
-                        <Select
-                            label="Priority"
-                            sx={{
-                                m: 0,
-                                minWidth: 190,
-                                bgcolor: 'yellow',
+                        <div>
+                            <Button sentenceCase
+                                size="small"
+                                aria-label="more"
+                                id="long-button"
+                                aria-controls={open ? 'long-menu' : undefined}
+                                aria-expanded={open ? 'true' : undefined}
+                                aria-haspopup="true"
+                                //onClick={handleClick}
 
-                            }}
-                            //input={<OutlinedInput label="Tag" />}
-                            bgcolor="green"
-                            value={priority}
+                                variant='outlined'
 
-                            margin="none"
-                            padding="0"
-                            variant="outlined"
-                            size="small"
-
-                            onChange={handlePriorityChange}
-                        >
-
-                            <MenuItem value="" bgcolor="red">
-                                <em>None</em>
-                            </MenuItem>
-                            <MenuItem value={10}>Priority 1</MenuItem>
-                            <MenuItem value={20}>Priority 2</MenuItem>
-                            <MenuItem value={30}>Priority 3</MenuItem>
-                        </Select>
+                                sx={{ color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' }, }}
+                            ><EmojiFlagsIcon />
+                                PRIORITY
+                            </Button>
+                            <Menu
+                                id="long-menu">
+                                {/* {options.map((option) => (
+                                    <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClosedot}>
+                                        {option}
+                                    </MenuItem>
+                                ))} */}
+                            </Menu>
+                        </div>
                     </Grid>
-
-                    <Grid item xs={6} md={3}>
+                    {/* <Grid item xs={4} md={0}>
+                        </Grid> */}
+                    <Grid item xs={4.4} md={2.4}>
 
                         {/* Reminder */}
-                        <Select
-                            sx={{ m: 0, minWidth: 190 }}
-                            value={priority}
-                            label="priority"
-                            margin="none"
-                            padding="0"
-                            variant="outlined"
-                            size="small"
-                            onChange={handlePriorityChange}
+                        <div>
+                            <Button sentenceCase
+                                size="small"
+                                aria-label="more"
+                                id="long-button"
+                                aria-controls={open ? 'long-menu' : undefined}
+                                aria-expanded={open ? 'true' : undefined}
+                                aria-haspopup="true"
+                               // onClick={handleClick}
 
-                        >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
-                            <MenuItem value={10}>Priority 1</MenuItem>
-                            <MenuItem value={20}>Priority 2</MenuItem>
-                            <MenuItem value={30}>Priority 3</MenuItem>
-                        </Select>
+                                variant='outlined'
+
+                                sx={{ color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' }, }}
+                            ><AccessAlarmIcon />
+                                Reminder  pro
+                            </Button>
+                            <Menu
+                                id="long-menu"
+                                MenuListProps={{
+                                    'aria-labelledby': 'long-button',
+                                }}
+                                // anchorEl={anchorEl}
+                                // open={opendot}
+                                // onClose={handleClosedot}
+                                // PaperProps={{
+                                //     style: {
+                                //         maxHeight: ITEM_HEIGHT * 4.5,
+                                //         width: '20ch',
+                                //     },
+                                // }}
+                            >
+                                {/* {options.map((option) => (
+                                    <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClosedot}>
+                                        {option}
+                                    </MenuItem>
+                                ))} */}
+                            </Menu>
+
+                        </div>
 
                     </Grid>
 
-                    <Grid item xs={6} md={3}>
+                    <Grid item xs={3} md={0.5}>
 
                         {/* ... */}
                         {/* <InputLabel id="demo-select-small">...</InputLabel> */}
-                        <Select
-                            sx={{ m: 0, minWidth: 190 }}
+                        <div>
+                            <Button sentenceCase
+                                size="small"
+                                aria-label="more"
+                                id="long-button"
+                                aria-controls={open ? 'long-menu' : undefined}
+                                aria-expanded={open ? 'true' : undefined}
+                                aria-haspopup="true"
+                               // onClick={handleClick}
 
-                            value={priority}
-                            label="priority"
-                            margin="none"
-                            padding="0"
-                            variant="outlined"
-                            size="small"
-                            onChange={handlePriorityChange}
-                        >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
-                            <MenuItem value={10}>Priority 1</MenuItem>
-                            <MenuItem value={20}>Priority 2</MenuItem>
-                            <MenuItem value={30}>Priority 3</MenuItem>
-                        </Select>
+                                variant='outlined'
+
+                                sx={{ color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' }, }}
+                            ><MoreHorizIcon />
+                            </Button>
+                            <Menu
+                                id="long-menu"
+                                MenuListProps={{
+                                    'aria-labelledby': 'long-button',
+                                }}
+                                // anchorEl={anchorEl}
+                                // open={opendot}
+                                // onClose={handleClosedot}
+                                // PaperProps={{
+                                //     style: {
+                                //         maxHeight: ITEM_HEIGHT * 4.5,
+                                //         width: '20ch',
+                                //     },
+                                // }}
+                            >
+                                {/* {options.map((option) => (
+                                    <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClosedot}>
+                                        {option}
+                                    </MenuItem>
+                                ))} */}
+                            </Menu>
+
+                        </div>
 
                     </Grid>
 
+                    <Grid item xs={4} md={6}>
+                    </Grid>
+                    <Divider />
 
-                    <Grid item xs={6} md={6}>
+                    <Grid item xs={6} md={8.5}>
 
                         {/* Home / Inspiration */}
                         <Select
-                            sx={{
-                                m: 0, minWidth: 390,
-                                minHeight: 30
-                            }}
+                            // sx={{
+                            //     m: 0, 
+                            //     color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' },
 
+                            // }}
                             value={priority}
-                            label="priority"
+                            label="Inbox"
                             margin="none"
                             padding="0"
                             variant="outlined"
                             size="small"
                             onChange={handlePriorityChange}
+
                         >
                             {/* <Tooltip title="Home/Inspiration" arrow>
                                 <Button>Arrow</Button>
@@ -326,22 +410,60 @@ export default function AddTask({ appendTaskFn }) {
                             <MenuItem value={10}>Priority 1</MenuItem>
                             <MenuItem value={20}>Priority 2</MenuItem>
                             <MenuItem value={30}>Priority 3</MenuItem>
+                            <MenuItem value={10}>Priority 4</MenuItem>
+                            <MenuItem value={20}>Priority 5</MenuItem>
+                            <MenuItem value={30}>Priority 6</MenuItem>
                         </Select>
 
                     </Grid>
 
                     {/* <Stack direction="row-reverse" spacing={1}
                         paddingTop={5}> */}
-                    <Grid item xs={3} md={3}>
+
+                    <Grid item xs={1} md={1.5}>
+
+                        <Button
+                            sx={{
+                                margin: theme.spacing(1),
+                                [theme.breakpoints.down("sm")]: {
+                                    minWidth: 32,
+                                    paddingLeft: 8,
+                                    paddingRight: 8,
+                                    "& .MuiButton-startIcon": {
+                                        margin: 0
+                                    }
+                                }
+                            }}
+
+                            onClick={handleCancel}
+                            startIcon={<ClearIcon />}
+
+                            margin="none"
+                            padding="0"
+                            variant="contained"
+                            size="small"
+                        > <span style={{
+                            [theme.breakpoints.down("sm")]: {
+                                display: "none"
+                              }
+                        }} >Cancel</span>
+                        </Button>
+
+                    </Grid>
+
+                    <Grid item xs={1} md={2}>
 
                         <Button
                             style={{
                                 borderRadius: 5,
                                 fontSize: 10,
+                                alignItems: 'flex-end',
+                                justifyContent: 'flex-end',
+                                Direction: 'row'
+
                             }}
                             sx={{
-                                width: "100%",
-                                height: "40px"
+                                bgcolor: 'red'
                             }}
                             onClick={handleAdd}
                             endIcon={<DoneIcon />}
@@ -349,31 +471,10 @@ export default function AddTask({ appendTaskFn }) {
                             padding="0"
                             variant="contained"
                             size="small"
-                        >Add</Button>
+                        >Add Task</Button>
 
                     </Grid>
 
-                    <Grid item xs={3} md={3}>
-
-                        <Button
-                            style={{
-                                borderRadius: 5,
-                                fontSize: 10,
-
-                            }}
-                            sx={{
-                                width: "100%",
-                                height: "40px"
-                            }}
-                            onClick={handleCancel}
-                            startIcon={<ClearIcon />}
-                            margin="none"
-                            padding="0"
-                            variant="contained"
-                            size="small"
-                        >Cancel</Button>
-
-                    </Grid>
 
 
                     {/* </Stack> */}
