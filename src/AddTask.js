@@ -80,7 +80,7 @@ export default function AddTask({ appendTaskFn }) {
     const theme = useTheme();
     const [dialogTaskName, setDialogTaskName] = React.useState('');
     const [dialogTaskDescription, setDialogTaskDescription] = React.useState('');
-    const [dateInput, setDateInput] = React.useState(dayjs('2014-08-18T21:11:54'));
+    const [dateInput, setDateInput] = React.useState();
     //const [value, setValue] = React.useState('2014-08-18T21:11:54');
 
     const [priority, setPriority] = React.useState('');
@@ -195,11 +195,14 @@ export default function AddTask({ appendTaskFn }) {
         <Box sx={{ ...styleForM, borderRadius: '16px', minwidth: 120 }} margin="0"
             padding="0">
 
-            <FormControl sx={{ m: 1, minWidth: 420, minHeight: 136 }}  >
+            <FormControl sx={{ m: 1, minWidth: 420, minHeight: 100 }}  >
                 <Grid container spacing={0.5} columns={12}  >
                     <Grid item xs={12}>
 
                         <TextField
+                        // paddingLeft= "0px" paddingTop= "0px"
+                        // paddingRight= "0px" paddingBottom= "0px"
+                
                             value={dialogTaskName}
                             onChange={handleDialogTaskName}
                             id="name"
@@ -207,7 +210,11 @@ export default function AddTask({ appendTaskFn }) {
                             type="email"
                             fullWidth
                             variant="standard"
-                            size="small"
+                            inputProps={{
+                                style: {
+                                  height: "1px"
+                                }
+                             }}
                             InputProps={{ disableUnderline: true }}
                         />
 
@@ -236,11 +243,22 @@ export default function AddTask({ appendTaskFn }) {
 
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DesktopDatePicker
-                                style={{
-                                    minheught: '4',
-                                    color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' },
+                                // style={{
+                                //     display: 'flex', alignItems: 'center',
+                                //     minheught: "50px",
+                                //     color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' },
 
-                                }}
+                                // }}
+                                renderInput={(params) => (
+                                    <TextField
+                                      sx={{
+                                        "& .MuiInputBase-input": {
+                                          height: "0.1px" // Set your height here.
+                                        }
+                                      }}
+                                      {...params}
+                                    />
+                                  )}
                                 padding={0}
                                 margin="none"
                                 inputFormat="MM/DD/YYYY"
@@ -249,7 +267,7 @@ export default function AddTask({ appendTaskFn }) {
                                 label="Due date"
                                 value={dateInput}
                                 onChange={handleDateTimePickerChange}
-                                renderInput={(params) => <TextField {...params} />}
+                                // renderInput={(params) => <TextField {...params} />}
                                 sx={{ color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' }, }}
 
                             />
@@ -381,7 +399,7 @@ export default function AddTask({ appendTaskFn }) {
 
                     <Grid item xs={4} md={6}>
                     </Grid>
-                    <Divider />
+                    <Divider style={{width:'100%'}} />
 
                     <Grid item xs={5.5} md={7.5}>
 
@@ -424,6 +442,10 @@ export default function AddTask({ appendTaskFn }) {
 
                         <Button
                             sx={{
+                                bgcolor:'#CED2C2',
+                                color: 'black',
+                                borderColor: '#CED2C2',
+                                ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' }, 
                                 margin: theme.spacing(1),
                                 [theme.breakpoints.down("sm")]: {
                                     minWidth: 32,
