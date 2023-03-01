@@ -156,8 +156,8 @@ export default function AddTask({ appendTaskFn }) {
         // display:"flex",
         // width: '35rem',
         // height: '11rem',
-        paddingLeft: "4px", paddingTop: "4px",
-        paddingRight: "4px", paddingBottom: "4px"
+        paddingLeft: "0px", paddingTop: "0px",
+        paddingRight: "0px", paddingBottom: "0px"
 
     };
     const Item = styled(Paper)(({ theme }) => ({
@@ -192,12 +192,12 @@ export default function AddTask({ appendTaskFn }) {
     // const classes = useStyles();
 
     return (
-        <Box sx={{ ...styleForM, borderRadius: '16px', minwidth: 120 }} margin="0"
-            padding="0">
+        <Box sx={{ ...styleForM, borderRadius: '16px', minwidth: 100 ,paddingTop:"0px"}} margin="0"
+            padding={0}>
 
-            <FormControl sx={{ m: 1, minWidth: 420, minHeight: 100 }}  >
-                <Grid container spacing={0.5} columns={12}  >
-                    <Grid item xs={12}>
+            <FormControl sx={{ m: 1, minWidth: 400, minHeight: 70, paddingTop:"0px" }}  >
+                <Grid container spacing={0.5} columns={12} paddingTop="0px" >
+                    <Grid item xs={12} paddingTop="0px">
 
                         <TextField
                         // paddingLeft= "0px" paddingTop= "0px"
@@ -212,10 +212,12 @@ export default function AddTask({ appendTaskFn }) {
                             variant="standard"
                             inputProps={{
                                 style: {
-                                  height: "1px"
+                                  height: "1px",
+                                  paddingTop:"0px",
+                                  paddingBottom:"0px"
                                 }
                              }}
-                            InputProps={{ disableUnderline: true }}
+                            InputProps={{ disableUnderline: true ,paddingTop:"0px"}}
                         />
 
                     </Grid>
@@ -233,13 +235,13 @@ export default function AddTask({ appendTaskFn }) {
                             fullWidth
                             variant="standard"
                             size="small"
-                            InputProps={{ disableUnderline: true }}
+                            paddingTop="0px"
+                            InputProps={{ disableUnderline: true ,paddingTop:"0px" }}
                         />
 
                     </Grid>
 
-                    <Grid item xs={4} md={1.7}>
-
+                    <Grid item xs={4} sm={2} md={1.7}>
 
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DesktopDatePicker
@@ -252,6 +254,7 @@ export default function AddTask({ appendTaskFn }) {
                                 renderInput={(params) => (
                                     <TextField
                                       sx={{
+                                        width: '100%',fontSize: '10px', 
                                         "& .MuiInputBase-input": {
                                           height: "0.1px" // Set your height here.
                                         }
@@ -274,10 +277,7 @@ export default function AddTask({ appendTaskFn }) {
                         </LocalizationProvider>
                     </Grid>
 
-
-
-
-                    <Grid item xs={4} md={1.73} aria-hidden="false"  >
+                    <Grid item xs={4} sm={2} md={1.73} aria-hidden="false"  >
                         {/* <InputLabel id="demo-simple-select-label">Age</InputLabel> */}
                         <div>
                             <Button sentenceCase
@@ -291,7 +291,7 @@ export default function AddTask({ appendTaskFn }) {
 
                                 variant='outlined'
 
-                                sx={{ color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' }, }}
+                                sx={{ width: '80%',fontSize: '10px',  color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' }, }}
                             ><EmojiFlagsIcon />
                                 PRIORITY
                             </Button>
@@ -307,7 +307,7 @@ export default function AddTask({ appendTaskFn }) {
                     </Grid>
                     {/* <Grid item xs={4} md={0}>
                         </Grid> */}
-                    <Grid item xs={4.4} md={2.4}>
+                    <Grid item xs={5.5} sm={4} md={3}>
 
                         {/* Reminder */}
                         <div>
@@ -322,7 +322,7 @@ export default function AddTask({ appendTaskFn }) {
 
                                 variant='outlined'
 
-                                sx={{ color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' }, }}
+                                sx={{ width: '80%',fontSize: '10px', color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' }, }}
                             ><AccessAlarmIcon />
                                 Reminder  pro
                             </Button>
@@ -352,7 +352,7 @@ export default function AddTask({ appendTaskFn }) {
 
                     </Grid>
 
-                    <Grid item xs={3} md={0.5}>
+                    <Grid item xs={2.5} sm={2} md={0.5}>
 
                         {/* ... */}
                         {/* <InputLabel id="demo-select-small">...</InputLabel> */}
@@ -368,7 +368,7 @@ export default function AddTask({ appendTaskFn }) {
 
                                 variant='outlined'
 
-                                sx={{ color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' }, }}
+                                sx={{ width: '60%',fontSize: '10px', color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' }, }}
                             ><MoreHorizIcon />
                             </Button>
                             <Menu
@@ -397,11 +397,11 @@ export default function AddTask({ appendTaskFn }) {
 
                     </Grid>
 
-                    <Grid item xs={4} md={6}>
+                    <Grid item xs={4} md={5.7}>
                     </Grid>
                     <Divider style={{width:'100%'}} />
 
-                    <Grid item xs={5.5} md={7.5}>
+                    <Grid item xs={8} sm={8} md={9}>
 
                         {/* Home / Inspiration */}
                         <Select
@@ -415,8 +415,9 @@ export default function AddTask({ appendTaskFn }) {
                             margin="none"
                             padding="0"
                             variant="outlined"
-                            size="small"
+                            size="small"         
                             onChange={handlePriorityChange}
+                            sx={{ width: '20%',fontSize: '10px',}}
 
                         >
                             {/* <Tooltip title="Home/Inspiration" arrow>
@@ -438,17 +439,18 @@ export default function AddTask({ appendTaskFn }) {
                     {/* <Stack direction="row-reverse" spacing={1}
                         paddingTop={5}> */}
 
-                    <Grid item xs={2.5} md={1.7}>
+                    <Grid item xs={2} sm={2} md={1.5}>
 
                         <Button
                             sx={{
+                                width: '90%',fontSize: '10px',
                                 bgcolor:'#CED2C2',
                                 color: 'black',
                                 borderColor: '#CED2C2',
                                 ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' }, 
                                 margin: theme.spacing(1),
                                 [theme.breakpoints.down("sm")]: {
-                                    minWidth: 32,
+                                    minWidth: 22,
                                     paddingLeft: 0,
                                     paddingRight: 0,
                                     "& .MuiButton-startIcon": {
@@ -473,21 +475,21 @@ export default function AddTask({ appendTaskFn }) {
 
                     </Grid>
 
-                    <Grid item xs={4} md={2.5}>
+                    <Grid item xs={2} sm={2} md={1.5}>
 
                         <Button
                             style={{
                                 margin: theme.spacing(1),
                                 [theme.breakpoints.down("sm")]: {
-                                    minWidth: 32,
-                                    paddingLeft: 0,
-                                    paddingRight: 0,
+                                    minWidth: 22,
                                     "& .MuiButton-startIcon": {
                                         margin: 0
                                     }
                                 }
                             }}
                             sx={{
+                                paddingLeft: '0px', paddingRight: '0px',
+                                width: '80%',fontSize: '10px',
                                 bgcolor: 'red'
                             }}
                             onClick={handleAdd}
@@ -496,7 +498,7 @@ export default function AddTask({ appendTaskFn }) {
                             padding="0"
                             variant="contained"
                             size="small"
-                        >Add Task</Button>
+                        >Add</Button>
 
                     </Grid>
 
