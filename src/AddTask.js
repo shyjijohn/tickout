@@ -151,12 +151,14 @@ export default function AddTask({ appendTaskFn }) {
         bgcolor: 'background.paper',
         borderColor: 'text.primary',
         m: 0.25,
+        fontSize: '10px',
         border: 1,
         maxWidth: 800,
+        maxheight: 150,   
         // display:"flex",
         // width: '35rem',
         // height: '11rem',
-        paddingLeft: "0px", paddingTop: "0px",
+        paddingLeft: "0px", paddingTop: "5px",
         paddingRight: "0px", paddingBottom: "0px"
 
     };
@@ -192,56 +194,53 @@ export default function AddTask({ appendTaskFn }) {
     // const classes = useStyles();
 
     return (
-        <Box sx={{ ...styleForM, borderRadius: '16px', minwidth: 100 ,paddingTop:"0px"}} margin="0"
-            padding={0}>
+        <Box sx={{ ...styleForM, borderRadius: '10px', minwidth: 100 }}>
 
-            <FormControl sx={{ m: 1, minWidth: 400, minHeight: 70, paddingTop:"0px" }}  >
-                <Grid container spacing={0.5} columns={12} paddingTop="0px" >
-                    <Grid item xs={12} paddingTop="0px">
+            <FormControl sx={{ m: 1, minWidth: 400, minHeight: 90}}  >
+                <Grid container spacing={0.5} columns={12}>
+                    <Grid item xs={12} md={12}>
 
                         <TextField
                         // paddingLeft= "0px" paddingTop= "0px"
                         // paddingRight= "0px" paddingBottom= "0px"
-                
+               
                             value={dialogTaskName}
                             onChange={handleDialogTaskName}
                             id="name"
-                            label="Task name"
+                           placeholder='Task name'
                             type="email"
                             fullWidth
                             variant="standard"
                             inputProps={{
                                 style: {
-                                  height: "1px",
-                                  paddingTop:"0px",
-                                  paddingBottom:"0px"
+                                  height: "4px",
+                                  
                                 }
                              }}
-                            InputProps={{ disableUnderline: true ,paddingTop:"0px"}}
+                            InputProps={{ disableUnderline: true }}
                         />
 
                     </Grid>
 
-                    <Grid item xs={12} padding={0}>
+                    <Grid item xs={12} md={12} padding={0}>
 
                         <TextField
                             value={dialogTaskDescription}
                             onChange={handleDialogTaskDescription}
                             autoFocus
                             id="name"
-                            label="Description"
+                            placeholder='Description'
                             type="email"
                             margin="none"
                             fullWidth
                             variant="standard"
                             size="small"
-                            paddingTop="0px"
-                            InputProps={{ disableUnderline: true ,paddingTop:"0px" }}
+                            InputProps={{ disableUnderline: true }}
                         />
 
                     </Grid>
 
-                    <Grid item xs={4} sm={2} md={1.7}>
+                    <Grid item xs={4}  md={1.7}>
 
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DesktopDatePicker
@@ -254,6 +253,7 @@ export default function AddTask({ appendTaskFn }) {
                                 renderInput={(params) => (
                                     <TextField
                                       sx={{
+                                               
                                         width: '100%',fontSize: '10px', 
                                         "& .MuiInputBase-input": {
                                           height: "0.1px" // Set your height here.
@@ -277,7 +277,7 @@ export default function AddTask({ appendTaskFn }) {
                         </LocalizationProvider>
                     </Grid>
 
-                    <Grid item xs={4} sm={2} md={1.73} aria-hidden="false"  >
+                    <Grid item xs={4} md={1.8} aria-hidden="false"  >
                         {/* <InputLabel id="demo-simple-select-label">Age</InputLabel> */}
                         <div>
                             <Button sentenceCase
@@ -307,7 +307,7 @@ export default function AddTask({ appendTaskFn }) {
                     </Grid>
                     {/* <Grid item xs={4} md={0}>
                         </Grid> */}
-                    <Grid item xs={5.5} sm={4} md={3}>
+                    <Grid item xs={6} md={2.5}>
 
                         {/* Reminder */}
                         <div>
@@ -352,7 +352,7 @@ export default function AddTask({ appendTaskFn }) {
 
                     </Grid>
 
-                    <Grid item xs={2.5} sm={2} md={0.5}>
+                    <Grid item xs={1} md={0.1}>
 
                         {/* ... */}
                         {/* <InputLabel id="demo-select-small">...</InputLabel> */}
@@ -368,7 +368,7 @@ export default function AddTask({ appendTaskFn }) {
 
                                 variant='outlined'
 
-                                sx={{ width: '60%',fontSize: '10px', color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' }, }}
+                                sx={{ width: '30%', fontSize: '10px', color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' }, }}
                             ><MoreHorizIcon />
                             </Button>
                             <Menu
@@ -397,7 +397,7 @@ export default function AddTask({ appendTaskFn }) {
 
                     </Grid>
 
-                    <Grid item xs={4} md={5.7}>
+                    <Grid item xs={4} md={8}>
                     </Grid>
                     <Divider style={{width:'100%'}} />
 
