@@ -6,7 +6,8 @@ import { createTheme } from "@mui/material/styles";
 
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
-
+import { alpha } from '@mui/material/styles';
+import EventNoteIcon from '@mui/icons-material/EventNote';
 
 
 import DoneIcon from '@mui/icons-material/Done';
@@ -42,7 +43,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 // import Radio from '@mui/material/Radio';
 
 
-
+import {  useRef } from "react";
 import TextField from '@mui/material/TextField';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -62,7 +63,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { Directions, Height } from '@mui/icons-material';
 
-import { styled,useTheme } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 
 
 
@@ -77,6 +78,8 @@ export default function AddTask({ appendTaskFn }) {
     //    const [item, setItem] = React.useState({});
     //class - object array
     //    const [itemCol, setItemCol] = React.useState([{}]);
+
+    const inputRef = useRef(null);
     const theme = useTheme();
     const [dialogTaskName, setDialogTaskName] = React.useState('');
     const [dialogTaskDescription, setDialogTaskDescription] = React.useState('');
@@ -154,7 +157,7 @@ export default function AddTask({ appendTaskFn }) {
         fontSize: '10px',
         border: 1,
         maxWidth: 800,
-        maxheight: 150,   
+        maxheight: 150,
         // display:"flex",
         // width: '35rem',
         // height: '11rem',
@@ -173,6 +176,31 @@ export default function AddTask({ appendTaskFn }) {
         paddingRight: "0px", paddingBottom: "0px"
 
     }));
+
+
+    const CustomButton = styled(Button)(({ theme }) => ({
+        size: "small",
+        variant: 'outlined',
+        fontSize: '10px',
+        color: 'grey',
+        borderColor: '#B2BEB5', ':hover':
+        {
+            bgcolor: '#F5F5F5',
+            color: 'black',
+            borderColor: 'black'
+        },
+
+    }));
+
+   
+
+const handleDateClick = () => {
+  // check if the ref is set
+  if (inputRef.current === null) return;
+  inputRef.current.DesktopDatePicker();
+};
+
+
 
     // const useStyles = makeStyles(theme => ({
     //     button: {
@@ -196,27 +224,27 @@ export default function AddTask({ appendTaskFn }) {
     return (
         <Box sx={{ ...styleForM, borderRadius: '10px', minwidth: 100 }}>
 
-            <FormControl sx={{ m: 1, minWidth: 400, minHeight: 90}}  >
+            <FormControl sx={{ m: 1, minWidth: 420, minHeight: 50 }}  >
                 <Grid container spacing={0.5} columns={12}>
                     <Grid item xs={12} md={12}>
 
                         <TextField
-                        // paddingLeft= "0px" paddingTop= "0px"
-                        // paddingRight= "0px" paddingBottom= "0px"
-               
+                            // paddingLeft= "0px" paddingTop= "0px"
+                            // paddingRight= "0px" paddingBottom= "0px"
+
                             value={dialogTaskName}
                             onChange={handleDialogTaskName}
                             id="name"
-                           placeholder='Task name'
+                            placeholder='Task name'
                             type="email"
                             fullWidth
                             variant="standard"
                             inputProps={{
                                 style: {
-                                  height: "4px",
-                                  
+                                    height: "4px",
+
                                 }
-                             }}
+                            }}
                             InputProps={{ disableUnderline: true }}
                         />
 
@@ -240,9 +268,31 @@ export default function AddTask({ appendTaskFn }) {
 
                     </Grid>
 
-                    <Grid item xs={4}  md={1.7}>
+                    <Grid item xs={4} md={2}>
 
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <CustomButton
+                            //sentenceCase
+                            aria-label="more"
+                            id="long-button"
+                            variant='outlined'
+                            aria-controls={open ? 'long-menu' : undefined}
+                            aria-expanded={open ? 'true' : undefined}
+                            aria-haspopup="true"
+                            //onClick={handleDateClick}
+                            onClick={handleDateTimePickerChange}
+                            fullWidth
+
+                            inputProps={{
+                                ref: inputRef,
+                              }}
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+
+                        ><EventNoteIcon/>
+                            Due date
+                        </CustomButton>
+                        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DesktopDatePicker
                                 // style={{
                                 //     display: 'flex', alignItems: 'center',
@@ -252,16 +302,16 @@ export default function AddTask({ appendTaskFn }) {
                                 // }}
                                 renderInput={(params) => (
                                     <TextField
-                                      sx={{
-                                               
-                                        width: '100%',fontSize: '10px', 
-                                        "& .MuiInputBase-input": {
-                                          height: "0.1px" // Set your height here.
-                                        }
-                                      }}
-                                      {...params}
+                                        sx={{
+
+                                            width: '100%', fontSize: '10px',
+                                            "& .MuiInputBase-input": {
+                                                height: "0.1px" // Set your height here.
+                                            }
+                                        }}
+                                        {...params}
                                     />
-                                  )}
+                                )}
                                 padding={0}
                                 margin="none"
                                 inputFormat="MM/DD/YYYY"
@@ -274,132 +324,117 @@ export default function AddTask({ appendTaskFn }) {
                                 sx={{ color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' }, }}
 
                             />
-                        </LocalizationProvider>
+                        </LocalizationProvider> */}
                     </Grid>
 
-                    <Grid item xs={4} md={1.8} aria-hidden="false"  >
-                        {/* <InputLabel id="demo-simple-select-label">Age</InputLabel> */}
-                        <div>
-                            <Button sentenceCase
-                                size="small"
-                                aria-label="more"
-                                id="long-button"
-                                aria-controls={open ? 'long-menu' : undefined}
-                                aria-expanded={open ? 'true' : undefined}
-                                aria-haspopup="true"
-                                //onClick={handleClick}
+                    <Grid item xs={4} md={1.8}  >
+                        <CustomButton
+                            //sentenceCase
+                            aria-label="more"
+                            id="long-button"
+                            variant='outlined'
+                            aria-controls={open ? 'long-menu' : undefined}
+                            aria-expanded={open ? 'true' : undefined}
+                            aria-haspopup="true"
+                            //onClick={handleClick}   
+                            fullWidth
 
-                                variant='outlined'
-
-                                sx={{ width: '80%',fontSize: '10px',  color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' }, }}
-                            ><EmojiFlagsIcon />
-                                PRIORITY
-                            </Button>
-                            <Menu
+                        ><EmojiFlagsIcon />
+                            PRIORITY
+                        </CustomButton>
+                        {/* <Menu
                                 id="long-menu">
                                 {/* {options.map((option) => (
                                     <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClosedot}>
                                         {option}
                                     </MenuItem>
                                 ))} */}
-                            </Menu>
-                        </div>
+
+
                     </Grid>
                     {/* <Grid item xs={4} md={0}>
                         </Grid> */}
                     <Grid item xs={6} md={2.5}>
 
-                        {/* Reminder */}
-                        <div>
-                            <Button sentenceCase
-                                size="small"
-                                aria-label="more"
-                                id="long-button"
-                                aria-controls={open ? 'long-menu' : undefined}
-                                aria-expanded={open ? 'true' : undefined}
-                                aria-haspopup="true"
-                               // onClick={handleClick}
+                        <CustomButton
+                            //sentenceCase  
+                            aria-label="more"
+                            id="long-button"
+                            variant='outlined'
+                            aria-controls={open ? 'long-menu' : undefined}
+                            aria-expanded={open ? 'true' : undefined}
+                            aria-haspopup="true"
+                            //onClick={handleClick}   
+                            fullWidth
 
-                                variant='outlined'
+                        ><AccessAlarmIcon />
+                            Reminder  pro
+                        </CustomButton>
 
-                                sx={{ width: '80%',fontSize: '10px', color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' }, }}
-                            ><AccessAlarmIcon />
-                                Reminder  pro
-                            </Button>
-                            <Menu
+                        {/* <Menu
                                 id="long-menu"
                                 MenuListProps={{
                                     'aria-labelledby': 'long-button',
-                                }}
-                                // anchorEl={anchorEl}
-                                // open={opendot}
-                                // onClose={handleClosedot}
-                                // PaperProps={{
-                                //     style: {
-                                //         maxHeight: ITEM_HEIGHT * 4.5,
-                                //         width: '20ch',
-                                //     },
-                                // }}
-                            >
-                                {/* {options.map((option) => (
+                                }} */}
+                        {/* // anchorEl={anchorEl}
+                            // open={opendot}
+                            // onClose={handleClosedot}
+                            // PaperProps={{ */}
+                        {/* //     style: { */}
+                        {/* //         maxHeight: ITEM_HEIGHT * 4.5,
+                            //         width: '20ch',
+                            //     },
+                            // }}
+                            > */}
+                        {/* {options.map((option) => (
                                     <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClosedot}>
                                         {option}
                                     </MenuItem>
                                 ))} */}
-                            </Menu>
-
-                        </div>
+                        {/* </Menu> */}
 
                     </Grid>
 
                     <Grid item xs={1} md={0.1}>
-
-                        {/* ... */}
-                        {/* <InputLabel id="demo-select-small">...</InputLabel> */}
-                        <div>
-                            <Button sentenceCase
-                                size="small"
-                                aria-label="more"
-                                id="long-button"
-                                aria-controls={open ? 'long-menu' : undefined}
-                                aria-expanded={open ? 'true' : undefined}
-                                aria-haspopup="true"
-                               // onClick={handleClick}
-
-                                variant='outlined'
-
-                                sx={{ width: '30%', fontSize: '10px', color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' }, }}
-                            ><MoreHorizIcon />
-                            </Button>
-                            <Menu
+                        <CustomButton
+                            //sentenceCase  
+                            aria-label="more"
+                            id="long-button"
+                            variant='outlined'
+                            aria-controls={open ? 'long-menu' : undefined}
+                            aria-expanded={open ? 'true' : undefined}
+                            aria-haspopup="true"
+                            //onClick={handleClick}   
+                            fullWidth
+                        ><MoreHorizIcon />
+                        </CustomButton>
+                        {/* <Menu
                                 id="long-menu"
                                 MenuListProps={{
                                     'aria-labelledby': 'long-button',
-                                }}
-                                // anchorEl={anchorEl}
-                                // open={opendot}
-                                // onClose={handleClosedot}
-                                // PaperProps={{
-                                //     style: {
-                                //         maxHeight: ITEM_HEIGHT * 4.5,
-                                //         width: '20ch',
-                                //     },
-                                // }}
-                            >
-                                {/* {options.map((option) => (
+                                }} */}
+                        {/* // anchorEl={anchorEl}
+                            // open={opendot}
+                            // onClose={handleClosedot}
+                            // PaperProps={{ */}
+                        {/* //     style: { */}
+                        {/* //         maxHeight: ITEM_HEIGHT * 4.5,
+                            //         width: '20ch',
+                            //     },
+                            // }}
+                            > */}
+                        {/* {options.map((option) => (
                                     <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClosedot}>
                                         {option}
                                     </MenuItem>
                                 ))} */}
-                            </Menu>
-
-                        </div>
+                        {/* </Menu> */}
 
                     </Grid>
 
-                    <Grid item xs={4} md={8}>
+                    <Grid item xs={4} md={12}>
                     </Grid>
-                    <Divider style={{width:'100%'}} />
+                    <Divider style={{ width: '100%' }} />
 
                     <Grid item xs={8} sm={8} md={9}>
 
@@ -415,9 +450,9 @@ export default function AddTask({ appendTaskFn }) {
                             margin="none"
                             padding="0"
                             variant="outlined"
-                            size="small"         
+                            size="small"
                             onChange={handlePriorityChange}
-                            sx={{ width: '20%',fontSize: '10px',}}
+                            sx={{ width: '20%', fontSize: '10px', }}
 
                         >
                             {/* <Tooltip title="Home/Inspiration" arrow>
@@ -443,11 +478,11 @@ export default function AddTask({ appendTaskFn }) {
 
                         <Button
                             sx={{
-                                width: '90%',fontSize: '10px',
-                                bgcolor:'#CED2C2',
+                                width: '90%', fontSize: '10px',
+                                bgcolor: '#CED2C2',
                                 color: 'black',
                                 borderColor: '#CED2C2',
-                                ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' }, 
+                                ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' },
                                 margin: theme.spacing(1),
                                 [theme.breakpoints.down("sm")]: {
                                     minWidth: 22,
@@ -469,7 +504,7 @@ export default function AddTask({ appendTaskFn }) {
                         > <span style={{
                             [theme.breakpoints.down("sm")]: {
                                 display: "none"
-                              }
+                            }
                         }} >Cancel</span>
                         </Button>
 
@@ -489,7 +524,7 @@ export default function AddTask({ appendTaskFn }) {
                             }}
                             sx={{
                                 paddingLeft: '0px', paddingRight: '0px',
-                                width: '80%',fontSize: '10px',
+                                width: '80%', fontSize: '10px',
                                 bgcolor: 'red'
                             }}
                             onClick={handleAdd}
