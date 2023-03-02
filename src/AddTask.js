@@ -14,6 +14,8 @@ import DoneIcon from '@mui/icons-material/Done';
 import ClearIcon from '@mui/icons-material/Clear';
 
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
@@ -42,6 +44,8 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 // import RadioGroup from '@mui/material/RadioGroup';
 // import Radio from '@mui/material/Radio';
 
+import { useState } from "react";
+import DateFnsUtils from "@date-io/date-fns"; // choose your lib
 
 import {  useRef } from "react";
 import TextField from '@mui/material/TextField';
@@ -93,6 +97,14 @@ export default function AddTask({ appendTaskFn }) {
 
     const [open, setOpen] = React.useState(false);
     const [age, setAge] = React.useState('');
+
+
+
+    const [isForcePickerOpen, setIsOpen] = useState(false);
+    const [selectedDate, handleDateChange] = useState(new Date());
+
+
+
 
     const handleChange = (event) => {
         setAge(Number(event.target.value) || '');
@@ -194,11 +206,11 @@ export default function AddTask({ appendTaskFn }) {
 
    
 
-const handleDateClick = () => {
-  // check if the ref is set
-  if (inputRef.current === null) return;
-  inputRef.current.DesktopDatePicker();
-};
+// const handleDateClick = () => {
+//   // check if the ref is set
+//   if (inputRef.current === null) return;
+//   inputRef.current.DesktopDatePicker();
+// };
 
 
 
@@ -268,66 +280,54 @@ const handleDateClick = () => {
 
                     </Grid>
 
-                    <Grid item xs={4} md={2}>
+                    <Grid item xs={3.5} md={1.9}>
 
-                    <CustomButton
-                            //sentenceCase
-                            aria-label="more"
-                            id="long-button"
-                            variant='outlined'
-                            aria-controls={open ? 'long-menu' : undefined}
-                            aria-expanded={open ? 'true' : undefined}
-                            aria-haspopup="true"
-                            //onClick={handleDateClick}
-                            onClick={handleDateTimePickerChange}
-                            fullWidth
 
-                            inputProps={{
-                                ref: inputRef,
-                              }}
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
 
-                        ><EventNoteIcon/>
-                            Due date
-                        </CustomButton>
-                        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DesktopDatePicker
-                                // style={{
-                                //     display: 'flex', alignItems: 'center',
-                                //     minheught: "50px",
-                                //     color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' },
 
-                                // }}
-                                renderInput={(params) => (
-                                    <TextField
-                                        sx={{
 
-                                            width: '100%', fontSize: '10px',
-                                            "& .MuiInputBase-input": {
-                                                height: "0.1px" // Set your height here.
-                                            }
-                                        }}
-                                        {...params}
-                                    />
-                                )}
-                                padding={0}
-                                margin="none"
-                                inputFormat="MM/DD/YYYY"
-                                variant="outlined"
-                                size="small"
-                                label="Due date"
-                                value={dateInput}
-                                onChange={handleDateTimePickerChange}
-                                // renderInput={(params) => <TextField {...params} />}
-                                sx={{ color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' }, }}
 
-                            />
-                        </LocalizationProvider> */}
+                    <React.Fragment>
+      
+      <LocalizationProvider dateAdapter={DateFnsUtils}>
+        <DatePicker
+          open={isForcePickerOpen}
+          onClose={() => setIsOpen(false)}
+          value={selectedDate}
+          onChange={handleDateChange}
+          renderInput={({
+            ref,
+            inputProps,
+            disabled,
+            onChange,
+            value,
+            ...other
+          }) => (
+            <div ref={ref} {...other}>
+              <input
+                style={{ display: "none" }}
+                value={value}
+                onChange={onChange}
+                disabled={disabled}
+                {...inputProps}
+              />
+              <CustomButton
+                variant="outlined"
+                fullWidth
+                color="primary"
+                onClick={() => setIsOpen((isOpen) => !isOpen)}
+              ><EventNoteIcon />
+                {"Due date"}
+              </CustomButton>
+            </div>
+          )}
+        />
+      </LocalizationProvider>
+    </React.Fragment>
+ 
                     </Grid>
 
-                    <Grid item xs={4} md={1.8}  >
+                    <Grid item xs={3.5} md={1.8}  >
                         <CustomButton
                             //sentenceCase
                             aria-label="more"
@@ -354,7 +354,7 @@ const handleDateClick = () => {
                     </Grid>
                     {/* <Grid item xs={4} md={0}>
                         </Grid> */}
-                    <Grid item xs={6} md={2.5}>
+                    <Grid item xs={5.2} md={2.5}>
 
                         <CustomButton
                             //sentenceCase  
@@ -395,7 +395,7 @@ const handleDateClick = () => {
 
                     </Grid>
 
-                    <Grid item xs={1} md={0.1}>
+                    <Grid item xs={0.3} md={0.1}>
                         <CustomButton
                             //sentenceCase  
                             aria-label="more"
