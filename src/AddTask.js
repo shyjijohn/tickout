@@ -12,6 +12,7 @@ import EventNoteIcon from '@mui/icons-material/EventNote';
 
 import DoneIcon from '@mui/icons-material/Done';
 import ClearIcon from '@mui/icons-material/Clear';
+import CloseIcon from '@mui/icons-material/Close';
 
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -47,7 +48,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { useState } from "react";
 import DateFnsUtils from "@date-io/date-fns"; // choose your lib
 
-import {  useRef } from "react";
+import { useRef } from "react";
 import TextField from '@mui/material/TextField';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -97,6 +98,9 @@ export default function AddTask({ appendTaskFn }) {
 
     const [open, setOpen] = React.useState(false);
     const [age, setAge] = React.useState('');
+    const [closeDate, setCloseDate] = useState(false);
+
+
 
 
 
@@ -162,6 +166,10 @@ export default function AddTask({ appendTaskFn }) {
     const handlePriorityChange = (e) => {
         setPriority(e.target.value);
     };
+
+
+    const handleCloseDate = () => setCloseDate(true);
+
     const styleForM = {
         bgcolor: 'background.paper',
         borderColor: 'text.primary',
@@ -192,8 +200,11 @@ export default function AddTask({ appendTaskFn }) {
 
     const CustomButton = styled(Button)(({ theme }) => ({
         size: "small",
+        textTransform: 'none',
+        padding: '2px',
+        textAlign: 'center',
         variant: 'outlined',
-        fontSize: '10px',
+        fontSize: '12px',
         color: 'grey',
         borderColor: '#B2BEB5', ':hover':
         {
@@ -204,40 +215,41 @@ export default function AddTask({ appendTaskFn }) {
 
     }));
 
-   
+    const CustomButtonred = styled(Button)(({ theme }) => ({
+        size: "small",
+        textTransform: 'none',
+        padding: '0px',
+        textAlign: 'center',
+        variant: 'contained',
+        fontSize: '10px',
+        color: 'red',
+        "&:hover": {
+            backgroundColor: "#ffcbd1",
+            color: 'red',
+            padding: '0px',
+            borderRadius: '4px'
+        },
 
-// const handleDateClick = () => {
-//   // check if the ref is set
-//   if (inputRef.current === null) return;
-//   inputRef.current.DesktopDatePicker();
-// };
+    }));
 
+    const CustomButtonclose = styled(Button)(({ theme }) => ({
+        size: "small",
+        textTransform: 'none',
+        padding: '0px',
+        minWidth: '39px',
+        textAlign: 'center',
+        variant: 'contained',
+        fontSize: '10px',
+        color: 'grey'
 
+    }));
 
-    // const useStyles = makeStyles(theme => ({
-    //     button: {
-    //         margin: theme.spacing(1),
-    //         [theme.breakpoints.down("sm")]: {
-    //             minWidth: 32,
-    //             paddingLeft: 8,
-    //             paddingRight: 8,
-
-    //         },
-    //         buttonText: {
-    //             [theme.breakpoints.down("sm")]: {
-    //                 display: "none"
-    //             }
-    //         }
-    //     }
-    // }));
-
-    // const classes = useStyles();
 
     return (
-        <Box sx={{ ...styleForM, borderRadius: '10px', minwidth: 100 }}>
+        <Box sx={{ ...styleForM, borderRadius: '10px', minwidth: '30px' }}>
 
-            <FormControl sx={{ m: 1, minWidth: 420, minHeight: 50 }}  >
-                <Grid container spacing={0.5} columns={12}>
+            <FormControl sx={{ m: 1, minWidth: '420px', minHeight: '50px' }}  >
+                <Grid container spacing={0.5} columns={12} >
                     <Grid item xs={12} md={12}>
 
                         <TextField
@@ -280,118 +292,97 @@ export default function AddTask({ appendTaskFn }) {
 
                     </Grid>
 
-                    <Grid item xs={3.5} md={1.9}>
+                    <Grid item xs={3.55} md={1.9}>
+                        <React.Fragment>
 
+                            <LocalizationProvider dateAdapter={DateFnsUtils}>
+                                <DatePicker
+                                    open={isForcePickerOpen}
+                                    onClose={() => setIsOpen(false)}
+                                    value={selectedDate}
+                                    onChange={handleDateChange}
+                                    renderInput={({
+                                        ref,
+                                        inputProps,
+                                        disabled,
+                                        onChange,
+                                        value,
+                                        ...other
+                                    }) => (
+                                        <div ref={ref} {...other}>
+                                            <input
+                                                style={{ display: "none" }}
+                                                value={value}
+                                                onChange={onChange}
+                                                disabled={disabled}
+                                                {...inputProps}
+                                            />
+                                            <Tooltip title="Set due date" placement="left">
+                                                <CustomButton
+                                                    variant="outlined"
+                                                    padding='0px'
 
+                                                    color="primary"
+                                                    onClick={() => setIsOpen((isOpen) => !isOpen)}
+                                                ><EventNoteIcon />
+                                                    {"Due date"}
+                                                    <Tooltip title="Remove due date" placement="right">
 
-
-
-
-                    <React.Fragment>
-      
-      <LocalizationProvider dateAdapter={DateFnsUtils}>
-        <DatePicker
-          open={isForcePickerOpen}
-          onClose={() => setIsOpen(false)}
-          value={selectedDate}
-          onChange={handleDateChange}
-          renderInput={({
-            ref,
-            inputProps,
-            disabled,
-            onChange,
-            value,
-            ...other
-          }) => (
-            <div ref={ref} {...other}>
-              <input
-                style={{ display: "none" }}
-                value={value}
-                onChange={onChange}
-                disabled={disabled}
-                {...inputProps}
-              />
-              <CustomButton
-                variant="outlined"
-                fullWidth
-                color="primary"
-                onClick={() => setIsOpen((isOpen) => !isOpen)}
-              ><EventNoteIcon />
-                {"Due date"}
-              </CustomButton>
-            </div>
-          )}
-        />
-      </LocalizationProvider>
-    </React.Fragment>
- 
+                                                        <CustomButtonclose
+                                                            size='small'
+                                                            onClick={handleCloseDate}
+                                                        >
+                                                            <CloseIcon />
+                                                        </CustomButtonclose>
+                                                    </Tooltip>
+                                                </CustomButton>
+                                            </Tooltip>
+                                        </div>
+                                    )}
+                                />
+                            </LocalizationProvider>
+                        </React.Fragment>
                     </Grid>
 
                     <Grid item xs={3.5} md={1.8}  >
-                        <CustomButton
-                            //sentenceCase
-                            aria-label="more"
-                            id="long-button"
-                            variant='outlined'
-                            aria-controls={open ? 'long-menu' : undefined}
-                            aria-expanded={open ? 'true' : undefined}
-                            aria-haspopup="true"
-                            //onClick={handleClick}   
-                            fullWidth
+                        <Tooltip title="Set priority p1, p2, p3, p4">
+                            <CustomButton
+                                //sentenceCase
+                                aria-label="more"
+                                id="long-button"
+                                variant='outlined'
+                                aria-controls={open ? 'long-menu' : undefined}
+                                aria-expanded={open ? 'true' : undefined}
+                                aria-haspopup="true"
+                                //onClick={handleClick}   
+                                fullWidth
 
-                        ><EmojiFlagsIcon />
-                            PRIORITY
-                        </CustomButton>
-                        {/* <Menu
-                                id="long-menu">
-                                {/* {options.map((option) => (
-                                    <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClosedot}>
-                                        {option}
-                                    </MenuItem>
-                                ))} */}
-
-
+                            ><EmojiFlagsIcon />
+                                Priority
+                            </CustomButton>
+                        </Tooltip>
                     </Grid>
                     {/* <Grid item xs={4} md={0}>
                         </Grid> */}
-                    <Grid item xs={5.2} md={2.5}>
+                    <Grid item xs={5.2} md={2.5} >
+                        <Tooltip title="Add Reminders">
+                            <CustomButton
+                                //sentenceCase  
+                                aria-label="more"
+                                id="long-button"
+                                variant='outlined'
+                                aria-controls={open ? 'long-menu' : undefined}
+                                aria-expanded={open ? 'true' : undefined}
+                                aria-haspopup="true"
+                                //onClick={handleClick}   
+                                fullWidth
 
-                        <CustomButton
-                            //sentenceCase  
-                            aria-label="more"
-                            id="long-button"
-                            variant='outlined'
-                            aria-controls={open ? 'long-menu' : undefined}
-                            aria-expanded={open ? 'true' : undefined}
-                            aria-haspopup="true"
-                            //onClick={handleClick}   
-                            fullWidth
+                            ><AccessAlarmIcon />
+                                Reminders
+                                <CustomButtonred>PRO</CustomButtonred>
+                            </CustomButton>
+                        </Tooltip>
 
-                        ><AccessAlarmIcon />
-                            Reminder  pro
-                        </CustomButton>
-
-                        {/* <Menu
-                                id="long-menu"
-                                MenuListProps={{
-                                    'aria-labelledby': 'long-button',
-                                }} */}
-                        {/* // anchorEl={anchorEl}
-                            // open={opendot}
-                            // onClose={handleClosedot}
-                            // PaperProps={{ */}
-                        {/* //     style: { */}
-                        {/* //         maxHeight: ITEM_HEIGHT * 4.5,
-                            //         width: '20ch',
-                            //     },
-                            // }}
-                            > */}
-                        {/* {options.map((option) => (
-                                    <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClosedot}>
-                                        {option}
-                                    </MenuItem>
-                                ))} */}
-                        {/* </Menu> */}
 
                     </Grid>
 
@@ -439,35 +430,44 @@ export default function AddTask({ appendTaskFn }) {
                     <Grid item xs={8} sm={8} md={9}>
 
                         {/* Home / Inspiration */}
-                        <Select
-                            // sx={{
-                            //     m: 0, 
-                            //     color: 'grey', borderColor: '#B2BEB5', ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' },
+                        <Tooltip title="Select a project">
+                            <Select
+                                value={priority}
+                                label="Inbox"
+                                margin="none"
+                                padding="0"
+                                variant="standard"
+                                textAlign="center"  
+                                justifycontent="center" 
+                                size="small"
+                                borderRadius= '10px'
+                                disableUnderline= 'true ' 
+                                onChange={handlePriorityChange}
+                                sx={{
+                                    width: '20%',
+                                    height: '70%',
+                                    borderRadius: '10px',
+                                    fontSize: '12px',                                  
+                                    "&:hover": {
+                                        bgcolor: '#F5F5F5',
+                                        color: 'black',
+                                        borderColor: 'black',
+                                        borderRadius: '10px'
+                                    },
+                                }}
 
-                            // }}
-                            value={priority}
-                            label="Inbox"
-                            margin="none"
-                            padding="0"
-                            variant="outlined"
-                            size="small"
-                            onChange={handlePriorityChange}
-                            sx={{ width: '20%', fontSize: '10px', }}
-
-                        >
-                            {/* <Tooltip title="Home/Inspiration" arrow>
-                                <Button>Arrow</Button>
-                            </Tooltip> */}
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
-                            <MenuItem value={10}>Priority 1</MenuItem>
-                            <MenuItem value={20}>Priority 2</MenuItem>
-                            <MenuItem value={30}>Priority 3</MenuItem>
-                            <MenuItem value={10}>Priority 4</MenuItem>
-                            <MenuItem value={20}>Priority 5</MenuItem>
-                            <MenuItem value={30}>Priority 6</MenuItem>
-                        </Select>
+                            >
+                                <MenuItem value="">
+                                    <em>None</em>
+                                </MenuItem>
+                                <MenuItem value={10}>Priority 1</MenuItem>
+                                <MenuItem value={20}>Priority 2</MenuItem>
+                                <MenuItem value={30}>Priority 3</MenuItem>
+                                <MenuItem value={10}>Priority 4</MenuItem>
+                                <MenuItem value={20}>Priority 5</MenuItem>
+                                <MenuItem value={30}>Priority 6</MenuItem>
+                            </Select>
+                        </Tooltip>
 
                     </Grid>
 
@@ -536,90 +536,9 @@ export default function AddTask({ appendTaskFn }) {
                         >Add</Button>
 
                     </Grid>
-
-
-
-                    {/* </Stack> */}
-
                 </Grid>
             </FormControl>
-
-            {/* <FormControl sx={{ m: 1, minWidth: 80 }} size="small">
-                    
-                </FormControl> */}
-
-            {/* 
-                <div>
-       <InputLabel id="demo-select-small" onClick={handleClickOpen}>Reminder</InputLabel>
-      <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
-        <DialogTitle>Fill the form</DialogTitle>
-        <DialogContent>
-          <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel htmlFor="demo-dialog-native">Age</InputLabel>
-              <Select
-                native
-                value={age}
-                onChange={handleChange}
-                input={<OutlinedInput label="Age" id="demo-dialog-native" />}
-              >
-                <option aria-label="None" value="" />
-                <option value={10}>Ten</option>
-                <option value={20}>Twenty</option>
-                <option value={30}>Thirty</option>
-              </Select>
-            </FormControl>
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel id="demo-dialog-select-label">Age</InputLabel>
-              <Select
-                labelId="demo-dialog-select-label"
-                id="demo-dialog-select"
-                value={age}
-                onChange={handleChange}
-                input={<OutlinedInput label="Age" />}
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Ok</Button>
-        </DialogActions>
-      </Dialog>
-    </div>
- */}
-
-
-            {/* 
-                <FormControl sx={{ m: 1, minWidth: 100, fontSize: "2" }} size="small">
-                    
-                </FormControl>
-
-
-                <FormControl sx={{ m: 1, minWidth: 60 }} size="small">
-                    
-                </FormControl>
-
-
-                <FormControl sx={{ m: 1, minWidth: 220 }} size="small">
-                   
-                </FormControl>
- */}
-
-
-            {/* <Button variant="outlined" >Reminders</Button>
-                <Button variant="outlined">...</Button> */}
-
-
-
-        </Box>
+        </Box >
 
     );
 }
