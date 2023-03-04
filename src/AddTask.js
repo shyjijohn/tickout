@@ -69,9 +69,28 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import { Directions, Height } from '@mui/icons-material';
 
 import { styled, useTheme } from '@mui/material/styles';
+import Autocomplete from '@mui/material/Autocomplete';
+import InputAdornment from "@mui/material/InputAdornment";
 
 
 
+const optionsprior = [
+    'Priority 1',
+    'Priority 2',
+    'Priority 3',
+    'Priority 4',
+    
+  ];
+
+  const optionsmore = [
+    'Labels',
+    'Add Extension...',
+    'Edit task actions',
+    
+  ];
+
+  
+  const ITEM_HEIGHT = 48;
 
 
 export default function AddTask({ appendTaskFn }) {
@@ -96,7 +115,7 @@ export default function AddTask({ appendTaskFn }) {
     // const [Extra, setExtra] = React.useState('');
     // const [HomeInspiration, setHomeInspiration] = React.useState('');
 
-    const [open, setOpen] = React.useState(false);
+    // const [open, setOpen] = React.useState(false);
     const [age, setAge] = React.useState('');
     const [closeDate, setCloseDate] = useState(false);
 
@@ -114,15 +133,15 @@ export default function AddTask({ appendTaskFn }) {
         setAge(Number(event.target.value) || '');
     };
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
+    // const handleClickOpen = () => {
+    //     setOpen(true);
+    // };
 
-    const handleClose = (event, reason) => {
-        if (reason !== 'backdropClick') {
-            setOpen(false);
-        }
-    };
+    // const handleClose = (event, reason) => {
+    //     if (reason !== 'backdropClick') {
+    //         setOpen(false);
+    //     }
+    // };
 
 
     const handleCancel = () => {
@@ -174,7 +193,7 @@ export default function AddTask({ appendTaskFn }) {
         bgcolor: 'background.paper',
         borderColor: 'text.primary',
         m: 0.25,
-        fontSize: '10px',
+        fontSize: '8px',
         border: 1,
         maxWidth: 800,
         maxheight: 150,
@@ -245,11 +264,45 @@ export default function AddTask({ appendTaskFn }) {
     }));
 
 
-    return (
-        <Box sx={{ ...styleForM, borderRadius: '10px', minwidth: '30px' }}>
 
-            <FormControl sx={{ m: 1, minWidth: '420px', minHeight: '50px' }}  >
-                <Grid container spacing={0.5} columns={12} >
+//     const [anchorEl, setAnchorEl] = React.useState(null);
+//   const open = Boolean(anchorEl);
+//   const handleClick = (event) => {
+//     setAnchorEl(event.currentTarget);
+//   };
+//   const handleClose = () => {
+//     setAnchorEl(null);
+//   };
+
+
+
+const top100Films = [
+    { title: 'The Shawshank Redemption', year: 1994 },
+    { title: 'The Godfather', year: 1972 },
+    { title: 'The Godfather: Part II', year: 1974 },
+    { title: 'The Dark Knight', year: 2008 },
+    { title: '12 Angry Men', year: 1957 },
+    { title: "Schindler's List", year: 1993 },
+    { title: 'Pulp Fiction', year: 1994 },
+
+];
+
+  
+  const [anchorE2, setAnchorE2] = React.useState(null);
+  const open2 = Boolean(anchorE2);
+  const handleClickmore = (event) => {
+    setAnchorE2(event.currentTarget);
+  };
+  const handleClosemore = () => {
+    setAnchorE2(null);
+  };
+
+    return (
+        <Box sx={{ ...styleForM, borderRadius: '10px', minwidth: '10px' }}>
+
+            <FormControl sx={{ m: 1, minWidth: '320px', minHeight: '110px' }} md={{ m: 1, minWidth: '420px', minHeight: '50px' }}>
+             {/* <FormControl   > */}
+                <Grid container spacing={0.7} columns={12} >
                     <Grid item xs={12} md={12}>
 
                         <TextField
@@ -292,7 +345,7 @@ export default function AddTask({ appendTaskFn }) {
 
                     </Grid>
 
-                    <Grid item xs={3.55} md={1.9}>
+                    <Grid item xs={4.6} md={2}>
                         <React.Fragment>
 
                             <LocalizationProvider dateAdapter={DateFnsUtils}>
@@ -319,9 +372,9 @@ export default function AddTask({ appendTaskFn }) {
                                             />
                                             <Tooltip title="Set due date" placement="left">
                                                 <CustomButton
+                                                    fullWidth
                                                     variant="outlined"
                                                     padding='0px'
-
                                                     color="primary"
                                                     onClick={() => setIsOpen((isOpen) => !isOpen)}
                                                 ><EventNoteIcon />
@@ -344,36 +397,98 @@ export default function AddTask({ appendTaskFn }) {
                         </React.Fragment>
                     </Grid>
 
-                    <Grid item xs={3.5} md={1.8}  >
+                    <Grid item xs={3.2} md={1.8}  >
                         <Tooltip title="Set priority p1, p2, p3, p4">
                             <CustomButton
                                 //sentenceCase
                                 aria-label="more"
                                 id="long-button"
                                 variant='outlined'
-                                aria-controls={open ? 'long-menu' : undefined}
-                                aria-expanded={open ? 'true' : undefined}
-                                aria-haspopup="true"
-                                //onClick={handleClick}   
+                               // aria-controls={open ? 'long-menu' : undefined}
+                               // aria-expanded={open ? 'true' : undefined}
+                               // aria-haspopup="true"
+                               // onClick={handleClick}   
                                 fullWidth
 
                             ><EmojiFlagsIcon />
                                 Priority
                             </CustomButton>
                         </Tooltip>
+
+
+
+
+                        <Tooltip title="Set priority p1, p2, p3, p4">
+                       
+                        <Autocomplete
+        // id="free-solo-demo"
+        size= "small"
+        // textTransform= 'none'
+        // padding= '2px'
+        // textAlign= 'center'
+        // variant= 'outlined'
+        // fontSize= '12px'
+        // color= 'grey'
+        // borderColor= '#B2BEB5'
+        // ':hover':
+        // {
+        //     bgcolor= '#F5F5F5',
+        //     color= 'black',
+        //     borderColor= 'black'
+        // };
+        freeSolo
+        options={top100Films.map((option) => option.title)}
+        renderInput={(params) => <TextField {...params} label="Priority" 
+         InputProps={{
+            ...params.InputProps,
+            endAdornment: (
+              <InputAdornment position="start">
+                <EmojiFlagsIcon />
+              </InputAdornment>)}}  />}></Autocomplete>
+      </Tooltip>
+
+
+
+
+
+
+                   
+                        {/* <Menu
+        id="long-menu"
+        MenuListProps={{
+          'aria-labelledby': 'long-button',
+        }}
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          style: {
+            maxHeight: ITEM_HEIGHT * 4.5,
+            width: '20ch',
+                
+          },
+        }}
+      >
+        {optionsprior.map((optionsprior) => (
+          <MenuItem key={optionsprior} selected={optionsprior === 'Pyxis'} onClick={handleClose}>
+            {optionsprior}
+          </MenuItem>
+        ))}
+      </Menu>
+      */}
                     </Grid>
                     {/* <Grid item xs={4} md={0}>
                         </Grid> */}
-                    <Grid item xs={5.2} md={2.5} >
+                    <Grid item xs={5.8} md={2.5} >
                         <Tooltip title="Add Reminders">
                             <CustomButton
                                 //sentenceCase  
                                 aria-label="more"
                                 id="long-button"
                                 variant='outlined'
-                                aria-controls={open ? 'long-menu' : undefined}
-                                aria-expanded={open ? 'true' : undefined}
-                                aria-haspopup="true"
+                            //    aria-controls={open ? 'long-menu' : undefined}
+                             //   aria-expanded={open ? 'true' : undefined}
+                           //     aria-haspopup="true"
                                 //onClick={handleClick}   
                                 fullWidth
 
@@ -386,40 +501,41 @@ export default function AddTask({ appendTaskFn }) {
 
                     </Grid>
 
-                    <Grid item xs={0.3} md={0.1}>
+                    <Grid item xs={0.1} md={0.1}>
                         <CustomButton
                             //sentenceCase  
                             aria-label="more"
                             id="long-button"
                             variant='outlined'
-                            aria-controls={open ? 'long-menu' : undefined}
-                            aria-expanded={open ? 'true' : undefined}
+                            aria-controls={open2 ? 'long-menu' : undefined}
+                            aria-expanded={open2 ? 'true' : undefined}
                             aria-haspopup="true"
-                            //onClick={handleClick}   
+                            onClick={handleClickmore}   
                             fullWidth
                         ><MoreHorizIcon />
                         </CustomButton>
-                        {/* <Menu
-                                id="long-menu"
-                                MenuListProps={{
-                                    'aria-labelledby': 'long-button',
-                                }} */}
-                        {/* // anchorEl={anchorEl}
-                            // open={opendot}
-                            // onClose={handleClosedot}
-                            // PaperProps={{ */}
-                        {/* //     style: { */}
-                        {/* //         maxHeight: ITEM_HEIGHT * 4.5,
-                            //         width: '20ch',
-                            //     },
-                            // }}
-                            > */}
-                        {/* {options.map((option) => (
-                                    <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClosedot}>
-                                        {option}
-                                    </MenuItem>
-                                ))} */}
-                        {/* </Menu> */}
+                        <Menu
+        id="long-menu"
+        MenuListProps={{
+          'aria-labelledby': 'long-button',
+        }}
+        anchorE2={anchorE2}
+        open={open2}
+        onClose={handleClosemore}
+        PaperProps={{
+          style: {
+            maxHeight: ITEM_HEIGHT * 4.5,
+            width: '20ch',
+                
+          },
+        }}
+      >
+        {optionsmore.map((optionsmore) => (
+          <MenuItem key={optionsmore} selected={optionsmore === 'Pyxis'} onClick={handleClosemore}>
+            {optionsmore}
+          </MenuItem>
+        ))}
+      </Menu>
 
                     </Grid>
 
@@ -474,7 +590,7 @@ export default function AddTask({ appendTaskFn }) {
                     {/* <Stack direction="row-reverse" spacing={1}
                         paddingTop={5}> */}
 
-                    <Grid item xs={2} sm={2} md={1.5}>
+                    <Grid item xs={0.5} sm={2} md={1.5}>
 
                         <Button
                             sx={{
@@ -483,15 +599,7 @@ export default function AddTask({ appendTaskFn }) {
                                 color: 'black',
                                 borderColor: '#CED2C2',
                                 ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' },
-                                margin: theme.spacing(1),
-                                [theme.breakpoints.down("sm")]: {
-                                    minWidth: 22,
-                                    paddingLeft: 0,
-                                    paddingRight: 0,
-                                    "& .MuiButton-startIcon": {
-                                        margin: 0
-                                    }
-                                }
+                               
                             }}
 
                             onClick={handleCancel}
@@ -510,22 +618,15 @@ export default function AddTask({ appendTaskFn }) {
 
                     </Grid>
 
-                    <Grid item xs={2} sm={2} md={1.5}>
+                    <Grid item xs={0.5} sm={2} md={1.5}>
 
                         <Button
-                            style={{
-                                margin: theme.spacing(1),
-                                [theme.breakpoints.down("sm")]: {
-                                    minWidth: 22,
-                                    "& .MuiButton-startIcon": {
-                                        margin: 0
-                                    }
-                                }
-                            }}
                             sx={{
-                                paddingLeft: '0px', paddingRight: '0px',
-                                width: '80%', fontSize: '10px',
-                                bgcolor: 'red'
+                                width: '90%', fontSize: '10px',
+                                bgcolor: 'red',
+                                color: 'white',
+                                borderColor: '#CED2C2',
+                                
                             }}
                             onClick={handleAdd}
                             endIcon={<DoneIcon />}
@@ -538,6 +639,7 @@ export default function AddTask({ appendTaskFn }) {
                     </Grid>
                 </Grid>
             </FormControl>
+            {/* </FormControl> */}
         </Box >
 
     );
