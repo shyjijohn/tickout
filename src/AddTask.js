@@ -66,8 +66,8 @@ import Autocomplete from '@mui/material/Autocomplete';
 import InputAdornment from "@mui/material/InputAdornment";
 
 import useMediaQuery from '@mui/material/useMediaQuery';
-
-
+import LabelIcon from '@mui/icons-material/Label';
+import ExtensionIcon from '@mui/icons-material/Extension';
 
 const ITEM_HEIGHT = 48;
 
@@ -100,6 +100,7 @@ function BasicMenu() {
             variant: 'outlined',
             fontSize: '12px',
             color: 'grey',
+            borderradius: '25px solid',  
             borderColor: '#B2BEB5', ':hover':
             {
                 bgcolor: '#F5F5F5',
@@ -113,16 +114,20 @@ function BasicMenu() {
         </Button>
         <Menu
           id="basic-menu"
+          
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
           MenuListProps={{
             'aria-labelledby': 'basic-button',
           }}
+        
         >
-          <MenuItem onClick={handleClose}>Labels</MenuItem>
-          <MenuItem onClick={handleClose}>Add extension...</MenuItem>
-          <MenuItem onClick={handleClose}>Edit task actions</MenuItem>
+          <MenuItem onClick={handleClose}sx={{fontSize: '12px'}}><LabelIcon />&nbsp;&nbsp;Labels</MenuItem>
+          <Divider />
+          <MenuItem onClick={handleClose}sx={{fontSize: '12px'}}><ExtensionIcon />&nbsp;&nbsp;Add extension...</MenuItem>
+          <Divider />
+          <MenuItem onClick={handleClose}sx={{color:"red",fontSize: '12px'}}>Edit task actions</MenuItem>
         </Menu>
       </div>
     );
