@@ -2,7 +2,7 @@
 import * as React from 'react';
 
 import { createTheme } from "@mui/material/styles";
-
+import InputBase from '@mui/material/InputBase';
 
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
@@ -38,13 +38,6 @@ import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 
-
-// import FormLabel from '@mui/material/FormLabel';
-// import FormControlLabel from '@mui/material/FormControlLabel';
-// import HighlightedCode from 'docs/src/modules/components/HighlightedCode';
-// import RadioGroup from '@mui/material/RadioGroup';
-// import Radio from '@mui/material/Radio';
-
 import { useState } from "react";
 import DateFnsUtils from "@date-io/date-fns"; // choose your lib
 
@@ -72,6 +65,7 @@ import { styled, useTheme } from '@mui/material/styles';
 import Autocomplete from '@mui/material/Autocomplete';
 import InputAdornment from "@mui/material/InputAdornment";
 
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 
 const optionsprior = [
@@ -79,25 +73,21 @@ const optionsprior = [
     'Priority 2',
     'Priority 3',
     'Priority 4',
-    
-  ];
 
-  const optionsmore = [
+];
+
+const optionsmore = [
     'Labels',
     'Add Extension...',
     'Edit task actions',
-    
-  ];
 
-  
-  const ITEM_HEIGHT = 48;
+];
+
+
+const ITEM_HEIGHT = 48;
 
 
 export default function AddTask({ appendTaskFn }) {
-
-
-
-
     //class - object
     //    const [item, setItem] = React.useState({});
     //class - object array
@@ -111,11 +101,7 @@ export default function AddTask({ appendTaskFn }) {
     //const [value, setValue] = React.useState('2014-08-18T21:11:54');
 
     const [priority, setPriority] = React.useState('');
-    // const [Reminder, setReminder] = React.useState('');
-    // const [Extra, setExtra] = React.useState('');
-    // const [HomeInspiration, setHomeInspiration] = React.useState('');
-
-    // const [open, setOpen] = React.useState(false);
+   
     const [age, setAge] = React.useState('');
     const [closeDate, setCloseDate] = useState(false);
 
@@ -124,7 +110,7 @@ export default function AddTask({ appendTaskFn }) {
 
 
     const [isForcePickerOpen, setIsOpen] = useState(false);
-    const [selectedDate, handleDateChange] = useState(new Date());
+    // const [selectedDate, handleDateChange] = useState(new Date());
 
 
 
@@ -133,17 +119,7 @@ export default function AddTask({ appendTaskFn }) {
         setAge(Number(event.target.value) || '');
     };
 
-    // const handleClickOpen = () => {
-    //     setOpen(true);
-    // };
-
-    // const handleClose = (event, reason) => {
-    //     if (reason !== 'backdropClick') {
-    //         setOpen(false);
-    //     }
-    // };
-
-
+   
     const handleCancel = () => {
         setDialogTaskName("")
         setDialogTaskDescription("")
@@ -151,8 +127,7 @@ export default function AddTask({ appendTaskFn }) {
 
 
     const handleAdd = () => {
-        // if (dialogTaskName == dialogTaskName && dialogTaskDescription == dialogTaskDescription)
-        //   return false; 
+      
 
         if (dialogTaskName == '' && dialogTaskDescription == '')
             return;
@@ -197,9 +172,6 @@ export default function AddTask({ appendTaskFn }) {
         border: 1,
         maxWidth: 800,
         maxheight: 150,
-        // display:"flex",
-        // width: '35rem',
-        // height: '11rem',
         paddingLeft: "0px", paddingTop: "5px",
         paddingRight: "0px", paddingBottom: "0px"
 
@@ -209,7 +181,6 @@ export default function AddTask({ appendTaskFn }) {
         ...theme.typography.body2,
         padding: theme.spacing(1),
         textAlign: 'center',
-        //maxHeight: 30,
         color: theme.palette.text.secondary,
         paddingLeft: "0px", paddingTop: "0px",
         paddingRight: "0px", paddingBottom: "0px"
@@ -264,44 +235,195 @@ export default function AddTask({ appendTaskFn }) {
     }));
 
 
+    const BootstrapInput = styled(InputBase)(({ theme }) => ({
+        'label + &': {
+            marginTop: theme.spacing(3),
+        },
+        '& .MuiInputBase-input': {
+            borderRadius: 4,
+            color: 'grey',
+            fontWeight: 'normal',
+            position: 'relative',
+            backgroundColor: theme.palette.background.paper,
+            border: '1px solid #ced4da',
+            // backgroundColor: 'green',
+            spacing: '0px',
+            fontSize: 12,
+            //   padding: '10px 26px 10px 12px',
+            padding: '2px',
+            width: 'inherit',
+            transition: theme.transitions.create(['border-color', 'box-shadow']),
+            // Use the system font instead of the default Roboto font.
+            fontFamily: [
+                '-apple-system',
+                'BlinkMacSystemFont',
+                '"Segoe UI"',
+                'Roboto',
+                '"Helvetica Neue"',
+                'Arial',
+                'sans-serif',
+                '"Apple Color Emoji"',
+                '"Segoe UI Emoji"',
+                '"Segoe UI Symbol"',
+            ].join(','),
+            ':hover':
+            {
+                bgcolor: '#F5F5F5',
+                color: 'black',
+                borderColor: 'black'
+            },
+        },
+    }));
 
-//     const [anchorEl, setAnchorEl] = React.useState(null);
-//   const open = Boolean(anchorEl);
-//   const handleClick = (event) => {
-//     setAnchorEl(event.currentTarget);
-//   };
-//   const handleClose = () => {
-//     setAnchorEl(null);
-//   };
-
-
-
-const top100Films = [
-    { title: 'The Shawshank Redemption', year: 1994 },
-    { title: 'The Godfather', year: 1972 },
-    { title: 'The Godfather: Part II', year: 1974 },
-    { title: 'The Dark Knight', year: 2008 },
-    { title: '12 Angry Men', year: 1957 },
-    { title: "Schindler's List", year: 1993 },
-    { title: 'Pulp Fiction', year: 1994 },
-
-];
-
+   
   
-  const [anchorE2, setAnchorE2] = React.useState(null);
-  const open2 = Boolean(anchorE2);
-  const handleClickmore = (event) => {
-    setAnchorE2(event.currentTarget);
-  };
-  const handleClosemore = () => {
-    setAnchorE2(null);
-  };
 
+    const [anchorE2, setAnchorE2] = React.useState(null);
+    const open2 = Boolean(anchorE2);
+    const handleClickmore = (event) => {
+        setAnchorE2(event.currentTarget);
+    };
+    const handleClosemore = () => {
+        setAnchorE2(null);
+    };
+
+
+
+    const ITEM_HEIGHT = 48;
+    const ITEM_PADDING_TOP = 8;
+    const MenuProps = {
+        PaperProps: {
+            style: {
+                maxHeight: ITEM_HEIGHT * 3.0 + ITEM_PADDING_TOP,
+                //width: 150,
+
+            },
+        },
+    };
+
+    const names = [
+        'Priority 1',
+        'Priority 2',
+        'Priority 3',
+        'Priority 4',
+
+    ];
+
+
+
+    function getSelectedPriorityItemStyle(hasSelection, theme2) {
+        // console.log("has selection ", hasSelection)
+        return {
+
+            fontWeight:
+                hasSelection === false
+                    ? theme2.typography.fontWeightLight
+                    : theme2.typography.fontWeightBold,
+
+        };
+    }
+
+
+    const themessss = useTheme();
+
+    const priorities = [
+        {
+            name: 'Priority 1',
+            color: 'secondary'
+        },
+        {
+            name: 'Priority 2',
+            color: 'success'
+        },
+        {
+            name: 'Priority 3',
+            color: 'primary'
+        },
+        {
+            name: 'Priority 4',
+            color: 'action'
+        }
+    ];
+
+    const [selectedPriorityIndex, setSelectedPriorityIndex] = React.useState(-1);
+
+    const handlePrioritySelection = (event) => {
+        console.log("handlePrioritySelection event: ", event);
+        console.log("handlePrioritySelection value: ", event.target.value);
+
+        var selIndex = priorities.indexOf(priorities.find(o => o.name === event.target.value));
+        setSelectedPriorityIndex(selIndex);
+        console.log(selIndex);
+
+
+        // const priority =
+        // {
+        //     name:"",
+        //     color: "" 
+        // };
+
+        // setSelectedPriority(priority)
+    }
+
+
+    const dates = [
+        {
+            name: 'Today',
+            color: 'secondary',
+            icon: '<CloseIcon/>'
+        },
+        {
+            name: 'Tomorrow',
+            color: 'success',
+            icon: '<CloseIcon/>'
+        },
+        {
+            name: 'This weekend',
+            color: 'primary',
+            icon: '<CloseIcon/>'
+        },
+        {
+            name: 'Next week',
+            color: 'action',
+            icon: '<CloseIcon/>'
+        }
+    ];
+
+
+
+
+    const [selectedDate, setSelectedDate] = useState(new Date());
+
+    const handleDateChange = (event) => {
+        console.log("handlePrioritySelection event: ", event);
+        console.log("handlePrioritySelection value: ", event.target.value);
+
+        var selIndex1 = dates.indexOf(dates.find(o => o.name === event.target.value));
+        setSelectedDate(selIndex1);
+        console.log(selIndex1);
+
+
+    }
+
+
+    const [showIcon, setshowIcon] = React.useState(false)
+
+    const handleCancelIcon = (event) => {
+        console.log("show icon", event);
+
+        setshowIcon(true);
+
+    }
+
+    const isMobileView = useMediaQuery(theme.breakpoints.down('sm'));
+    console.log("isMobileView", isMobileView);
+    //console.log('breakpoint', theme.breakpoints.down("xs"));
+    //isMobileView  ? null : <Typography ADD />>
     return (
         <Box sx={{ ...styleForM, borderRadius: '10px', minwidth: '10px' }}>
 
             <FormControl sx={{ m: 1, minWidth: '320px', minHeight: '110px' }} md={{ m: 1, minWidth: '420px', minHeight: '50px' }}>
-             {/* <FormControl   > */}
+                {/* <FormControl   > */}
                 <Grid container spacing={0.7} columns={12} >
                     <Grid item xs={12} md={12}>
 
@@ -327,7 +449,7 @@ const top100Films = [
 
                     </Grid>
 
-                    <Grid item xs={12} md={12} padding={0}>
+                    <Grid item xs={12} md={12}>
 
                         <TextField
                             value={dialogTaskDescription}
@@ -345,11 +467,13 @@ const top100Films = [
 
                     </Grid>
 
-                    <Grid item xs={4.6} md={2}>
+                    <Grid item xs={4.8} md={2}>
                         <React.Fragment>
 
                             <LocalizationProvider dateAdapter={DateFnsUtils}>
+                                {/* <MuiPickersUtilsProvider utils={MomentUtils}> */}
                                 <DatePicker
+                                    paddingLeft="0px"
                                     open={isForcePickerOpen}
                                     onClose={() => setIsOpen(false)}
                                     value={selectedDate}
@@ -366,7 +490,7 @@ const top100Films = [
                                             <input
                                                 style={{ display: "none" }}
                                                 value={value}
-                                                onChange={onChange}
+                                                onChange={handleDateChange}
                                                 disabled={disabled}
                                                 {...inputProps}
                                             />
@@ -392,90 +516,90 @@ const top100Films = [
                                             </Tooltip>
                                         </div>
                                     )}
-                                />
+                                >
+
+                                    {dates.map((d, i) => (
+                                        <MenuItem
+                                            key={d.name}
+                                            value={d.name}
+                                        //style={getSelectedPriorityItemStyle(selectedPriorityIndex === i, theme)}
+                                        >
+                                            <Stack direction="row" spacing={0.5} >
+                                                <EmojiFlagsIcon color={d.color} />
+                                                <Box sx={{ typography: 'body1' }}>{d.name}</Box>
+                                            </Stack>
+                                        </MenuItem>
+
+                                    ))}
+
+                                    {/* </MuiPickersUtilsProvider> */}
+                                </DatePicker>
                             </LocalizationProvider>
                         </React.Fragment>
                     </Grid>
 
-                    <Grid item xs={3.2} md={1.8}  >
-                        <Tooltip title="Set priority p1, p2, p3, p4">
-                            <CustomButton
-                                //sentenceCase
-                                aria-label="more"
-                                id="long-button"
-                                variant='outlined'
-                               // aria-controls={open ? 'long-menu' : undefined}
-                               // aria-expanded={open ? 'true' : undefined}
-                               // aria-haspopup="true"
-                               // onClick={handleClick}   
-                                fullWidth
+                    <Grid item xs={3.2} md={1.8}
+                    //bgcolor='red'
+                    >
+                        {/* <Tooltip title="Set priority p1, p2, p3, p4"> */}
+                        <Select
+                            displayEmpty
+                            fullWidth={true}
+                            value={selectedPriorityIndex}
+                            onChange={handlePrioritySelection}
+                            input={<BootstrapInput />}
+                            renderValue={(selectedIndex) => {
 
-                            ><EmojiFlagsIcon />
-                                Priority
-                            </CustomButton>
-                        </Tooltip>
+                                if (selectedIndex === -1) {
+                                    return (
+                                        <Stack direction="row" spacing={0.5}>
+                                            <EmojiFlagsIcon />
+                                            <Box
+                                                sx=
+                                                {{
+                                                    typography: 'body1'
+                                                }}>
+                                                Priority
+                                            </Box>
+                                        </Stack>
+                                    )
+                                }
+                                else {
+                                    return (
+                                        <Stack direction="row" spacing={0.5}>
+                                            <EmojiFlagsIcon color={priorities[selectedIndex].color} />
+                                            <Box
+                                                sx=
+                                                {{
+                                                    typography: 'body1'
+                                                }}>
+                                                {priorities[selectedIndex].name}
+                                            </Box>
+                                        </Stack>
+                                    )
+                                }
+                            }}
+                        >
+
+                            {priorities.map((p, i) => (
+                                <MenuItem
+                                    key={p.name}
+                                    value={p.name}
+                                    style={getSelectedPriorityItemStyle(selectedPriorityIndex === i, theme)}
+                                >
+                                    <Stack direction="row" spacing={0.5} >
+                                        <EmojiFlagsIcon color={p.color} />
+                                        <Box sx={{ typography: 'body1' }}>{p.name}</Box>
+                                    </Stack>
+                                </MenuItem>
+
+                            ))}
+                        </Select>
 
 
+                        {/* </Tooltip> */}
 
 
-                        <Tooltip title="Set priority p1, p2, p3, p4">
-                       
-                        <Autocomplete
-        // id="free-solo-demo"
-        size= "small"
-        // textTransform= 'none'
-        // padding= '2px'
-        // textAlign= 'center'
-        // variant= 'outlined'
-        // fontSize= '12px'
-        // color= 'grey'
-        // borderColor= '#B2BEB5'
-        // ':hover':
-        // {
-        //     bgcolor= '#F5F5F5',
-        //     color= 'black',
-        //     borderColor= 'black'
-        // };
-        freeSolo
-        options={top100Films.map((option) => option.title)}
-        renderInput={(params) => <TextField {...params} label="Priority" 
-         InputProps={{
-            ...params.InputProps,
-            endAdornment: (
-              <InputAdornment position="start">
-                <EmojiFlagsIcon />
-              </InputAdornment>)}}  />}></Autocomplete>
-      </Tooltip>
-
-
-
-
-
-
-                   
-                        {/* <Menu
-        id="long-menu"
-        MenuListProps={{
-          'aria-labelledby': 'long-button',
-        }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          style: {
-            maxHeight: ITEM_HEIGHT * 4.5,
-            width: '20ch',
-                
-          },
-        }}
-      >
-        {optionsprior.map((optionsprior) => (
-          <MenuItem key={optionsprior} selected={optionsprior === 'Pyxis'} onClick={handleClose}>
-            {optionsprior}
-          </MenuItem>
-        ))}
-      </Menu>
-      */}
                     </Grid>
                     {/* <Grid item xs={4} md={0}>
                         </Grid> */}
@@ -486,9 +610,9 @@ const top100Films = [
                                 aria-label="more"
                                 id="long-button"
                                 variant='outlined'
-                            //    aria-controls={open ? 'long-menu' : undefined}
-                             //   aria-expanded={open ? 'true' : undefined}
-                           //     aria-haspopup="true"
+                                //    aria-controls={open ? 'long-menu' : undefined}
+                                //   aria-expanded={open ? 'true' : undefined}
+                                //     aria-haspopup="true"
                                 //onClick={handleClick}   
                                 fullWidth
 
@@ -510,32 +634,32 @@ const top100Films = [
                             aria-controls={open2 ? 'long-menu' : undefined}
                             aria-expanded={open2 ? 'true' : undefined}
                             aria-haspopup="true"
-                            onClick={handleClickmore}   
+                            onClick={handleClickmore}
                             fullWidth
                         ><MoreHorizIcon />
                         </CustomButton>
                         <Menu
-        id="long-menu"
-        MenuListProps={{
-          'aria-labelledby': 'long-button',
-        }}
-        anchorE2={anchorE2}
-        open={open2}
-        onClose={handleClosemore}
-        PaperProps={{
-          style: {
-            maxHeight: ITEM_HEIGHT * 4.5,
-            width: '20ch',
-                
-          },
-        }}
-      >
-        {optionsmore.map((optionsmore) => (
-          <MenuItem key={optionsmore} selected={optionsmore === 'Pyxis'} onClick={handleClosemore}>
-            {optionsmore}
-          </MenuItem>
-        ))}
-      </Menu>
+                            id="long-menu"
+                            MenuListProps={{
+                                'aria-labelledby': 'long-button',
+                            }}
+                            anchorE2={anchorE2}
+                            open={open2}
+                            onClose={handleClosemore}
+                            PaperProps={{
+                                style: {
+                                    maxHeight: ITEM_HEIGHT * 4.5,
+                                    width: '20ch',
+
+                                },
+                            }}
+                        >
+                            {optionsmore.map((optionsmore) => (
+                                <MenuItem key={optionsmore} selected={optionsmore === 'Pyxis'} onClick={handleClosemore}>
+                                    {optionsmore}
+                                </MenuItem>
+                            ))}
+                        </Menu>
 
                     </Grid>
 
@@ -543,7 +667,7 @@ const top100Films = [
                     </Grid>
                     <Divider style={{ width: '100%' }} />
 
-                    <Grid item xs={8} sm={8} md={9}>
+                    <Grid item xs={7} md={9}>
 
                         {/* Home / Inspiration */}
                         <Tooltip title="Select a project">
@@ -553,17 +677,17 @@ const top100Films = [
                                 margin="none"
                                 padding="0"
                                 variant="standard"
-                                textAlign="center"  
-                                justifycontent="center" 
+                                textAlign="center"
+                                justifycontent="center"
                                 size="small"
-                                borderRadius= '10px'
-                                disableUnderline= 'true ' 
+                                borderRadius='10px'
+                                disableUnderline='true '
                                 onChange={handlePriorityChange}
                                 sx={{
                                     width: '20%',
                                     height: '70%',
                                     borderRadius: '10px',
-                                    fontSize: '12px',                                  
+                                    fontSize: '12px',
                                     "&:hover": {
                                         bgcolor: '#F5F5F5',
                                         color: 'black',
@@ -590,7 +714,7 @@ const top100Films = [
                     {/* <Stack direction="row-reverse" spacing={1}
                         paddingTop={5}> */}
 
-                    <Grid item xs={0.5} sm={2} md={1.5}>
+                    <Grid item xs={2.5} md={1.5}>
 
                         <Button
                             sx={{
@@ -599,26 +723,23 @@ const top100Films = [
                                 color: 'black',
                                 borderColor: '#CED2C2',
                                 ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' },
-                               
+
                             }}
 
-                            onClick={handleCancel}
+                            onClick={handleCancelIcon}
                             startIcon={<ClearIcon />}
 
                             margin="none"
                             padding="0"
                             variant="contained"
                             size="small"
-                        > <span style={{
-                            [theme.breakpoints.down("sm")]: {
-                                display: "none"
-                            }
-                        }} >Cancel</span>
+                        >
+                           { isMobileView  ? null : <typography>CANCEL</typography>  }
                         </Button>
 
                     </Grid>
 
-                    <Grid item xs={0.5} sm={2} md={1.5}>
+                    <Grid item xs={2.5} md={1.5}>
 
                         <Button
                             sx={{
@@ -626,7 +747,7 @@ const top100Films = [
                                 bgcolor: 'red',
                                 color: 'white',
                                 borderColor: '#CED2C2',
-                                
+
                             }}
                             onClick={handleAdd}
                             endIcon={<DoneIcon />}
@@ -634,13 +755,17 @@ const top100Films = [
                             padding="0"
                             variant="contained"
                             size="small"
-                        >Add</Button>
+                        >
+                            { isMobileView  ? null : <typography>ADD</typography>  }
+                            </Button>
 
                     </Grid>
                 </Grid>
             </FormControl>
-            {/* </FormControl> */}
+
         </Box >
 
     );
 }
+
+
