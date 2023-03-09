@@ -68,23 +68,65 @@ import InputAdornment from "@mui/material/InputAdornment";
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 
-const optionsprior = [
-    'Priority 1',
-    'Priority 2',
-    'Priority 3',
-    'Priority 4',
-
-];
-
-const optionsmore = [
-    'Labels',
-    'Add Extension...',
-    'Edit task actions',
-
-];
-
 
 const ITEM_HEIGHT = 48;
+
+
+
+function BasicMenu() {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+  
+    return (
+      <div>
+        <Button
+        variant='outlined'
+          id="basic-button"
+          aria-controls={open ? 'basic-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? 'true' : undefined}
+          onClick={handleClick}
+          sx={{
+            size: "small",
+            textTransform: 'none',
+            padding: '2px',
+            textAlign: 'center',
+            variant: 'outlined',
+            fontSize: '12px',
+            color: 'grey',
+            borderColor: '#B2BEB5', ':hover':
+            {
+                bgcolor: '#F5F5F5',
+                color: 'black',
+                borderColor: 'black'
+            },
+    
+          }}
+        >
+          <MoreHorizIcon />
+        </Button>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            'aria-labelledby': 'basic-button',
+          }}
+        >
+          <MenuItem onClick={handleClose}>Labels</MenuItem>
+          <MenuItem onClick={handleClose}>Add extension...</MenuItem>
+          <MenuItem onClick={handleClose}>Edit task actions</MenuItem>
+        </Menu>
+      </div>
+    );
+  }
 
 
 export default function AddTask({ appendTaskFn }) {
@@ -101,7 +143,7 @@ export default function AddTask({ appendTaskFn }) {
     //const [value, setValue] = React.useState('2014-08-18T21:11:54');
 
     const [priority, setPriority] = React.useState('');
-   
+
     const [age, setAge] = React.useState('');
     const [closeDate, setCloseDate] = useState(false);
 
@@ -119,7 +161,7 @@ export default function AddTask({ appendTaskFn }) {
         setAge(Number(event.target.value) || '');
     };
 
-   
+
     const handleCancel = () => {
         setDialogTaskName("")
         setDialogTaskDescription("")
@@ -127,7 +169,7 @@ export default function AddTask({ appendTaskFn }) {
 
 
     const handleAdd = () => {
-      
+
 
         if (dialogTaskName == '' && dialogTaskDescription == '')
             return;
@@ -275,19 +317,24 @@ export default function AddTask({ appendTaskFn }) {
         },
     }));
 
-   
-  
 
-    const [anchorE2, setAnchorE2] = React.useState(null);
-    const open2 = Boolean(anchorE2);
-    const handleClickmore = (event) => {
-        setAnchorE2(event.currentTarget);
-    };
-    const handleClosemore = () => {
-        setAnchorE2(null);
-    };
+    //more button
+
+    // const [moreMenuAnchor, setMoreMenuAnchor] = React.useState(null);
+    // const isMoreMenuOpen = Boolean(moreMenuAnchor);
+    // const handleClickmore = (event) => {
+    //     setMoreMenuAnchor(event.currentTarget);
+    // };
+    // const handleClosemore = () => {
+    //     setMoreMenuAnchor(null);
+    // };
 
 
+
+
+
+    
+    //priority button
 
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
@@ -365,7 +412,7 @@ export default function AddTask({ appendTaskFn }) {
         // setSelectedPriority(priority)
     }
 
-
+    //date button
     const dates = [
         {
             name: 'Today',
@@ -406,14 +453,17 @@ export default function AddTask({ appendTaskFn }) {
     }
 
 
-    const [showIcon, setshowIcon] = React.useState(false)
+    //icon button
 
-    const handleCancelIcon = (event) => {
-        console.log("show icon", event);
 
-        setshowIcon(true);
+    // const [showIcon, setshowIcon] = React.useState(false)
 
-    }
+    // const handleCancelIcon = (event) => {
+    //     console.log("show icon", event);
+
+    //     setshowIcon(true);
+
+    // }
 
     const isMobileView = useMediaQuery(theme.breakpoints.down('sm'));
     console.log("isMobileView", isMobileView);
@@ -626,40 +676,7 @@ export default function AddTask({ appendTaskFn }) {
                     </Grid>
 
                     <Grid item xs={0.1} md={0.1}>
-                        <CustomButton
-                            //sentenceCase  
-                            aria-label="more"
-                            id="long-button"
-                            variant='outlined'
-                            aria-controls={open2 ? 'long-menu' : undefined}
-                            aria-expanded={open2 ? 'true' : undefined}
-                            aria-haspopup="true"
-                            onClick={handleClickmore}
-                            fullWidth
-                        ><MoreHorizIcon />
-                        </CustomButton>
-                        <Menu
-                            id="long-menu"
-                            MenuListProps={{
-                                'aria-labelledby': 'long-button',
-                            }}
-                            anchorE2={anchorE2}
-                            open={open2}
-                            onClose={handleClosemore}
-                            PaperProps={{
-                                style: {
-                                    maxHeight: ITEM_HEIGHT * 4.5,
-                                    width: '20ch',
-
-                                },
-                            }}
-                        >
-                            {optionsmore.map((optionsmore) => (
-                                <MenuItem key={optionsmore} selected={optionsmore === 'Pyxis'} onClick={handleClosemore}>
-                                    {optionsmore}
-                                </MenuItem>
-                            ))}
-                        </Menu>
+                    <BasicMenu></BasicMenu>
 
                     </Grid>
 
@@ -722,11 +739,16 @@ export default function AddTask({ appendTaskFn }) {
                                 bgcolor: '#CED2C2',
                                 color: 'black',
                                 borderColor: '#CED2C2',
-                                ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' },
-
+                                "&:hover": {
+                                    //you want this to be the same as the backgroundColor above
+                                    backgroundColor: '#CED2C2'
+                                }
+                                // [theme.breakpoints.up('sm')]: {
+                                //     ':hover': { bgcolor: '#F5F5F5', color: 'black', borderColor: 'black' },
+                                //   }
                             }}
 
-                            onClick={handleCancelIcon}
+                            // onClick={handleCancelIcon}
                             startIcon={<ClearIcon />}
 
                             margin="none"
@@ -734,7 +756,7 @@ export default function AddTask({ appendTaskFn }) {
                             variant="contained"
                             size="small"
                         >
-                           { isMobileView  ? null : <typography>CANCEL</typography>  }
+                            {isMobileView ? null : <typography>CANCEL</typography>}
                         </Button>
 
                     </Grid>
@@ -747,6 +769,10 @@ export default function AddTask({ appendTaskFn }) {
                                 bgcolor: 'red',
                                 color: 'white',
                                 borderColor: '#CED2C2',
+                                "&:hover": {
+                                    //you want this to be the same as the backgroundColor above
+                                    backgroundColor: 'red'
+                                }
 
                             }}
                             onClick={handleAdd}
@@ -756,8 +782,8 @@ export default function AddTask({ appendTaskFn }) {
                             variant="contained"
                             size="small"
                         >
-                            { isMobileView  ? null : <typography>ADD</typography>  }
-                            </Button>
+                            {isMobileView ? null : <typography>ADD</typography>}
+                        </Button>
 
                     </Grid>
                 </Grid>
