@@ -88,6 +88,7 @@ function App() {
 
   const [todoCol, settodoCol] = React.useState([[]]);
 
+  console.log(todoCol);
   const appendTask = (t) => {
     settodoCol([...todoCol, t])
   };

@@ -1,65 +1,93 @@
 import * as React from 'react';
 
-import Button from '@mui/material/Button';
-
-import DoneIcon from '@mui/icons-material/Done';
-import ClearIcon from '@mui/icons-material/Clear';
-
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
-
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 
 
-import TextField from '@mui/material/TextField';
+
+
+
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Radio from '@mui/material/Radio';
-import { Box } from '@mui/system';
 
 import { Stack } from '@mui/material';
+import EventIcon from '@mui/icons-material/Event';
+
+
+import SaveIcon from '@mui/icons-material/Save';
+import ShareIcon from '@mui/icons-material/Share';
+import CommentIcon from '@mui/icons-material/Comment';
+import GridViewIcon from '@mui/icons-material/GridView';
 
 
 export default function GetTodoListView({ items }) {
 
   const [checked, setChecked] = React.useState([0]);
+  const [isMouseHover, setIsMouseHover] = React.useState(false);
 
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
+  const handleToggle = (nameAsValue) => () => {
+
+    console.log('handleToggle value', nameAsValue);
+    const currentIndex = checked.indexOf(nameAsValue);
+    const newChecked = [...checked]; //copy to new array
 
     if (currentIndex === -1) {
-      newChecked.push(value);
+      newChecked.push(nameAsValue);
     } else {
       newChecked.splice(currentIndex, 1);
     }
+    console.log('Checked', checked);
+    console.log('newChecked', newChecked);
 
     setChecked(newChecked);
   };
 
+  function isListItemHover() {
+    return (
+      isMouseHover ?
+        <Stack
+          name="label2"
+          direction="row"
+          paddingBottom={7}>
+          <CommentIcon sx={{ color: 'grey' }} />&nbsp;&nbsp;
+          <SaveIcon sx={{ color: 'grey' }} />&nbsp;&nbsp;
+          <GridViewIcon sx={{ color: 'grey' }} />&nbsp;&nbsp;
+          <ShareIcon sx={{ color: 'grey' }} />
+        </Stack >
+
+        : <Stack
+          name="label2"
+          display="none">
+          <CommentIcon></CommentIcon>
+        </Stack>
+    )
+  }
   return (
-    <div>
+    <div > 
       <List sx={{
-        width: '100%', maxWidth: 360,
+        width: '100%', maxWidth: 960,
         bgcolor: 'background.paper'
       }}>
         {items.map((value) => {
+
+          if (value === undefined)
+            return null;
+          if (value.length === 0)
+            return null;
+
+          console.log('value', value);
+          console.log(value.date.toString());
           const labelId = `checkbox-list-label-${value.name}`;
           return (
-            <ListItem
+            <ListItem 
+              onMouseOver={() => setIsMouseHover(true)}
+              onMouseOut={() => setIsMouseHover(false)}
               key={value.name}
-
               disablePadding
             >
-              <ListItemButton role={undefined} onClick={handleToggle(value.name)} dense>
+              <ListItemButton role={undefined} onClick={handleToggle(value.name)} dense >
                 <ListItemIcon>
                   <Radio
                     edge="start"
@@ -67,9 +95,41 @@ export default function GetTodoListView({ items }) {
                     tabIndex={-1}
                     disableRipple
                     inputProps={{ 'aria-labelledby': labelId }}
-                  />
+                    sx={{
+                      paddingBottom: "60px",
+                      ':hover':
+                      {
+                        bgcolor: '#F5F5F5',
+                        color: 'black',
+                        borderColor: '#B2BEB5'
+                      },
+                    }}
+                  >
+                  
+                  </Radio>
+
                 </ListItemIcon>
-                <ListItemText id={labelId} primary={value.name} />
+                <Stack name="label1" direction="column"  >
+                  <ListItemText
+                    id={labelId}
+                    primary={value.name} />
+                  <ListItemText
+                    id={labelId}
+                    primary={value.description} />
+                  <Stack direction="row">
+                    <EventIcon
+                      sx={{
+                        color: "grey"
+                      }}
+                    />&nbsp;
+                    <ListItemText
+                      id={labelId}
+                      primary={value.date.toDateString()} />
+                  </Stack>
+                </Stack>
+
+                <Stack>{isListItemHover()}</Stack >
+
               </ListItemButton>
             </ListItem>
           );

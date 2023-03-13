@@ -28,6 +28,10 @@ import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import LabelIcon from '@mui/icons-material/Label';
 import ExtensionIcon from '@mui/icons-material/Extension';
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
+
+
+
 
 function MoreOptionsButton() {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -61,7 +65,7 @@ function MoreOptionsButton() {
                     {
                         bgcolor: '#F5F5F5',
                         color: 'black',
-                        borderColor: 'black'
+                        borderColor: '#B2BEB5'
                     },
 
                 }}
@@ -96,15 +100,17 @@ export default function AddTask({ appendTaskFn }) {
     const theme = useTheme();
     const [dialogTaskName, setDialogTaskName] = React.useState('');
     const [dialogTaskDescription, setDialogTaskDescription] = React.useState('');
-    const [selectedProject, setSelectedProject] = React.useState('');
+    const [selectedProject, setSelectedProject] = React.useState(-1);
     const [selectedPriorityIndex, setSelectedPriorityIndex] = React.useState(-1);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const isMobileView = useMediaQuery(theme.breakpoints.down('sm'));
 
     const handleAdd = () => {
-        if (dialogTaskName === '' && dialogTaskDescription === '')
-            return;
+        // if (dialogTaskName === '' || dialogTaskDescription === '' || selectedDate === '')
+        //     return ;
         let t = new Task(dialogTaskName, dialogTaskDescription, selectedDate, selectedProject)
+        //console.log(t);
+        //console.log(selectedDate.toString());
         appendTaskFn(t);
         setDialogTaskName("")
         setDialogTaskDescription("")
@@ -117,11 +123,6 @@ export default function AddTask({ appendTaskFn }) {
     const handleDialogTaskDescription = (e) => {
         setDialogTaskDescription(e.target.value);
     };
-
-    const handleProjectSelection = (e) => {
-        setSelectedProject(e.target.value);
-    };
-
 
     const styleForM = {
         bgcolor: 'background.paper',
@@ -149,7 +150,7 @@ export default function AddTask({ appendTaskFn }) {
         {
             bgcolor: '#F5F5F5',
             color: 'black',
-            borderColor: 'black'
+            borderColor: '#B2BEB5'
         },
 
     }));
@@ -206,6 +207,8 @@ export default function AddTask({ appendTaskFn }) {
             ].join(','),
             ':hover':
             {
+
+
                 bgcolor: '#F5F5F5',
                 color: 'black',
                 borderColor: 'black'
@@ -214,18 +217,8 @@ export default function AddTask({ appendTaskFn }) {
     }));
 
 
-    function getSelectedPriorityItemStyle(hasSelection, theme2) {
-        // console.log("has selection ", hasSelection)
-        return {
 
-            fontWeight:
-                hasSelection === false
-                    ? theme2.typography.fontWeightLight
-                    : theme2.typography.fontWeightBold,
-
-        };
-    }
-
+    //priority
 
 
     const priorities = [
@@ -256,22 +249,25 @@ export default function AddTask({ appendTaskFn }) {
         setSelectedPriorityIndex(selIndex);
         console.log(selIndex);
 
+    }
 
-        // const priority =
-        // {
-        //     name:"",
-        //     color: "" 
-        // };
+    function getSelectedPriorityItemStyle(hasSelection, theme2) {
+        // console.log("has selection ", hasSelection)
+        return {
 
-        // setSelectedPriority(priority)
+            fontWeight:
+                hasSelection === false
+                    ? theme2.typography.fontWeightLight
+                    : theme2.typography.fontWeightBold,
+
+        };
     }
 
 
-    const handleDateChange = (event) => {
-        console.log("handlePrioritySelection event: ", event);
-        setSelectedDate(event);
-    }
 
+
+
+    //datepicker
 
     function getDatePicker() {
         return (
@@ -279,24 +275,134 @@ export default function AddTask({ appendTaskFn }) {
                 inputFormat="MM/DD/YYYY"
                 value={selectedDate}
                 onChange={handleDateChange}
-                renderInput={(params) => <TextField {...params} />}
+                sx={{ 
+                    borderColor: '#B2BEB5',
+                    ':hover':
+                    {
+                        bgcolor: '#F5F5F5',
+                        color: 'black',
+                        borderColor: '#B2BEB5'
+                    },
+                }}
+                renderInput={(params) => <TextField
+                    sx={{
+                        "& .MuiInputBase-input": {
+                            height: "fit-content",  // Set your height here.
+                            backgroundColor: "transparent",
+                            color: "grey",
+                            borderRadius: "10px",
+                            padding: "3.5px",
+                            fontSize: "15px",
+                            textAlign: "center",
+                            borderColor: "#B2BEB5",
+                            ':hover':
+                            {
+                                bgcolor: '#F5F5F5',
+                                color: 'black',
+                                borderColor: '#B2BEB5'
+                            },
+                        }
+                    }}
+                    {...params}
+                />}
             />
                 :
                 <DesktopDatePicker
-
                     inputFormat="MM/DD/YYYY"
                     value={selectedDate}
                     onChange={handleDateChange}
-                    renderInput={(params) => <TextField {...params} />}
-                />
+                    sx={{
+                        borderColor: '#B2BEB5',
+                        ':hover':
+                        {
+                            bgcolor: '#F5F5F5',
+                            color: 'black',
+                            borderColor: '#B2BEB5'
+                        },
+                    }}
+                    renderInput={(params) => <TextField
+                        sx={{
+                            "& .MuiInputBase-input": {
+                                height: "fit-content",  // Set your height here.
+                                borderRadius: "0px",
+                                color: "grey",
+                                paddingTop: "3.5px",
+                                paddingBottom: "3.5px",
+                                paddingLeft: "3.5px",
+                                fontSize: "13px",
+                                textAlign: "right",
+                                borderColor: '#B2BEB5',
+                                ':hover':
+                                {
+                                    bgcolor: '#F5F5F5',
+                                    color: 'black',
+                                    borderColor: '#B2BEB5'
+                                },
+                            }
+                        }}
+                        {...params}
+                    />}
+                >
+                </DesktopDatePicker>
+
         );
     }
+
+    const handleDateChange = (event) => {
+        console.log("handlePrioritySelection event: ", event);
+        setSelectedDate(event);
+    }
+
+    //project
+    const project = [
+        {
+            name: 'Inbox',
+            color: 'secondary'
+        },
+        {
+            name: 'Home',
+            color: 'success'
+        },
+        {
+            name: 'Routines',
+            color: 'primary'
+        },
+        {
+            name: 'Inspiration',
+            color: 'action'
+        }
+    ];
+
+
+    const handleProjectSelection = (event) => {
+        console.log("handleProjectSelection event: ", event);
+        console.log("handleProjectSelection value: ", event.target.value);
+
+        var selIndex2 = project.indexOf(project.find(o => o.name === event.target.value));
+        setSelectedProject(selIndex2);
+        console.log(selIndex2);
+
+    }
+
+    // function getSelectedProjectItemStyle(hasSelection, theme2) {
+    //     // console.log("has selection ", hasSelection)
+    //     return {
+
+    //         fontWeight:
+    //             hasSelection === false
+    //                 ? theme2.typography.fontWeightLight
+    //                 : theme2.typography.fontWeightBold,
+
+    //     };
+    // }
+
 
     return (
         <Box sx={{ ...styleForM, borderRadius: '10px', minwidth: '10px' }}>
             <FormControl sx={{ m: 1, minWidth: '320px', minHeight: '110px' }} md={{ m: 1, minWidth: '420px', minHeight: '50px' }}>
                 <Grid container spacing={0.7} columns={12} >
                     <Grid item xs={12} md={12}>
+
                         <TextField
                             value={dialogTaskName}
                             onChange={handleDialogTaskName}
@@ -337,13 +443,23 @@ export default function AddTask({ appendTaskFn }) {
                         </LocalizationProvider>
                     </Grid>
 
-                    <Grid item xs={3.2} md={1.8}>
+                    <Grid item xs={3.2} md={1.8}>  
                         <Select
                             displayEmpty
                             fullWidth={true}
                             value={selectedPriorityIndex}
                             onChange={handlePrioritySelection}
                             input={<BootstrapInput />}
+                            sx={{
+                                bgcolor: '#F5F5F5',
+                                borderColor: '#B2BEB5',
+                                ':hover':
+                                {
+                                    bgcolor: '#F5F5F5',
+                                    color: 'black',
+                                    borderColor: '#B2BEB5'
+                                },
+                            }}
                             renderValue={(selectedIndex) => {
 
                                 if (selectedIndex === -1) {
@@ -353,7 +469,8 @@ export default function AddTask({ appendTaskFn }) {
                                             <Box
                                                 sx=
                                                 {{
-                                                    typography: 'body1'
+                                                    typography: 'body1',
+                                                   
                                                 }}>
                                                 Priority
                                             </Box>
@@ -367,7 +484,8 @@ export default function AddTask({ appendTaskFn }) {
                                             <Box
                                                 sx=
                                                 {{
-                                                    typography: 'body1'
+                                                    typography: 'body1',
+                                                   
                                                 }}>
                                                 {priorities[selectedIndex].name}
                                             </Box>
@@ -385,7 +503,7 @@ export default function AddTask({ appendTaskFn }) {
                                 >
                                     <Stack direction="row" spacing={0.5} >
                                         <EmojiFlagsIcon color={p.color} />
-                                        <Box sx={{ typography: 'body1' }}>{p.name}</Box>
+                                        <Box sx={{ typography: 'body1', fontSize: "12px" }}>{p.name}</Box>
                                     </Stack>
                                 </MenuItem>
 
@@ -415,45 +533,114 @@ export default function AddTask({ appendTaskFn }) {
 
                     <Grid item xs={4} md={12}>
                     </Grid>
-                    <Divider style={{ width: '100%' }} />
+                    <Divider style={{ width: '101%' }} />
 
                     <Grid item xs={7} md={9}>
                         <Tooltip title="Select a project">
+
                             <Select
+                                displayEmpty
+                                fullWidth={true}
                                 value={selectedProject}
-                                label="Inbox"
+                                label={"Inbox"}
                                 margin="none"
-                                padding="0"
+                                paddingTop="10px"
+                                bgcolor='blue'
                                 variant="standard"
-                                textAlign="center"
+                                textAlign="right"
                                 justifycontent="center"
                                 size="small"
                                 borderRadius='10px'
                                 disableUnderline='true '
+
                                 onChange={handleProjectSelection}
                                 sx={{
-                                    width: '20%',
-                                    height: '70%',
+                                    width: '22%',
+                                    height: '94%',
                                     borderRadius: '10px',
                                     fontSize: '12px',
+                                    color: 'grey',
                                     "&:hover": {
                                         bgcolor: '#F5F5F5',
                                         color: 'black',
                                         borderColor: 'black',
-                                        borderRadius: '10px'
+                                        borderRadius: '5px'
                                     },
+                                }}
+                                renderValue={(selectedIndex) => {
+
+                                    if (selectedIndex === -1) {
+                                        return (
+                                            <Stack direction="row" spacing={0.5}>
+                                                <AccountTreeIcon 
+                                                sx={{
+                                                    paddingTop:"4px",
+                                                    paddingLeft:"4px",  
+                                                    }}/>
+                                                &nbsp;
+                                                <Box
+                                                    sx=
+                                                    {{
+                                                        typography: 'body1',
+                                                        paddingTop: "7px",
+                                                        borderRadius: '5px'
+                                                    }}>
+                                                    Project 1
+                                                </Box>
+                                            </Stack>
+                                        )
+                                    }
+                                    else {
+                                        return (
+                                            <Stack direction="row" spacing={0.5}>
+                                                <EmojiFlagsIcon color={priorities[selectedIndex].color} />
+                                                <Box
+                                                    sx=
+                                                    {{
+                                                        typography: 'body1',
+                                                        paddingTop: "5px"
+                                                    }}>
+                                                    {priorities[selectedIndex].name}
+                                                </Box>
+                                            </Stack>
+                                        )
+                                    }
                                 }}
 
                             >
-                                <MenuItem value="">
-                                    <em>None</em>
-                                </MenuItem>
-                                <MenuItem value={10}>Priority 1</MenuItem>
-                                <MenuItem value={20}>Priority 2</MenuItem>
-                                <MenuItem value={30}>Priority 3</MenuItem>
-                                <MenuItem value={10}>Priority 4</MenuItem>
-                                <MenuItem value={20}>Priority 5</MenuItem>
-                                <MenuItem value={30}>Priority 6</MenuItem>
+                                {/* <TextField value={dialogTaskName}
+                            //onChange={handleDialogTaskName}
+                            //id="name"
+                            placeholder='Type a project'
+                            //type="email"
+                            fullWidth
+                            variant="standard"
+                            inputProps={{
+                                style: {
+                                    height: "20px",
+                                    fontSize: '12px'
+                                }
+                            }}
+                            InputProps={{ disableUnderline: false }} 
+                            />
+                                <MenuItem sx={{ fontSize: '12px' }}><MoveToInboxIcon />&nbsp;&nbsp;&nbsp;&nbsp;Inbox</MenuItem>
+                                <MenuItem sx={{ fontSize: '12px' }}><FiberManualRecordIcon />&nbsp;&nbsp;&nbsp;&nbsp;Home&nbsp;<HomeIcon /></MenuItem>
+                                <MenuItem sx={{ fontSize: '12px' }}>Routines&nbsp;<RepeatOnIcon /></MenuItem>
+                                <MenuItem sx={{ fontSize: '12px' }}>Inspiration&nbsp;<AutoAwesomeIcon /></MenuItem> */}
+
+
+                                {/* {project.map((j, i) => (
+                                    <MenuItem
+                                        key={j.name}
+                                        value={j.name}
+                                        style={getSelectedProjectItemStyle(selectedProject === i, theme)}
+                                    >
+                                        <Stack direction="row" spacing={0.5} >
+                                            <MoveToInboxIcon color={j.color} />
+                                            <Box sx={{ typography: 'body1' }}>{j.name}</Box>
+                                        </Stack>
+                                    </MenuItem>
+                                ))} */}
                             </Select>
                         </Tooltip>
 
