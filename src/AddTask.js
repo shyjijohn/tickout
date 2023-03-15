@@ -463,6 +463,7 @@ export default function AddTask({ appendTaskFn }) {
                             renderValue={(selectedIndex) => {
 
                                 if (selectedIndex === -1) {
+                                    
                                     return (
                                         <Stack direction="row" spacing={0.5}>
                                             <EmojiFlagsIcon />
