@@ -31,6 +31,225 @@ import ExtensionIcon from '@mui/icons-material/Extension';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 
 
+function PrioritiesButton() {
+
+    const [selectedPriorityIndex, setSelectedPriorityIndex] = React.useState(-1);
+    const theme = useTheme();
+
+    const BootstrapInput = styled(InputBase)(({ theme }) => ({
+        'label + &': {
+            marginTop: theme.spacing(3),
+        },
+        '& .MuiInputBase-input': {
+            borderRadius: 4,
+            color: 'grey',
+            fontWeight: 'normal',
+            position: 'relative',
+            backgroundColor: theme.palette.background.paper,
+            border: '1px solid #ced4da',
+            // backgroundColor: 'green',
+            spacing: '0px',
+            fontSize: 12,
+            //   padding: '10px 26px 10px 12px',
+            padding: '2px',
+            width: 'inherit',
+            transition: theme.transitions.create(['border-color', 'box-shadow']),
+            // Use the system font instead of the default Roboto font.
+            fontFamily: [
+                '-apple-system',
+                'BlinkMacSystemFont',
+                '"Segoe UI"',
+                'Roboto',
+                '"Helvetica Neue"',
+                'Arial',
+                'sans-serif',
+                '"Apple Color Emoji"',
+                '"Segoe UI Emoji"',
+                '"Segoe UI Symbol"',
+            ].join(','),
+            ':hover':
+            {
+
+
+                bgcolor: '#F5F5F5',
+                color: 'black',
+                borderColor: 'black'
+            },
+        },
+    }));
+
+
+
+
+    //priority
+
+
+    const priorities = [
+        {
+            name: 'Priority 1',
+            color: 'secondary'
+        },
+        {
+            name: 'Priority 2',
+            color: 'success'
+        },
+        {
+            name: 'Priority 3',
+            color: 'primary'
+        },
+        {
+            name: 'Priority 4',
+            color: 'action'
+        }
+    ];
+
+
+    const onClickOfMenuitem = (event) => {
+        //console.log("onClickOfMenuitem called");
+        //console.log("onClickOfMenuitem  event", event);
+       // console.log("onClickOfMenuitem  value", event.target.innerText);
+     
+     
+        // console.log("handlePrioritySelection event: ", event);
+        // console.log("handlePrioritySelection value: ", event.target.value);
+
+        var selIndex = priorities.indexOf(priorities.find(o => o.name === event.target.innerText));
+        setSelectedPriorityIndex(selIndex);
+        //console.log(selIndex);
+
+    }
+
+    function getSelectedPriorityItemStyle(hasSelection, theme2) {
+        // console.log("has selection ", hasSelection)
+        return {
+
+            fontWeight:
+                hasSelection === false
+                    ? theme2.typography.fontWeightLight
+                    : theme2.typography.fontWeightBold,
+
+        };
+    }
+
+    const [anchorPoint, setAnchorPoint] = React.useState(null);
+    const open2 = Boolean(anchorPoint);
+    const handleClick1 = (event) => {
+        setAnchorPoint(event.currentTarget);
+    };
+    const handleClose1 = () => {
+        setAnchorPoint(null);
+    };
+
+    const clearpriority = () =>
+    {
+        setSelectedPriorityIndex(-1)   
+    }
+
+
+    function prioritymain() {
+        console.log("priority index", selectedPriorityIndex);
+        return (
+            selectedPriorityIndex === -1 ? (
+
+                <Stack direction="row" spacing={0.5}>
+                    <EmojiFlagsIcon />
+                    <Box
+                        sx=
+                        {{
+                            typography: 'body1',
+
+                        }}>
+                        Priority
+
+                    </Box>
+                </Stack> )
+                :
+              (  <Stack direction="row" spacing={0.5}>
+                    <EmojiFlagsIcon color={priorities[selectedPriorityIndex].color} />
+                    <Box
+                        sx=
+                        {{
+                            typography: 'body1',
+
+                        }}>
+                        {priorities[selectedPriorityIndex].name}
+                    </Box>
+                    <ClearIcon fontSize='small' onClick={clearpriority} />
+                </Stack>
+              )
+        )
+    }
+
+
+   // console.log("priority index", selectedPriorityIndex);
+
+return (
+    
+    <div>
+        <Button
+            //displayEmpty
+            fullWidth={true}
+            value={selectedPriorityIndex}
+            input={<BootstrapInput />}
+            variant='outlined'
+            id="basic-button1"
+            aria-controls={open2 ? 'basic-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open2 ? 'true' : undefined}
+            onClick={handleClick1}
+            sx={{
+                size: "small",
+                textTransform: 'none',
+                padding: '2px',
+                textAlign: 'center',
+                variant: 'outlined',
+                fontSize: '12px',
+                color: 'grey',
+                border: '1px solid',
+                borderColor: '#B2BEB5', ':hover':
+                {
+                    bgcolor: '#F5F5F5',
+                    color: 'black',
+                    borderColor: '#B2BEB5'
+                },
+
+            }}
+
+        >
+            <Stack>{prioritymain()}</Stack >
+        </Button>
+
+        <Menu
+            id="basic-menu1"
+            anchorEl={anchorPoint}
+            open={open2}
+            onClose={handleClose1}
+            MenuListProps={{
+                'aria-labelledby': 'basic-button',
+            }}
+            sx={{
+                spacing: '20%'
+            }}
+        >
+            {priorities.map((p, i) => (
+                <MenuItem
+                    key={p.name}
+                    value={p.name}
+                    onClick={onClickOfMenuitem}
+                    style={getSelectedPriorityItemStyle(selectedPriorityIndex === i, theme)}
+                >
+                    <Stack direction="row" spacing={0.5} >
+                        <EmojiFlagsIcon color={p.color} />
+                        <Box sx={{ typography: 'body1', fontSize: "12px" }}>{p.name}</Box>
+                    </Stack>
+                </MenuItem>
+
+            ))}
+        </Menu>
+
+    </div>
+);
+}
 
 
 function MoreOptionsButton() {
@@ -101,13 +320,12 @@ export default function AddTask({ appendTaskFn }) {
     const [dialogTaskName, setDialogTaskName] = React.useState('');
     const [dialogTaskDescription, setDialogTaskDescription] = React.useState('');
     const [selectedProject, setSelectedProject] = React.useState(-1);
-    const [selectedPriorityIndex, setSelectedPriorityIndex] = React.useState(-1);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const isMobileView = useMediaQuery(theme.breakpoints.down('sm'));
 
     const handleAdd = () => {
-        // if (dialogTaskName === '' || dialogTaskDescription === '' || selectedDate === '')
-        //     return ;
+        if (dialogTaskName === '' || dialogTaskDescription === '' || selectedDate === '')
+            return;
         let t = new Task(dialogTaskName, dialogTaskDescription, selectedDate, selectedProject)
         //console.log(t);
         //console.log(selectedDate.toString());
@@ -217,10 +435,6 @@ export default function AddTask({ appendTaskFn }) {
     }));
 
 
-
-    //priority
-
-
     const priorities = [
         {
             name: 'Priority 1',
@@ -241,28 +455,6 @@ export default function AddTask({ appendTaskFn }) {
     ];
 
 
-    const handlePrioritySelection = (event) => {
-        console.log("handlePrioritySelection event: ", event);
-        console.log("handlePrioritySelection value: ", event.target.value);
-
-        var selIndex = priorities.indexOf(priorities.find(o => o.name === event.target.value));
-        setSelectedPriorityIndex(selIndex);
-        console.log(selIndex);
-
-    }
-
-    function getSelectedPriorityItemStyle(hasSelection, theme2) {
-        // console.log("has selection ", hasSelection)
-        return {
-
-            fontWeight:
-                hasSelection === false
-                    ? theme2.typography.fontWeightLight
-                    : theme2.typography.fontWeightBold,
-
-        };
-    }
-
 
 
 
@@ -275,7 +467,7 @@ export default function AddTask({ appendTaskFn }) {
                 inputFormat="MM/DD/YYYY"
                 value={selectedDate}
                 onChange={handleDateChange}
-                sx={{ 
+                sx={{
                     borderColor: '#B2BEB5',
                     ':hover':
                     {
@@ -349,7 +541,7 @@ export default function AddTask({ appendTaskFn }) {
     }
 
     const handleDateChange = (event) => {
-        console.log("handlePrioritySelection event: ", event);
+        //console.log("handlePrioritySelection event: ", event);
         setSelectedDate(event);
     }
 
@@ -443,74 +635,11 @@ export default function AddTask({ appendTaskFn }) {
                         </LocalizationProvider>
                     </Grid>
 
-                    <Grid item xs={3.2} md={1.8}>  
-                        <Select
-                            displayEmpty
-                            fullWidth={true}
-                            value={selectedPriorityIndex}
-                            onChange={handlePrioritySelection}
-                            input={<BootstrapInput />}
-                            sx={{
-                                bgcolor: '#F5F5F5',
-                                borderColor: '#B2BEB5',
-                                ':hover':
-                                {
-                                    bgcolor: '#F5F5F5',
-                                    color: 'black',
-                                    borderColor: '#B2BEB5'
-                                },
-                            }}
-                            renderValue={(selectedIndex) => {
+                    <Grid item xs={3.2} md={1.8}>
+                        <PrioritiesButton></PrioritiesButton>
 
-                                if (selectedIndex === -1) {
-                                    
-                                    return (
-                                        <Stack direction="row" spacing={0.5}>
-                                            <EmojiFlagsIcon />
-                                            <Box
-                                                sx=
-                                                {{
-                                                    typography: 'body1',
-                                                   
-                                                }}>
-                                                Priority
-                                            </Box>
-                                        </Stack>
-                                    )
-                                }
-                                else {
-                                    return (
-                                        <Stack direction="row" spacing={0.5}>
-                                            <EmojiFlagsIcon color={priorities[selectedIndex].color} />
-                                            <Box
-                                                sx=
-                                                {{
-                                                    typography: 'body1',
-                                                   
-                                                }}>
-                                                {priorities[selectedIndex].name}
-                                            </Box>
-                                        </Stack>
-                                    )
-                                }
-                            }}
-                        >
-
-                            {priorities.map((p, i) => (
-                                <MenuItem
-                                    key={p.name}
-                                    value={p.name}
-                                    style={getSelectedPriorityItemStyle(selectedPriorityIndex === i, theme)}
-                                >
-                                    <Stack direction="row" spacing={0.5} >
-                                        <EmojiFlagsIcon color={p.color} />
-                                        <Box sx={{ typography: 'body1', fontSize: "12px" }}>{p.name}</Box>
-                                    </Stack>
-                                </MenuItem>
-
-                            ))}
-                        </Select>
                     </Grid>
+
                     <Grid item xs={5.8} md={2.5} >
                         <Tooltip title="Add Reminders">
                             <CustomButton
@@ -573,11 +702,11 @@ export default function AddTask({ appendTaskFn }) {
                                     if (selectedIndex === -1) {
                                         return (
                                             <Stack direction="row" spacing={0.5}>
-                                                <AccountTreeIcon 
-                                                sx={{
-                                                    paddingTop:"4px",
-                                                    paddingLeft:"4px",  
-                                                    }}/>
+                                                <AccountTreeIcon
+                                                    sx={{
+                                                        paddingTop: "4px",
+                                                        paddingLeft: "4px",
+                                                    }} />
                                                 &nbsp;
                                                 <Box
                                                     sx=
