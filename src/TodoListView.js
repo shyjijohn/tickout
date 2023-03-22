@@ -6,14 +6,13 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Radio from '@mui/material/Radio';
 
-import { Stack } from '@mui/material';
+import { Divider, ListSubheader, Stack } from '@mui/material';
 import EventIcon from '@mui/icons-material/Event';
 
 
-import SaveIcon from '@mui/icons-material/Save';
-import ShareIcon from '@mui/icons-material/Share';
-import CommentIcon from '@mui/icons-material/Comment';
-import GridViewIcon from '@mui/icons-material/GridView';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 
 export default function GetTodoListView({ items }) {
@@ -51,6 +50,8 @@ export default function GetTodoListView({ items }) {
   //   }
   // }
 
+  
+
   function isListItemHover(value) {
     console.log("item hover", value.name);
     console.log("--------------------------------------------");
@@ -62,17 +63,40 @@ export default function GetTodoListView({ items }) {
         <Stack
           name="label2"
           direction="row"
+          paddingLeft={59}
+          position="relative"
+          justifyContent= "flex-end"
           paddingBottom={7}>
-          <CommentIcon sx={{ color: 'grey' }} />&nbsp;&nbsp;
-          <SaveIcon sx={{ color: 'grey' }} />&nbsp;&nbsp;
-          <GridViewIcon sx={{ color: 'grey' }} />&nbsp;&nbsp;
-          <ShareIcon sx={{ color: 'grey' }} />
+          <BorderColorIcon sx={{ color: 'grey' , "&:hover": {
+                                        bgcolor: '#F5F5F5',
+                                        color: 'black',
+                                        borderColor: 'black',
+                                        borderRadius: '5px'
+                                    },}} />&nbsp;&nbsp;
+          <EventIcon sx={{ color: 'grey', "&:hover": {
+                                        bgcolor: '#F5F5F5',
+                                        color: 'black',
+                                        borderColor: 'black',
+                                        borderRadius: '5px'
+                                    }, }} />&nbsp;&nbsp;
+          <ChatBubbleOutlineIcon sx={{ color: 'grey', "&:hover": {
+                                        bgcolor: '#F5F5F5',
+                                        color: 'black',
+                                        borderColor: 'black',
+                                        borderRadius: '5px'
+                                    }, }} />&nbsp;&nbsp;
+          <MoreHorizIcon sx={{ color: 'grey', "&:hover": {
+                                        bgcolor: '#F5F5F5',
+                                        color: 'black',
+                                        borderColor: 'black',
+                                        borderRadius: '5px'
+                                    }, }} />
         </Stack >
 
         : <Stack
           name="label2"
           display="none">
-          <CommentIcon></CommentIcon>
+          <BorderColorIcon></BorderColorIcon>
         </Stack>
     )
   }
@@ -81,7 +105,7 @@ export default function GetTodoListView({ items }) {
   return (
     <div >
       <List sx={{
-        width: '100%', maxWidth: 960,
+        width: '100%', maxWidth: 800,
         bgcolor: 'background.paper'
       }}>
         {items.map((value) => {
@@ -100,6 +124,14 @@ export default function GetTodoListView({ items }) {
           //console.log('Item index', items.indexOf(value.name));
           return (
             <ListItem
+            sx={{
+              borderLeftWidth: "0px",
+              marginLeft: "0px",
+              padddingLeft: "0px",
+              borderRightWidth: "0px",
+              marginRight: "0px",
+              padddingRight: "0px"
+            }}
               onMouseOver={() => {
                 console.log("mouse hover on item!!!!!!!", value.name)
                  setMouseHoveringItemName(value.name);
@@ -122,15 +154,37 @@ export default function GetTodoListView({ items }) {
               key={value.name}
               disablePadding
             >
-              <ListItemButton role={undefined} onClick={handleToggle(value.name)} dense >
-                <ListItemIcon>
+              <ListItemButton role={undefined} onClick={handleToggle(value.name)} dense 
+              sx={{
+                borderLeftWidth: "0px",
+                marginLeft: "-18px",
+                padddingLeft: "0px",
+                borderRightWidth: "0px",
+                marginRight: "0px",
+                padddingRight: "0px"
+              }}>
+                <ListItemIcon
+                 sx={{
+                  borderLeftWidth: "0px",
+                  marginLeft: "0px",
+                  padddingLeft: "0px",
+                  borderRightWidth: "0px",
+                  marginRight: "-22px",
+                  padddingRight: "0px"
+                }} >
                   <Radio
                     edge="start"
                     checked={checked.indexOf(value.name) !== -1}
                     tabIndex={-1}
                     disableRipple
                     inputProps={{ 'aria-labelledby': labelId }}
-                    sx={{
+                    sx={{ 
+                      borderLeft: "0px",
+                      borderRight: "0px",
+                      marginLeft: "0px",
+                      marginRight: "0px",
+                      paddingLeft: "0px", 
+                      paddingRight: "0px",               
                       paddingBottom: "60px",
                       ':hover':
                       {
@@ -140,7 +194,6 @@ export default function GetTodoListView({ items }) {
                       },
                     }}
                   >
-
                   </Radio>
 
                 </ListItemIcon>
@@ -154,12 +207,18 @@ export default function GetTodoListView({ items }) {
                   <Stack direction="row">
                     <EventIcon
                       sx={{
-                        color: "grey"
+                        color: "#D0312D"
                       }}
                     />&nbsp;
                     <ListItemText
                       id={labelId}
-                      primary={value.date.toDateString()} />
+                      primary={value.date.toDateString()} 
+                      sx={{
+                        color: "#D0312D"
+                      }}/>
+                     
+                      {/* {Divider()}  */}
+                     
                   </Stack>
                 </Stack>
 

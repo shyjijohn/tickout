@@ -107,9 +107,9 @@ function PrioritiesButton() {
     const onClickOfMenuitem = (event) => {
         //console.log("onClickOfMenuitem called");
         //console.log("onClickOfMenuitem  event", event);
-       // console.log("onClickOfMenuitem  value", event.target.innerText);
-     
-     
+        // console.log("onClickOfMenuitem  value", event.target.innerText);
+
+
         // console.log("handlePrioritySelection event: ", event);
         // console.log("handlePrioritySelection value: ", event.target.value);
 
@@ -140,9 +140,9 @@ function PrioritiesButton() {
         setAnchorPoint(null);
     };
 
-    const clearpriority = () =>
-    {
-        setSelectedPriorityIndex(-1)   
+    const clearpriority = () => {
+        setSelectedPriorityIndex(-1)
+        { handleClose1() };
     }
 
 
@@ -151,104 +151,112 @@ function PrioritiesButton() {
         return (
             selectedPriorityIndex === -1 ? (
 
-                <Stack direction="row" spacing={0.5}>
+                <Stack direction="row" spacing={0.5} bgcolor='red' paddingLeft='0px' paddingRight='0px'
+                >
                     <EmojiFlagsIcon />
                     <Box
                         sx=
                         {{
+                            //  bgcolor: 'red',
+                            width: 'fit content-box',
+                            paddingTop: '2px',
                             typography: 'body1',
-
                         }}>
                         Priority
 
                     </Box>
-                </Stack> )
+                </Stack>)
                 :
-              (  <Stack direction="row" spacing={0.5}>
+                (<Stack direction="row" bgcolor='blue'>
                     <EmojiFlagsIcon color={priorities[selectedPriorityIndex].color} />
                     <Box
                         sx=
                         {{
+                            // bgcolor: 'blue',
+                            minWidth: '10px',
+                            maxWidth: '60px',
+                            paddingTop: '2px',
                             typography: 'body1',
-
+                            width: 'fit content',
+                            spacing: "1px"
                         }}>
                         {priorities[selectedPriorityIndex].name}
                     </Box>
                     <ClearIcon fontSize='small' onClick={clearpriority} />
                 </Stack>
-              )
+                )
         )
     }
 
 
-   // console.log("priority index", selectedPriorityIndex);
+    // console.log("priority index", selectedPriorityIndex);
 
-return (
-    
-    <div>
-        <Button
-            //displayEmpty
-            fullWidth={true}
-            value={selectedPriorityIndex}
-            input={<BootstrapInput />}
-            variant='outlined'
-            id="basic-button1"
-            aria-controls={open2 ? 'basic-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open2 ? 'true' : undefined}
-            onClick={handleClick1}
-            sx={{
-                size: "small",
-                textTransform: 'none',
-                padding: '2px',
-                textAlign: 'center',
-                variant: 'outlined',
-                fontSize: '12px',
-                color: 'grey',
-                border: '1px solid',
-                borderColor: '#B2BEB5', ':hover':
-                {
-                    bgcolor: '#F5F5F5',
-                    color: 'black',
-                    borderColor: '#B2BEB5'
-                },
+    return (
 
-            }}
+        <div>
+            <Button
+                //displayEmpty
+                fullWidth={true}
+                value={selectedPriorityIndex}
+                input={<BootstrapInput />}
+                variant='outlined'
+                id="basic-button1"
+                aria-controls={open2 ? 'basic-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open2 ? 'true' : undefined}
+                onClick={handleClick1}
+                sx={{
+                    size: "small",
+                    textTransform: 'none',
+                    padding: '2px',
+                    textAlign: 'center',
+                    variant: 'outlined',
+                    fontSize: '12px',
+                    color: 'grey',
+                    border: '1px solid',
+                    borderColor: '#B2BEB5', ':hover':
+                    {
+                        bgcolor: '#F5F5F5',
+                        color: 'black',
+                        borderColor: '#B2BEB5'
+                    },
 
-        >
-            <Stack>{prioritymain()}</Stack >
-        </Button>
+                }}
 
-        <Menu
-            id="basic-menu1"
-            anchorEl={anchorPoint}
-            open={open2}
-            onClose={handleClose1}
-            MenuListProps={{
-                'aria-labelledby': 'basic-button',
-            }}
-            sx={{
-                spacing: '20%'
-            }}
-        >
-            {priorities.map((p, i) => (
-                <MenuItem
-                    key={p.name}
-                    value={p.name}
-                    onClick={onClickOfMenuitem}
-                    style={getSelectedPriorityItemStyle(selectedPriorityIndex === i, theme)}
-                >
-                    <Stack direction="row" spacing={0.5} >
-                        <EmojiFlagsIcon color={p.color} />
-                        <Box sx={{ typography: 'body1', fontSize: "12px" }}>{p.name}</Box>
-                    </Stack>
-                </MenuItem>
+            >
+                <Stack>{prioritymain()}</Stack >
+            </Button>
 
-            ))}
-        </Menu>
+            <Menu
+                id="basic-menu1"
+                anchorEl={anchorPoint}
+                open={open2}
+                onClose={handleClose1}
+                MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                }}
+                sx={{
+                    spacing: '20%'
+                }}
+            >
+                {priorities.map((p, i) => (
+                    <MenuItem
+                        key={p.name}
+                        value={p.name}
+                        onClick={onClickOfMenuitem}
+                        style={getSelectedPriorityItemStyle(selectedPriorityIndex === i, theme)}
+                    >
+                        <Stack direction="row" spacing={0.5} >
+                            <EmojiFlagsIcon color={p.color} />
+                            <Box sx={{ typography: 'body1', fontSize: "12px" }}>{p.name}</Box>
+                        </Stack>
+                    </MenuItem>
 
-    </div>
-);
+                ))}
+            </Menu>
+
+        </div>
+    );
 }
 
 
@@ -324,7 +332,7 @@ export default function AddTask({ appendTaskFn }) {
     const isMobileView = useMediaQuery(theme.breakpoints.down('sm'));
 
     const handleAdd = () => {
-        if (dialogTaskName === '' || dialogTaskDescription === '' || selectedDate === '')
+        if (dialogTaskName === '')
             return;
         let t = new Task(dialogTaskName, dialogTaskDescription, selectedDate, selectedProject)
         //console.log(t);
@@ -369,23 +377,6 @@ export default function AddTask({ appendTaskFn }) {
             bgcolor: '#F5F5F5',
             color: 'black',
             borderColor: '#B2BEB5'
-        },
-
-    }));
-
-    const CustomButtonred = styled(Button)(() => ({
-        size: "small",
-        textTransform: 'none',
-        padding: '0px',
-        textAlign: 'center',
-        variant: 'contained',
-        fontSize: '10px',
-        color: 'red',
-        "&:hover": {
-            backgroundColor: "#ffcbd1",
-            color: 'red',
-            padding: '0px',
-            borderRadius: '4px'
         },
 
     }));
@@ -590,8 +581,8 @@ export default function AddTask({ appendTaskFn }) {
 
 
     return (
-        <Box sx={{ ...styleForM, borderRadius: '10px', minwidth: '10px' }}>
-            <FormControl sx={{ m: 1, minWidth: '320px', minHeight: '110px' }} md={{ m: 1, minWidth: '420px', minHeight: '50px' }}>
+        <Box sx={{ ...styleForM, borderRadius: '10px', minwidth: '10px', paddingLeft: "0px", marginLeft: "0px", borderleft: "0px" }}>
+            <FormControl sx={{ m: 1, minWidth: '320px', minHeight: '110px', paddingLeft: "0px" }} md={{ m: 1, minWidth: '420px', minHeight: '50px' }}>
                 <Grid container spacing={0.7} columns={12} >
                     <Grid item xs={12} md={12}>
 
@@ -629,18 +620,18 @@ export default function AddTask({ appendTaskFn }) {
 
                     </Grid>
 
-                    <Grid item xs={4.8} md={2}>
+                    <Grid item xs={4.8} md={1.9}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             {getDatePicker()}
                         </LocalizationProvider>
                     </Grid>
 
-                    <Grid item xs={3.2} md={1.8}>
+                    <Grid item xs={4} md={1.7}>
                         <PrioritiesButton></PrioritiesButton>
 
                     </Grid>
 
-                    <Grid item xs={5.8} md={2.5} >
+                    <Grid item xs={5.8} md={1.7} >
                         <Tooltip title="Add Reminders">
                             <CustomButton
                                 aria-label="more"
@@ -649,7 +640,6 @@ export default function AddTask({ appendTaskFn }) {
                                 fullWidth
                             ><AccessAlarmIcon />
                                 Reminders
-                                <CustomButtonred>PRO</CustomButtonred>
                             </CustomButton>
                         </Tooltip>
 
@@ -661,11 +651,13 @@ export default function AddTask({ appendTaskFn }) {
 
                     </Grid>
 
-                    <Grid item xs={4} md={12}>
+                    <Grid item xs={3} md={18.9}>
                     </Grid>
-                    <Divider style={{ width: '101%' }} />
+                    <Grid item xs={12} md={12}>
+                        <Divider style={{ width: '100%' }} />
+                    </Grid>
 
-                    <Grid item xs={7} md={9}>
+                    <Grid item xs={4.5} md={2}>
                         <Tooltip title="Select a project">
 
                             <Select
@@ -685,8 +677,8 @@ export default function AddTask({ appendTaskFn }) {
 
                                 onChange={handleProjectSelection}
                                 sx={{
-                                    width: '22%',
-                                    height: '94%',
+                                    // width: '22%',
+                                    // height: '94%',
                                     borderRadius: '10px',
                                     fontSize: '12px',
                                     color: 'grey',
@@ -704,15 +696,15 @@ export default function AddTask({ appendTaskFn }) {
                                             <Stack direction="row" spacing={0.5}>
                                                 <AccountTreeIcon
                                                     sx={{
-                                                        paddingTop: "4px",
-                                                        paddingLeft: "4px",
+                                                        paddingTop: "5px",
+                                                        paddingLeft: "5px",
                                                     }} />
                                                 &nbsp;
                                                 <Box
                                                     sx=
                                                     {{
                                                         typography: 'body1',
-                                                        paddingTop: "7px",
+                                                        paddingTop: "8px",
                                                         borderRadius: '5px'
                                                     }}>
                                                     Project 1
@@ -738,90 +730,122 @@ export default function AddTask({ appendTaskFn }) {
                                 }}
 
                             >
-                                {/* <TextField value={dialogTaskName}
-                            //onChange={handleDialogTaskName}
-                            //id="name"
-                            placeholder='Type a project'
-                            //type="email"
-                            fullWidth
-                            variant="standard"
-                            inputProps={{
-                                style: {
-                                    height: "20px",
-                                    fontSize: '12px'
-                                }
-                            }}
-                            InputProps={{ disableUnderline: false }} 
-                            />
-                                <MenuItem sx={{ fontSize: '12px' }}><MoveToInboxIcon />&nbsp;&nbsp;&nbsp;&nbsp;Inbox</MenuItem>
-                                <MenuItem sx={{ fontSize: '12px' }}><FiberManualRecordIcon />&nbsp;&nbsp;&nbsp;&nbsp;Home&nbsp;<HomeIcon /></MenuItem>
-                                <MenuItem sx={{ fontSize: '12px' }}>Routines&nbsp;<RepeatOnIcon /></MenuItem>
-                                <MenuItem sx={{ fontSize: '12px' }}>Inspiration&nbsp;<AutoAwesomeIcon /></MenuItem> */}
 
-
-                                {/* {project.map((j, i) => (
-                                    <MenuItem
-                                        key={j.name}
-                                        value={j.name}
-                                        style={getSelectedProjectItemStyle(selectedProject === i, theme)}
-                                    >
-                                        <Stack direction="row" spacing={0.5} >
-                                            <MoveToInboxIcon color={j.color} />
-                                            <Box sx={{ typography: 'body1' }}>{j.name}</Box>
-                                        </Stack>
-                                    </MenuItem>
-                                ))} */}
                             </Select>
                         </Tooltip>
 
                     </Grid>
-                    <Grid item xs={2.5} md={1.5}>
 
-                        <Button
-                            sx={{
-                                width: '90%', fontSize: '10px',
-                                bgcolor: '#CED2C2',
-                                color: 'black',
-                                borderColor: '#CED2C2',
-                                "&:hover": {
-                                    //you want this to be the same as the backgroundColor above
-                                    backgroundColor: '#CED2C2'
-                                }
-                            }}
-                            startIcon={<ClearIcon />}
-                            margin="none"
-                            padding="0"
-                            variant="contained"
-                            size="small"
-                        >
-                            {isMobileView ? null : <typography>CANCEL</typography>}
-                        </Button>
+                    <Grid item xs={3.9} md={7.6}>
+                    </Grid>
+                    <Grid item xs={1.5} md={1.2} >
+                        {isMobileView ?
+                            <Button
+                                sx={{
+                                    size: "small",
+                                    color: "black",
+                                    bgcolor: "#BDBDBD",
+                                    variant: "outlined",
+                                    minWidth: "30%",
+                                    //    width: "fit-content",   
+                                    height: "28px",
+                                    //   paddingLeft: "-10px !important",
+                                    //  paddingRight: "-10px !important",
+                                    //  marginLeft: "0px !important ",
+                                    borderLeft: "0px",
+                                    margin: "0px",
+                                    borderRight: "0px",
+                                    "&:hover": {
+                                        backgroundColor: '#9E9E9E'
+                                    },
+                                }}
+                            >
+                                <ClearIcon fontSize="small" />
+                            </Button>
 
+                            : <Button
+                                sx={{
+                                    color: "black",
+                                    bgcolor: "#BDBDBD",
+                                    variant: "contained",
+                                    minWidth: "60%",
+                                    height: "28px",
+                                    padding: "5px",
+                                    margin: "0px",
+                                    border: "0px",
+                                    fontSize: "10px",
+                                    size: "small",
+                                    "&:hover": {
+                                        backgroundColor: '#9E9E9E'
+                                    },
+                                }}
+                            >
+                                <ClearIcon fontSize="small" />
+                                <typography
+                                    sx={{
+                                        fontSize: "10px"
+                                    }}
+                                >
+                                    CANCEL
+                                </typography>
+                            </Button>
+                        }
                     </Grid>
 
-                    <Grid item xs={2.5} md={1.5}>
-
-                        <Button
-                            sx={{
-                                width: '90%', fontSize: '10px',
-                                bgcolor: 'red',
-                                color: 'white',
-                                borderColor: '#CED2C2',
-                                "&:hover": {
-                                    //you want this to be the same as the backgroundColor above
-                                    backgroundColor: 'red'
-                                }
-
-                            }}
+                    <Grid item xs={1.8} md={1.2}>
+                        {isMobileView ?
+                            <Button
                             onClick={handleAdd}
-                            endIcon={<DoneIcon />}
-                            margin="none"
-                            padding="0"
-                            variant="contained"
-                            size="small"
-                        >
-                            {isMobileView ? null : <typography>ADD</typography>}
-                        </Button>
+                                sx={{
+                                    fontSize: "small",
+                                    color: "white",
+                                      bgcolor: "#D0312D",
+                                    variant: "outlined",
+                                    minWidth: "30%",
+                                    //    width: "fit-content",
+                                    height: "28px",
+                                    //  paddingLeft: "0px",
+                                    // paddingRight: "0px",
+                                    // marginLeft: "0px",
+                                    // borderLeft: "0px",
+                                    // marginRight: "0px",
+                                    // borderRight: "0px",
+                                    "&:hover": {
+                                          backgroundColor: '#D0312D'
+                                    },
+                                }}
+                            >
+                                <DoneIcon fontSize="small" />
+                            </Button>
+                            :
+                            <Button
+                            onClick={handleAdd}
+                                sx={{
+                                    color: "white",
+                                    bgcolor: "#D0312D",
+                                    variant: "contained",
+                                    minwidth: "25px",
+                                    height: "28px",
+                                    padding: "0px",
+                                    margin: "0px",
+                                    border: "0px",
+                                    fontSize: "10px",
+                                    size: "small",
+                                    "&:hover": {
+                                        backgroundColor: '#D0312D'
+                                    },
+                                }}
+                            >
+                                <typography
+                                    sx={{
+                                        fontSize: "10px"
+                                    }}
+                                >
+                                    ADD
+                                </typography>
+                                <DoneIcon fontSize="small" />
+                            </Button>
+                        }
 
                     </Grid>
                 </Grid>
