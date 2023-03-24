@@ -1,7 +1,5 @@
 
 import * as React from 'react';
-
-
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import InputBase from '@mui/material/InputBase';
 import Button from '@mui/material/Button';
@@ -142,7 +140,7 @@ function PrioritiesButton() {
 
     const clearpriority = () => {
         setSelectedPriorityIndex(-1)
-        { handleClose1() };
+        // { handleClose1() };
     }
 
 
@@ -151,7 +149,7 @@ function PrioritiesButton() {
         return (
             selectedPriorityIndex === -1 ? (
 
-                <Stack direction="row" spacing={0.5} bgcolor='red' paddingLeft='0px' paddingRight='0px'
+                <Stack direction="row" spacing={0.5} paddingLeft='0px' paddingRight='0px'
                 >
                     <EmojiFlagsIcon />
                     <Box
@@ -167,7 +165,7 @@ function PrioritiesButton() {
                     </Box>
                 </Stack>)
                 :
-                (<Stack direction="row" bgcolor='blue'>
+                (<Stack direction="row" >
                     <EmojiFlagsIcon color={priorities[selectedPriorityIndex].color} />
                     <Box
                         sx=
@@ -183,13 +181,10 @@ function PrioritiesButton() {
                         {priorities[selectedPriorityIndex].name}
                     </Box>
                     <ClearIcon fontSize='small' onClick={clearpriority} />
-                </Stack>
-                )
+                </Stack>)
+                
         )
     }
-
-
-    // console.log("priority index", selectedPriorityIndex);
 
     return (
 
@@ -331,12 +326,12 @@ export default function AddTask({ appendTaskFn }) {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const isMobileView = useMediaQuery(theme.breakpoints.down('sm'));
 
+    console.log("selectedDate from Add Task", selectedDate);
+
     const handleAdd = () => {
         if (dialogTaskName === '')
             return;
         let t = new Task(dialogTaskName, dialogTaskDescription, selectedDate, selectedProject)
-        //console.log(t);
-        //console.log(selectedDate.toString());
         appendTaskFn(t);
         setDialogTaskName("")
         setDialogTaskDescription("")
@@ -382,50 +377,6 @@ export default function AddTask({ appendTaskFn }) {
     }));
 
 
-
-    const BootstrapInput = styled(InputBase)(({ theme }) => ({
-        'label + &': {
-            marginTop: theme.spacing(3),
-        },
-        '& .MuiInputBase-input': {
-            borderRadius: 4,
-            color: 'grey',
-            fontWeight: 'normal',
-            position: 'relative',
-            backgroundColor: theme.palette.background.paper,
-            border: '1px solid #ced4da',
-            // backgroundColor: 'green',
-            spacing: '0px',
-            fontSize: 12,
-            //   padding: '10px 26px 10px 12px',
-            padding: '2px',
-            width: 'inherit',
-            transition: theme.transitions.create(['border-color', 'box-shadow']),
-            // Use the system font instead of the default Roboto font.
-            fontFamily: [
-                '-apple-system',
-                'BlinkMacSystemFont',
-                '"Segoe UI"',
-                'Roboto',
-                '"Helvetica Neue"',
-                'Arial',
-                'sans-serif',
-                '"Apple Color Emoji"',
-                '"Segoe UI Emoji"',
-                '"Segoe UI Symbol"',
-            ].join(','),
-            ':hover':
-            {
-
-
-                bgcolor: '#F5F5F5',
-                color: 'black',
-                borderColor: 'black'
-            },
-        },
-    }));
-
-
     const priorities = [
         {
             name: 'Priority 1',
@@ -447,14 +398,12 @@ export default function AddTask({ appendTaskFn }) {
 
 
 
-
-
-
     //datepicker
 
     function getDatePicker() {
         return (
             isMobileView ? <MobileDatePicker
+            fullWidth
                 inputFormat="MM/DD/YYYY"
                 value={selectedDate}
                 onChange={handleDateChange}
@@ -491,6 +440,7 @@ export default function AddTask({ appendTaskFn }) {
             />
                 :
                 <DesktopDatePicker
+                fullwidth
                     inputFormat="MM/DD/YYYY"
                     value={selectedDate}
                     onChange={handleDateChange}
@@ -533,7 +483,8 @@ export default function AddTask({ appendTaskFn }) {
 
     const handleDateChange = (event) => {
         //console.log("handlePrioritySelection event: ", event);
-        setSelectedDate(event);
+       setSelectedDate(event);
+       console.log("setSelectedDate event: ", event);
     }
 
     //project
@@ -567,26 +518,16 @@ export default function AddTask({ appendTaskFn }) {
 
     }
 
-    // function getSelectedProjectItemStyle(hasSelection, theme2) {
-    //     // console.log("has selection ", hasSelection)
-    //     return {
-
-    //         fontWeight:
-    //             hasSelection === false
-    //                 ? theme2.typography.fontWeightLight
-    //                 : theme2.typography.fontWeightBold,
-
-    //     };
-    // }
-
 
     return (
-        <Box sx={{ ...styleForM, borderRadius: '10px', minwidth: '10px', paddingLeft: "0px", marginLeft: "0px", borderleft: "0px" }}>
-            <FormControl sx={{ m: 1, minWidth: '320px', minHeight: '110px', paddingLeft: "0px" }} md={{ m: 1, minWidth: '420px', minHeight: '50px' }}>
-                <Grid container spacing={0.7} columns={12} >
+
+        <Box sx={{ ...styleForM, boxSizing: "border-box", borderRadius: '10px', minwidth: '10px' }}>
+            <FormControl sx={{ m: 1, boxSizing: "border-box", display:"block", minWidth: '30px', minHeight: '110px' }} md={{ m: 1, display:"block", minWidth: '420px', minHeight: '50px' }}>   
+                <Grid container spacing={0.7} columns={12} >              
                     <Grid item xs={12} md={12}>
 
                         <TextField
+                                                display="block" 
                             value={dialogTaskName}
                             onChange={handleDialogTaskName}
                             id="name"
@@ -596,7 +537,8 @@ export default function AddTask({ appendTaskFn }) {
                             variant="standard"
                             inputProps={{
                                 style: {
-                                    height: "4px",
+                                    
+                                    boxSizing: "border-box",  
 
                                 }
                             }}
@@ -605,6 +547,7 @@ export default function AddTask({ appendTaskFn }) {
                     <Grid item xs={12} md={12}>
 
                         <TextField
+                        display="block" 
                             value={dialogTaskDescription}
                             onChange={handleDialogTaskDescription}
                             autoFocus
@@ -615,6 +558,12 @@ export default function AddTask({ appendTaskFn }) {
                             fullWidth
                             variant="standard"
                             size="small"
+                            inputProps={{
+                                style: {
+                                    boxSizing: "border-box",  
+
+                                }
+                            }}
                             InputProps={{ disableUnderline: true }}
                         />
 
@@ -677,8 +626,6 @@ export default function AddTask({ appendTaskFn }) {
 
                                 onChange={handleProjectSelection}
                                 sx={{
-                                    // width: '22%',
-                                    // height: '94%',
                                     borderRadius: '10px',
                                     fontSize: '12px',
                                     color: 'grey',
@@ -852,7 +799,6 @@ export default function AddTask({ appendTaskFn }) {
             </FormControl>
 
         </Box >
-
     );
 }
 

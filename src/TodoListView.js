@@ -5,21 +5,24 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Radio from '@mui/material/Radio';
-
-import { Divider, ListSubheader, Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import EventIcon from '@mui/icons-material/Event';
-
-
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import {useTheme } from '@mui/material/styles';
 
 
 export default function GetTodoListView({ items }) {
   console.log("GetTodoListView start");
   const [checked, setChecked] = React.useState([0]);
-  //const [isMouseHover, setIsMouseHover] = React.useState(false);
-  const [mouseHoveringItemName, setMouseHoveringItemName] = React.useState();
+  const [mouseHoveringItemName, setMouseHoveringItemName] = React.useState(); 
+  const [editItem, setEditItem] = React.useState(); 
+  const [dateItem, setDateItem] = React.useState(); 
+  const [commentItem, setCommentItem] = React.useState(); 
+  const [moreItem, setMoreItem] = React.useState(); 
+
 
   const handleToggle = (nameAsValue) => () => {
 
@@ -38,19 +41,84 @@ export default function GetTodoListView({ items }) {
     setChecked(newChecked);
   };
 
-  // const handleMouse = (value) => () => {
+ 
+const theme = useTheme();
 
-  //   console.log('handleMouse value', value);
-  //   const mouseHoveringItemName = isMouseHoverIndex.indexOf(value);
-  //   const newValue = [...isMouseHoverIndex];
-  //   if (currentHoverIndex === -1) {
-  //     newValue.push(items);
-  //   } else {
-  //     newValue.splice(currentHoverIndex, 1);
-  //   }
-  // }
+const isMobileSchedule = useMediaQuery(theme.breakpoints.down('md'));
 
-  
+function schedule ()
+{
+return(
+(isMobileSchedule ?
+(<Stack
+marginTop={-3.5}
+  name="label2"
+  direction="row"
+  paddingLeft={25}
+  position="relative"    
+  paddingBottom={0}>
+  <BorderColorIcon sx={{ color: 'grey' , "&:hover": {
+                                bgcolor: '#F5F5F5',
+                                color: 'black',
+                                onClick: 'MyComponent()',
+                                borderColor: 'black',
+                                borderRadius: '5px'
+                            },}} />&nbsp;&nbsp;
+  <EventIcon sx={{ color: 'grey', "&:hover": {
+                                bgcolor: '#F5F5F5',
+                                color: 'black',
+                                borderColor: 'black',
+                                borderRadius: '5px'
+                            }, }} />&nbsp;&nbsp;
+  <ChatBubbleOutlineIcon sx={{ color: 'grey', "&:hover": {
+                                bgcolor: '#F5F5F5',
+                                color: 'black',
+                                borderColor: 'black',
+                                borderRadius: '5px'
+                            }, }} />&nbsp;&nbsp;
+  <MoreHorizIcon sx={{ color: 'grey', "&:hover": {
+                                bgcolor: '#F5F5F5',
+                                color: 'black',
+                                borderColor: 'black',
+                                borderRadius: '5px'
+                            }, }} />
+</Stack >)
+:
+(<Stack
+marginTop={-3.5}
+  name="label2"
+  direction="row"
+  paddingLeft={75}
+  position="relative"    
+  paddingBottom={0}>
+  <BorderColorIcon sx={{ color: 'grey' , "&:hover": {
+                                bgcolor: '#F5F5F5',
+                                color: 'black',
+                                borderColor: 'black',
+                                borderRadius: '5px'
+                            },}} />&nbsp;&nbsp;
+  <EventIcon sx={{ color: 'grey', "&:hover": {
+                                bgcolor: '#F5F5F5',
+                                color: 'black',
+                                borderColor: 'black',
+                                borderRadius: '5px'
+                            }, }} />&nbsp;&nbsp;
+  <ChatBubbleOutlineIcon sx={{ color: 'grey', "&:hover": {
+                                bgcolor: '#F5F5F5',
+                                color: 'black',
+                                borderColor: 'black',
+                                borderRadius: '5px'
+                            }, }} />&nbsp;&nbsp;
+  <MoreHorizIcon sx={{ color: 'grey', "&:hover": {
+                                bgcolor: '#F5F5F5',
+                                color: 'black',
+                                borderColor: 'black',
+                                borderRadius: '5px'
+                            }, }} />
+</Stack >)
+))
+   }
+
 
   function isListItemHover(value) {
     console.log("item hover", value.name);
@@ -58,39 +126,71 @@ export default function GetTodoListView({ items }) {
     // setMouseHoveringItemName = value.name;
 
     // console.log('isListItemHover ', isMouseHover);
+
+
+    const handleedithover = (e) => {
+      setEditItem(e.target.value)
+    };
+    const handledatehover = (e) => {
+      setDateItem(e.target.value)
+    };
+    const handlecommenthover = (e) => {
+      setCommentItem(e.target.value)
+    };
+    const handlemorehover = (e) => {
+      setMoreItem(e.target.value)
+    };
+
+
     return (
       mouseHoveringItemName === value.name ?
         <Stack
           name="label2"
-          direction="row"
-          paddingLeft={59}
+          direction="row"       
           position="relative"
-          justifyContent= "flex-end"
+          display= "inline-flex"
+          justifyContent="flex-end"
           paddingBottom={7}>
-          <BorderColorIcon sx={{ color: 'grey' , "&:hover": {
-                                        bgcolor: '#F5F5F5',
-                                        color: 'black',
-                                        borderColor: 'black',
-                                        borderRadius: '5px'
-                                    },}} />&nbsp;&nbsp;
-          <EventIcon sx={{ color: 'grey', "&:hover": {
-                                        bgcolor: '#F5F5F5',
-                                        color: 'black',
-                                        borderColor: 'black',
-                                        borderRadius: '5px'
-                                    }, }} />&nbsp;&nbsp;
-          <ChatBubbleOutlineIcon sx={{ color: 'grey', "&:hover": {
-                                        bgcolor: '#F5F5F5',
-                                        color: 'black',
-                                        borderColor: 'black',
-                                        borderRadius: '5px'
-                                    }, }} />&nbsp;&nbsp;
-          <MoreHorizIcon sx={{ color: 'grey', "&:hover": {
-                                        bgcolor: '#F5F5F5',
-                                        color: 'black',
-                                        borderColor: 'black',
-                                        borderRadius: '5px'
-                                    }, }} />
+          <BorderColorIcon 
+          onClick={handleedithover}
+          sx={{
+            color: 'grey', "&:hover": {
+              bgcolor: '#F5F5F5',
+              color: 'black',
+              borderColor: 'black',
+              borderRadius: '5px'
+            },
+          }} />&nbsp;&nbsp;
+          <EventIcon 
+          onClick={handledatehover}
+          sx={{
+            color: 'grey', "&:hover": {
+              bgcolor: '#F5F5F5',
+              color: 'black',
+              borderColor: 'black',
+              borderRadius: '5px'
+            },
+          }} />&nbsp;&nbsp;
+          <ChatBubbleOutlineIcon
+          onClick={handlecommenthover}
+           sx={{
+            color: 'grey', "&:hover": {
+              bgcolor: '#F5F5F5',
+              color: 'black',
+              borderColor: 'black',
+              borderRadius: '5px'
+            },
+          }} />&nbsp;&nbsp;
+          <MoreHorizIcon 
+          onClick={handlemorehover}
+          sx={{
+            color: 'grey', "&:hover": {
+              bgcolor: '#F5F5F5',
+              color: 'black',
+              borderColor: 'black',
+              borderRadius: '5px'
+            },
+          }} />
         </Stack >
 
         : <Stack
@@ -104,7 +204,21 @@ export default function GetTodoListView({ items }) {
   console.log("going to call html");
   return (
     <div >
+      
+      <div>
+        <Typography
+          paddingLeft={0.5}
+          fontWeight="bold"
+          fontSize="20px"
+        >
+          Schedule        
+        </Typography>
+      <div>{schedule()}</div>
+      </div>
+
+
       <List sx={{
+                          boxSizing: "border-box",  
         width: '100%', maxWidth: 800,
         bgcolor: 'background.paper'
       }}>
@@ -115,8 +229,9 @@ export default function GetTodoListView({ items }) {
           if (value.length === 0)
             return null;
 
-
-          console.log('value', value.name);
+            
+          console.log('value casted to date', new Date(value.date).toDateString());
+          //console.log('value not casted', value.date.toDateString());
           // console.log(value.date.toString());
           const labelId = `checkbox-list-label-${value.name}`;
           console.log("item hover", labelId);
@@ -124,17 +239,14 @@ export default function GetTodoListView({ items }) {
           //console.log('Item index', items.indexOf(value.name));
           return (
             <ListItem
-            sx={{
-              borderLeftWidth: "0px",
-              marginLeft: "0px",
-              padddingLeft: "0px",
-              borderRightWidth: "0px",
-              marginRight: "0px",
-              padddingRight: "0px"
-            }}
+              sx={{
+                boxSizing: "border-box",  
+                justifyContent : "center ",
+                alignItems: "left "
+              }}
               onMouseOver={() => {
                 console.log("mouse hover on item!!!!!!!", value.name)
-                 setMouseHoveringItemName(value.name);
+                setMouseHoveringItemName(value.name);
                 //  if(value.name === -1)
                 // {
 
@@ -149,42 +261,37 @@ export default function GetTodoListView({ items }) {
                 setMouseHoveringItemName(null);
 
                 console.log("mouse out of item*********", value.name)
-               // setIsMouseHover(false)
+                // setIsMouseHover(false)
               }}
               key={value.name}
               disablePadding
             >
-              <ListItemButton role={undefined} onClick={handleToggle(value.name)} dense 
-              sx={{
-                borderLeftWidth: "0px",
-                marginLeft: "-18px",
-                padddingLeft: "0px",
-                borderRightWidth: "0px",
-                marginRight: "0px",
-                padddingRight: "0px"
-              }}>
+              <ListItemButton role={undefined} onClick={handleToggle(value.name)} dense
+                sx={{
+                  boxSizing: "border-box",  
+                  marginLeft: "-15px",
+                
+                }}>
                 <ListItemIcon
-                 sx={{
-                  borderLeftWidth: "0px",
-                  marginLeft: "0px",
-                  padddingLeft: "0px",
-                  borderRightWidth: "0px",
-                  marginRight: "-22px",
-                  padddingRight: "0px"
-                }} >
+                  sx={{
+                    // borderLeftWidth: "0px",
+                    // marginLeft: "0px",
+                    // padddingLeft: "0px",
+                    // borderRightWidth: "0px",
+                    // marginRight: "-0px",
+                    // padddingRight: "0px"
+                    justifyContent : "left ",
+                    alignItems: "left "
+                  }} >
                   <Radio
                     edge="start"
                     checked={checked.indexOf(value.name) !== -1}
                     tabIndex={-1}
                     disableRipple
                     inputProps={{ 'aria-labelledby': labelId }}
-                    sx={{ 
-                      borderLeft: "0px",
-                      borderRight: "0px",
-                      marginLeft: "0px",
-                      marginRight: "0px",
-                      paddingLeft: "0px", 
-                      paddingRight: "0px",               
+                    sx={{
+                      justifyContent : "left ",
+                      alignItems: "left ",
                       paddingBottom: "60px",
                       ':hover':
                       {
@@ -197,11 +304,18 @@ export default function GetTodoListView({ items }) {
                   </Radio>
 
                 </ListItemIcon>
-                <Stack name="label1" direction="column"  >
+                <Stack name="label1" direction="column" 
+                sx={{
+                  display:"block",
+                  boxSizing: "border-box",  
+                  justifyContent : "left ",
+                  alignItems: "left "}} >
                   <ListItemText
+                  sx={{boxSizing: "border-box", display:"flex", flexWrap:"inherit"}}
                     id={labelId}
                     primary={value.name} />
                   <ListItemText
+                    sx={{boxSizing: "border-box", display:"flex", flexWrap:"inherit"}}
                     id={labelId}
                     primary={value.description} />
                   <Stack direction="row">
@@ -212,19 +326,20 @@ export default function GetTodoListView({ items }) {
                     />&nbsp;
                     <ListItemText
                       id={labelId}
-                      primary={value.date.toDateString()} 
+                      primary={new Date(value.date).toDateString()}
                       sx={{
                         color: "#D0312D"
-                      }}/>
-                     
-                      {/* {Divider()}  */}
-                     
+                      }} />
+
+                    {/* {Divider()}  */}
+
                   </Stack>
                 </Stack>
-
-                <Stack>{isListItemHover(value)}</Stack >
-
               </ListItemButton>
+              <Stack sx={{    
+                        boxSizing: "border-box",      
+              }}
+              >{isListItemHover(value)}</Stack >
             </ListItem>
           );
         })}

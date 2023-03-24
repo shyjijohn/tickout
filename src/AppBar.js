@@ -1,15 +1,7 @@
 import './App.css';
 import * as React from 'react';
-
-
-
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-
-
 import Grid from '@mui/material/Grid';
-
-import Button from '@mui/material/Button';
-
 import { Box } from '@mui/system';
 import { styled, useTheme, alpha } from '@mui/material/styles';
 import MuiAppBar from '@mui/material/AppBar';
@@ -17,7 +9,6 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import MailIcon from '@mui/icons-material/Mail';
-
 import Badge from '@mui/material/Badge';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -25,7 +16,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import InputBase from '@mui/material/InputBase';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { TextField } from '@mui/material';
+import { Stack, TextField } from '@mui/material';
 
 
 export default function AppBar({ drawerWidth, open, handleDrawerOpen }) {
@@ -96,32 +87,6 @@ export default function AppBar({ drawerWidth, open, handleDrawerOpen }) {
     },
   }));
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const menuId = 'primary-search-account-menu';
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-
   function searchTextfield() {
     <TextField width="200px"></TextField>
   }
@@ -130,35 +95,46 @@ export default function AppBar({ drawerWidth, open, handleDrawerOpen }) {
   const isMatch = useMediaQuery(theme.breakpoints.up('sm'))
 
   function searchicon() {
-    return(
-    isMatch ? (
-      <Search >
-        <SearchIconWrapper sx={{ width: "50px" }} >
-          <SearchIcon />
-        </SearchIconWrapper>
-        <StyledInputBase
-          placeholder="Search…"
-          inputProps={{ 'aria-label': 'search' }}
-          sx={{
-            width: "600px"
-          }} />
-      </Search>
-    ) :
-      (
-        <Search sx={{ width: "6px" }}>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase
-            placeholder="Search…"
-            inputProps={{ 'aria-label': 'search' }}
-            onClick={searchTextfield}
-            sx={{
-              width: "6px",
-              height: "10px"
-            }} />
-        </Search>
-      )
+    return (
+      isMatch ? (
+        <Grid paddingLeft={14}>
+          <Search >
+            <SearchIconWrapper sx={{ width: "50px" }} >
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Search…"
+              inputProps={{ 'aria-label': 'search' }}
+              sx={{
+                //  paddingLeft: "50px",  
+                // justifyContent: 'center', 
+                width: "420px"
+              }} />
+          </Search>
+        </Grid>
+      ) :
+        (
+          <Grid paddingLeft={39}>
+            <Search sx={{
+              width: "5px", paddingLeft: "0px"
+            }}>
+              <SearchIconWrapper  >
+                <SearchIcon sx={{ width: "25px", marginRight: "0px" }} />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ 'aria-label': 'search' }}
+                onClick={searchTextfield}
+                sx={{
+                  paddingRight: "0px",
+                  alignItems: 'left',
+                  justifyContent: 'left',
+                  width: "5px",
+                  height: "10px"
+                }} />
+            </Search>
+          </Grid>
+        )
     )
   }
 
@@ -169,25 +145,29 @@ export default function AppBar({ drawerWidth, open, handleDrawerOpen }) {
       }}>
       <Toolbar
       >
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          onClick={handleDrawerOpen}
-          edge="start"
-          sx={{ mr: 0.1, ...(open && { display: 'none' }) }}
-        >
-          <MenuIcon />
-        </IconButton>
-        <IconButton>
-          <HomeOutlinedIcon sx={{ color: "white" }} />
-        </IconButton>
+        <Stack direction="row" spacing={1} justifyContent="left">
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            sx={{ mr: 0.1, ...(open && { display: 'none' }) }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <IconButton>
+            <HomeOutlinedIcon sx={{ color: "white" }} />
+          </IconButton>
+        </Stack>
 
-        <Grid>
-          {searchicon()}
-          </Grid>
-         
+        <Stack justifyContent="center">
+          <div >
+            {searchicon()}
+          </div>
+        </Stack>
+
         <Box sx={{ flexGrow: 1 }} />
-        <Box sx={{ display: { xs: 'flex', md: 'flex' } }}>
+        <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
           <IconButton size="large" aria-label="show 4 new mails" color="inherit">
             <Badge badgeContent={4} color="error">
               <MailIcon />
@@ -228,6 +208,8 @@ export default function AppBar({ drawerWidth, open, handleDrawerOpen }) {
         </Box>
       </Toolbar>
     </AppBar>
+
+
   );
 
 
