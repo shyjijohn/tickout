@@ -326,7 +326,8 @@ export default function AddTask({ appendTaskFn }) {
     const [selectedProject, setSelectedProject] = React.useState(-1);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const isMobileView = useMediaQuery(theme.breakpoints.down('sm'));
-    const [dataFromDatabase, setDataFromDatabase] = useState([]);
+   
+
 
     console.log("selectedDate from Add Task", selectedDate);
 
@@ -334,13 +335,11 @@ export default function AddTask({ appendTaskFn }) {
 
         if (dialogTaskName === '')
             return;
-
         axios.post('http://localhost:3002/create', {
             dialogTaskName: dialogTaskName,
             dialogTaskDescription: dialogTaskDescription,
             selectedDate: selectedDate
         }).then(() => console.log("Finished pushing to database"))
-
 
 
         // axios.post('http://localhost:3001/create',{
@@ -352,11 +351,7 @@ export default function AddTask({ appendTaskFn }) {
 
     };
 
-    const showDataFromDatabase = () => {
-        axios.get('http://localhost:3002/task').then((response) => {
-            setDataFromDatabase(response.data)
-        })
-    }
+   
 
     const handleDialogTaskName = (e) => {
         setDialogTaskName(e.target.value);
@@ -816,12 +811,7 @@ export default function AddTask({ appendTaskFn }) {
                         }
 
                     </Grid>
-                    <div>
-                        <button onClick={showDataFromDatabase}>Show Data From Database</button>
-                        {dataFromDatabase.map(data => {
-                            return <p>{data.dialogTaskName}</p>
-                        })}
-                    </div>
+                   
                 </Grid>
 
             </FormControl>

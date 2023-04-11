@@ -51,6 +51,30 @@ app.get('/task', (req, res) => {
     )
 })
 
+
+app.put('/update', (req, res) => {
+    console.log('console data', req.body)
+    const id = req.body.id;
+    const dialogTaskName = req.body.dialogTaskName;
+    const dialogTaskDescription = req.body.dialogTaskDescription;
+    const selectedDateAnyDT = req.body.selectedDate;
+    
+    db.query(
+      `update employees set dialogTaskName='${dialogTaskName}',
+      dialogTaskDescription=${dialogTaskDescription},
+      selectedDateAnyDT='${selectedDate}' where id=${id}`,      
+      [dialogTaskName, dialogTaskDescription, selectedDateAnyDT, id],
+      (err, result) => {
+        if (err) {
+          console.log(err)
+        } else {
+          res.send(result)
+        }
+      }
+    )
+  })
+
+  
 app.listen(3002, () => {
     console.log('Hey Shyji!! --   Backend server is running')
 })

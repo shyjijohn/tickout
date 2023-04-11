@@ -12,6 +12,9 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import { useState } from "react";
+import axios from 'axios'
 
 
 export default function GetTodoListView({ items }) {
@@ -25,11 +28,12 @@ export default function GetTodoListView({ items }) {
   const [dateItem, setDateItem] = React.useState();
   const [commentItem, setCommentItem] = React.useState();
   const [moreItem, setMoreItem] = React.useState();
+  const [dataFromDatabase, setDataFromDatabase] = useState([]);
 
 
   const handleToggle = (nameAsValue) => () => {
 
-    console.log('handleToggle value', nameAsValue);
+    //console.log('handleToggle value', nameAsValue);
     const currentIndex = checked.indexOf(nameAsValue);
     const newChecked = [...checked]; //copy to new array
 
@@ -38,12 +42,28 @@ export default function GetTodoListView({ items }) {
     } else {
       newChecked.splice(currentIndex, 1);
     }
-    console.log('Checked', checked);
-    console.log('newChecked', newChecked);
+   // console.log('Checked', checked);
+   // console.log('newChecked', newChecked);
 
     setChecked(newChecked);
   };
 
+  const showDataFromDatabase = () => {
+   // console.log(' clicked!!');
+    axios.get('http://localhost:3002/task').then((response) => {
+
+    //  console.log('response', response.data);
+    //  console.log('items coll', items); 
+      setDataFromDatabase(response.data)
+    })
+  }
+
+  showDataFromDatabase();
+
+
+const handleUpdate = () => {
+
+}
 
   const theme = useTheme();
 
@@ -138,9 +158,9 @@ export default function GetTodoListView({ items }) {
   }
 
 
-  function isListItemHover(value) {
-    console.log("item hover", value.name);
-    console.log("--------------------------------------------");
+  function isListItemHover(data) {
+    //console.log("item hover", data.dialogTaskName);
+    //console.log("--------------------------------------------");
     // setMouseHoveringItemName = value.name;
 
     // console.log('isListItemHover ', isMouseHover);
@@ -159,9 +179,10 @@ export default function GetTodoListView({ items }) {
       setMoreItem(e.target.value)
     };
 
+   
 
     return (
-      mouseHoveringItemName === value.name ?
+      mouseHoveringItemName === data.dialogTaskName ?
         <Stack
           name="label2"
           direction="row"
@@ -219,7 +240,7 @@ export default function GetTodoListView({ items }) {
     )
   }
 
-  console.log("going to call html");
+  //console.log("going to call html");
   return (
     <div >
 
@@ -234,24 +255,24 @@ export default function GetTodoListView({ items }) {
         <div>{schedule()}</div>
       </div>
 
-
+ 
       <List sx={{
         boxSizing: "border-box",
         width: '100%', maxWidth: 800,
         bgcolor: 'background.paper'
       }}>
-        {items.map((value) => {
+        {dataFromDatabase.map((data) => {
 
-          if (value === undefined)
+          if (data === undefined)
             return null;
-          if (value.length === 0)
+          if (data.length === 0)
             return null;
 
 
-          console.log('value casted to date', new Date(value.date).toDateString());
+         // console.log('value casted to date', new Date(data.date).toDateString());
           //console.log('value not casted', value.date.toDateString());
           // console.log(value.date.toString());
-          const labelId = `checkbox-list-label-${value.name}`;
+          const labelId = `checkbox-list-label-${data.dialogTaskName}`;
           console.log("item hover", labelId);
 
           //console.log('Item index', items.indexOf(value.name));
@@ -263,13 +284,13 @@ export default function GetTodoListView({ items }) {
                 alignItems: "left "
               }}
               onMouseOver={() => {
-                console.log("mouse hover on item!!!!!!!", value.name)
-                setMouseHoveringItemName(value.name);
+               // console.log("mouse hover on item!!!!!!!", data.dialogTaskName)
+                setMouseHoveringItemName(data.dialogTaskName);
                 //  if(value.name === -1)
                 // {
 
                 // }
-                console.log("mouse hovering now", value)
+//console.log("mouse hovering now", data)
 
                 // { handleMouse() }
                 //setIsMouseHover(true)
@@ -278,13 +299,13 @@ export default function GetTodoListView({ items }) {
               onMouseOut={() => {
                 setMouseHoveringItemName(null);
 
-                console.log("mouse out of item*********", value.name)
+             //   console.log("mouse out of item*********", data.dialogTaskName)
                 // setIsMouseHover(false)
               }}
-              key={value.name}
+              key={data.name}
               disablePadding
             >
-              <ListItemButton role={undefined} onClick={handleToggle(value.name)} dense
+              <ListItemButton role={undefined} onClick={handleToggle(data.dialogTaskName)} dense
                 sx={{
                   boxSizing: "border-box",
                   marginLeft: "-15px",
@@ -303,7 +324,7 @@ export default function GetTodoListView({ items }) {
                   }} >
                   <Radio
                     edge="start"
-                    checked={checked.indexOf(value.name) !== -1}
+                    checked={checked.indexOf(data.dialogTaskName) !== -1}
                     tabIndex={-1}
                     disableRipple
                     inputProps={{ 'aria-labelledby': labelId }}
@@ -332,11 +353,11 @@ export default function GetTodoListView({ items }) {
                   <ListItemText
                     sx={{ boxSizing: "border-box", display: "flex", flexWrap: "inherit" }}
                     id={labelId}
-                    primary={value.name} />
+                    primary={data.dialogTaskName} />
                   <ListItemText
                     sx={{ boxSizing: "border-box", display: "flex", flexWrap: "inherit" }}
                     id={labelId}
-                    primary={value.description} />
+                    primary={data.dialogTaskDescription} />
                   <Stack direction="row">
                     <EventIcon
                       sx={{
@@ -345,7 +366,7 @@ export default function GetTodoListView({ items }) {
                     />&nbsp;
                     <ListItemText
                       id={labelId}
-                      primary={new Date(value.date).toDateString()}
+                      primary={new Date(data.selectedDate).toDateString()}
                       sx={{
                         color: "#D0312D"
                       }} />
@@ -358,12 +379,22 @@ export default function GetTodoListView({ items }) {
               <Stack sx={{
                 boxSizing: "border-box",
               }}
-              >{isListItemHover(value)}</Stack >
+              >{isListItemHover(data)}</Stack >
             </ListItem>
           );
         })}
       </List>
+     
+{/*       
+      <div>
+        <button onClick = {showDataFromDatabase} >Show Data From DB</button>
+        {dataFromDatabase.map(data => {
+          return <p>{data.dialogTaskName}</p>
+        })}
+      </div> */}
     </div>
+
+
 
   );
 }
