@@ -39,13 +39,6 @@ const drawerWidth = 240;
 
 function App() {
 
-  const [todoCol, settodoCol] = React.useState([[]]);
-
-  console.log(todoCol);
-  const appendTask = (t) => {
-    settodoCol([...todoCol, t])
-  };
-
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -74,11 +67,11 @@ function App() {
       <Main open={open}>
         <Grid
           container>
-          <Grid
+          <Grid 
             item
             xs={12}>
-            <GetTodoListView items={todoCol}>  </GetTodoListView>
-            <AddTask appendTaskFn={appendTask}></AddTask>
+            <GetTodoListView></GetTodoListView>
+            <AddTask></AddTask>
           </Grid>
         </Grid>
       </Main>

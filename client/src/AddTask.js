@@ -318,7 +318,7 @@ function MoreOptionsButton() {
 }
 
 
-export default function AddTask({ appendTaskFn }) {
+export default function AddTask() {
 
     const theme = useTheme();
     const [dialogTaskName, setDialogTaskName] = React.useState('');
@@ -343,8 +343,6 @@ export default function AddTask({ appendTaskFn }) {
 
 
         // axios.post('http://localhost:3001/create',{
-        let t = new Task(dialogTaskName, dialogTaskDescription, selectedDate, selectedProject)
-        appendTaskFn(t);
         setDialogTaskName("")
         setDialogTaskDescription("")
         //   }).then(()=>console.log("success"))
@@ -709,12 +707,8 @@ export default function AddTask({ appendTaskFn }) {
                                     color: "black",
                                     bgcolor: "#BDBDBD",
                                     variant: "outlined",
-                                    minWidth: "30%",
-                                    //    width: "fit-content",   
+                                    minWidth: "30%", 
                                     height: "28px",
-                                    //   paddingLeft: "-10px !important",
-                                    //  paddingRight: "-10px !important",
-                                    //  marginLeft: "0px !important ",
                                     borderLeft: "0px",
                                     margin: "0px",
                                     borderRight: "0px",

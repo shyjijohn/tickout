@@ -2,10 +2,6 @@
 import './App.css';
 
 import * as React from 'react';
-
-
-
-
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 import TodayIcon from '@mui/icons-material/Today';
@@ -49,87 +45,145 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import InputBase from '@mui/material/InputBase';
+import Collapse from '@mui/material/Collapse';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import CircleIcon from '@mui/icons-material/Circle';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import Button from "@mui/material/Button";
 
 
+export default function AppDrawer({ drawerWidth, open, handleDrawerClose, theme }) {
 
-export default function AppDrawer({drawerWidth, open,handleDrawerClose, theme})
-{
+  const DrawerHeader = styled('div')(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-end',
+  }));
 
-    const DrawerHeader = styled('div')(({ theme }) => ({
-        display: 'flex',
-        alignItems: 'center',
-        padding: theme.spacing(0, 1),
-        // necessary for content to be below app bar
-        ...theme.mixins.toolbar,
-        justifyContent: 'flex-end',
-      }));
-    
+  const [openProject, setOpenProject] = React.useState(true);
+  const [openDialog, setOpenDialog] = React.useState(false);
 
-    return (
+  const handleClick = () => {
+    setOpenProject(!openProject);
+  };
 
-        <Drawer
-        sx={{
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleToCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+
+  return (
+
+    <Drawer
+      sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
           width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-          },
-        }}
-        variant="persistent"
-        anchor="left"
-        open={open}
-      >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {['Projects'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <AccountTreeIcon />
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-              <ListItemButton>
-                <ListItemIcon>
-               <AddCircleIcon />
-                </ListItemIcon>
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <List>
-          {['Today', 'Upcoming'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index === 0 ? <TodayIcon /> : <UpcomingIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        {/* <Divider /> */}
-        <List>
-          {['Calendar View', 'Board View'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <CalendarMonthIcon /> : <DashboardIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
+          boxSizing: 'border-box',
+        },
+      }}
+      variant="persistent"
+      anchor="left"
+      open={open}
+    >
+      <DrawerHeader>
+        <IconButton onClick={handleDrawerClose}>
+          {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+        </IconButton>
+      </DrawerHeader>
+      <Divider />
 
+      <List>
+        {['Today', 'Upcoming'].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                {index === 0 ? <TodayIcon /> : <UpcomingIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+      {/* <Divider /> */}
+      <List>
+        {['Calendar View', 'Board View'].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                {index % 2 === 0 ? <CalendarMonthIcon /> : <DashboardIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+      <List>
+        {['Projects'].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton onClick={handleClick}>
+              <ListItemIcon><AccountTreeIcon /></ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+            <ListItemButton>
+              <ListItemIcon>
+                <AddCircleIcon onClick={handleOpenDialog}>
+                <Dialog open={openDialog} onClose={handleToCloseDialog}>
+        <DialogTitle>How are you?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            I am Good, Hope the same for you!
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Email Address"
+            type="email"
+            fullWidth
+            variant="standard"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleToCloseDialog} 
+                  color="primary" autoFocus>
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+                </AddCircleIcon>
+              </ListItemIcon>
+              {openProject ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+          </ListItem>
+        ))}
 
-    );
+        <Collapse in={openProject} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItemButton sx={{ pl: 8 }}>
+              <ListItemIcon>
+                <CircleIcon fontSize="10px" />
+              </ListItemIcon>
+              <ListItemText primary="Project 1" />
+            </ListItemButton>
+          </List>
+        </Collapse>
+      </List>
+    </Drawer>
+  );
 }
+
