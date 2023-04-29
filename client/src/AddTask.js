@@ -320,7 +320,7 @@ function MoreOptionsButton() {
 
 export default function AddTask(props) {
 
-    console.log("isSaveTask ", props.isSaveTask, props.data);
+    //console.log("isSaveTask ", props.isSaveTask, props);
 
     const theme = useTheme();
 
@@ -330,43 +330,44 @@ export default function AddTask(props) {
     const [selectedProject, setSelectedProject] = React.useState(-1);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const isMobileView = useMediaQuery(theme.breakpoints.down('sm'));
-    const [openCancel, setOpenCancel] = React.useState(true);
-console.log("shyji bullshit", props.data);
+    //const [openCancel, setOpenCancel] = React.useState(true);
+    //console.log("shyji bullshit", props.data);
 
     const handleAdd = () => {
-         if(dialogTaskName === '')
+        console.log("handleAdd");
+        if (dialogTaskName === '')
             return;
-            if (props.isSaveTask === true )
-            {
-                console.log("update method called");
-                axios.put('http://localhost:3002/update', {
-                    id:props.data.id,
-                    dialogTaskName: dialogTaskName,
-                    dialogTaskDescription: dialogTaskDescription,
-                    selectedDate: selectedDate
-                }).then(() => console.log("Finished updating to database"))
-                setDialogTaskName("")
-                setDialogTaskDescription("")  
-                handleCancelClick();     
-            }
-            else
-            {
-                console.log("create method called");
-                axios.post('http://localhost:3002/create', {
-                    dialogTaskName: dialogTaskName,
-                    dialogTaskDescription: dialogTaskDescription,
-                    selectedDate: selectedDate
-                }).then(() => console.log("Finished pushing to database"))
-                setDialogTaskName("")
-                setDialogTaskDescription("") 
-                handleCancelClick();
-            }
-           // handleCancelClick();    
+        if (props.isSaveTask === true) {
+            console.log("update method called");
+            axios.put('http://localhost:3002/update', {
+                id: props.data.id,
+                dialogTaskName: dialogTaskName,
+                dialogTaskDescription: dialogTaskDescription,
+                selectedDate: selectedDate
+            }).then(() => console.log("Finished updating to database"))
+            setDialogTaskName("")
+            setDialogTaskDescription("")
+            props.endSave();
+        }
+        else {
+            console.log("create method called");
+            axios.post('http://localhost:3002/create', {
+                dialogTaskName: dialogTaskName,
+                dialogTaskDescription: dialogTaskDescription,
+                selectedDate: selectedDate
+            }).then(() => console.log("Finished pushing to database"))
+            setDialogTaskName("")
+            setDialogTaskDescription("")
+           // handleCancelClick();
+        }
+        // handleCancelClick();    
     };
 
     const handleCancelClick = () => {
         console.log("Cancelling");
-        setOpenCancel(false)
+        if (props.isSaveTask === true) {
+            props.endSave();
+        }
     };
 
     const handleDialogTaskName1 = (e) => {
@@ -661,7 +662,7 @@ console.log("shyji bullshit", props.data);
                     <Grid item xs={4.5} md={2}>
                         <Tooltip title="Select a project">
                             <button></button>
-{/* 
+                            {/* 
                             <Select
                                 displayEmpty
                                 fullWidth={true}
@@ -761,7 +762,7 @@ console.log("shyji bullshit", props.data);
                             </Button>
 
                             : <Button
-                                onClose={handleCancelClick}
+                            onClick={handleCancelClick}
                                 sx={{
                                     color: "black",
                                     bgcolor: "#BDBDBD",
@@ -779,13 +780,7 @@ console.log("shyji bullshit", props.data);
                                 }}
                             >
                                 <ClearIcon fontSize="small" />
-                                <typography
-                                    sx={{
-                                        fontSize: "10px"
-                                    }}
-                                >
                                     CANCEL
-                                </typography>
                             </Button>
                         }
                     </Grid>
@@ -827,13 +822,9 @@ console.log("shyji bullshit", props.data);
                                     },
                                 }}
                             >
-                                <typography
-                                    sx={{
-                                        fontSize: "10px"
-                                    }}
-                                >
+                                
                                     {getButtonName()}
-                                </typography>
+                                
                                 <DoneIcon fontSize="small" />
                             </Button>
                         }

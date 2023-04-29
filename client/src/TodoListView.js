@@ -391,8 +391,8 @@ export default function GetTodoListView() {
 
   //console.log("going to call html");
 
-  
-//getTodolistview return fn
+
+  //getTodolistview return fn
   return (
     <div >
 
@@ -425,16 +425,20 @@ export default function GetTodoListView() {
           //console.log("Data", data);
           //console.log("Data id", data.id);
 
-
-
+          const closeSaveTask = () => {
+            setSelectedEditButtonItemId('');
+          }
           if (data.id === selectedEditButtonItemId) {
             return (<AddTask isSaveTask={true}
               data={data}
+              endSave={closeSaveTask}
             ></AddTask>);
           }
 
           const handleListItemClick = () => {
-            setListItemClick(data.id)
+
+            //console.log("handleListItemClick")
+           // setListItemClick(data.id)
           }
 
           const radioClickHandler = () => {
@@ -506,7 +510,7 @@ export default function GetTodoListView() {
               }}
               key={data.name}
               disablePadding
-              onClick={handleListItemClick}
+             // onClick={handleListItemClick}
             >
               <ListItemButton role={undefined} onClick={handleToggle(data.dialogTaskName)} dense
                 sx={{
