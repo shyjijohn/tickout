@@ -147,7 +147,7 @@ function PrioritiesButton() {
 
 
     function prioritymain() {
-        console.log("priority index", selectedPriorityIndex);
+        //console.log("priority index", selectedPriorityIndex);
         return (
             selectedPriorityIndex === -1 ? (
 
@@ -318,40 +318,62 @@ function MoreOptionsButton() {
 }
 
 
-export default function AddTask() {
+export default function AddTask(props) {
+
+    console.log("isSaveTask ", props.isSaveTask, props.data);
 
     const theme = useTheme();
-    const [dialogTaskName, setDialogTaskName] = React.useState('');
+
+    const [dialogTaskName, setDialogTaskName] = React.useState(props.isSaveTask ?
+        props.data.dialogTaskName : '');
     const [dialogTaskDescription, setDialogTaskDescription] = React.useState('');
     const [selectedProject, setSelectedProject] = React.useState(-1);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const isMobileView = useMediaQuery(theme.breakpoints.down('sm'));
-   
-
-
-    console.log("selectedDate from Add Task", selectedDate);
+    const [openCancel, setOpenCancel] = React.useState(true);
+console.log("shyji bullshit", props.data);
 
     const handleAdd = () => {
-
-        if (dialogTaskName === '')
+         if(dialogTaskName === '')
             return;
-        axios.post('http://localhost:3002/create', {
-            dialogTaskName: dialogTaskName,
-            dialogTaskDescription: dialogTaskDescription,
-            selectedDate: selectedDate
-        }).then(() => console.log("Finished pushing to database"))
-
-
-        // axios.post('http://localhost:3001/create',{
-        setDialogTaskName("")
-        setDialogTaskDescription("")
-        //   }).then(()=>console.log("success"))
-
+            if (props.isSaveTask === true )
+            {
+                console.log("update method called");
+                axios.put('http://localhost:3002/update', {
+                    id:props.data.id,
+                    dialogTaskName: dialogTaskName,
+                    dialogTaskDescription: dialogTaskDescription,
+                    selectedDate: selectedDate
+                }).then(() => console.log("Finished updating to database"))
+                setDialogTaskName("")
+                setDialogTaskDescription("")  
+                handleCancelClick();     
+            }
+            else
+            {
+                console.log("create method called");
+                axios.post('http://localhost:3002/create', {
+                    dialogTaskName: dialogTaskName,
+                    dialogTaskDescription: dialogTaskDescription,
+                    selectedDate: selectedDate
+                }).then(() => console.log("Finished pushing to database"))
+                setDialogTaskName("")
+                setDialogTaskDescription("") 
+                handleCancelClick();
+            }
+           // handleCancelClick();    
     };
 
-   
+    const handleCancelClick = () => {
+        console.log("Cancelling");
+        setOpenCancel(false)
+    };
 
-    const handleDialogTaskName = (e) => {
+    const handleDialogTaskName1 = (e) => {
+        setDialogTaskName(e.target.value);
+    };
+
+    const handleDialogTaskName2 = (e) => {
         setDialogTaskName(e.target.value);
     };
 
@@ -532,6 +554,22 @@ export default function AddTask() {
 
     }
 
+    const getButtonName = () => {
+        return props.isSaveTask ? "Save" : "Add";
+    };
+
+    // const getTaskName = () => {
+    //     return props.isSaveTask ? "data.dialogTaskName" : "Add";
+    // };
+
+    // const getTaskDescription = () => {
+    //     return props.isSaveTask ? "Save" : "Add";
+    // };
+
+    // const getTaskDate = () => {
+    //     return props.isSaveTask ? "Save" : "Add";
+    // };
+
 
     return (
 
@@ -539,11 +577,10 @@ export default function AddTask() {
             <FormControl sx={{ m: 1, boxSizing: "border-box", display: "block", minWidth: '30px', minHeight: '110px' }} md={{ m: 1, display: "block", minWidth: '420px', minHeight: '50px' }}>
                 <Grid container spacing={0.7} columns={12} >
                     <Grid item xs={12} md={12}>
-
                         <TextField
                             display="block"
                             value={dialogTaskName}
-                            onChange={handleDialogTaskName}
+                            onChange={handleDialogTaskName2}
                             id="name"
                             placeholder='Task name'
                             type="email"
@@ -557,6 +594,7 @@ export default function AddTask() {
                                 }
                             }}
                             InputProps={{ disableUnderline: true }} />
+
                     </Grid>
                     <Grid item xs={12} md={12}>
 
@@ -622,7 +660,8 @@ export default function AddTask() {
 
                     <Grid item xs={4.5} md={2}>
                         <Tooltip title="Select a project">
-
+                            <button></button>
+{/* 
                             <Select
                                 displayEmpty
                                 fullWidth={true}
@@ -692,7 +731,7 @@ export default function AddTask() {
 
                             >
 
-                            </Select>
+                            </Select> */}
                         </Tooltip>
 
                     </Grid>
@@ -702,12 +741,13 @@ export default function AddTask() {
                     <Grid item xs={1.5} md={1.2} >
                         {isMobileView ?
                             <Button
+                                onClick={handleCancelClick}
                                 sx={{
                                     size: "small",
                                     color: "black",
                                     bgcolor: "#BDBDBD",
                                     variant: "outlined",
-                                    minWidth: "30%", 
+                                    minWidth: "30%",
                                     height: "28px",
                                     borderLeft: "0px",
                                     margin: "0px",
@@ -721,6 +761,7 @@ export default function AddTask() {
                             </Button>
 
                             : <Button
+                                onClose={handleCancelClick}
                                 sx={{
                                     color: "black",
                                     bgcolor: "#BDBDBD",
@@ -759,14 +800,7 @@ export default function AddTask() {
                                     bgcolor: "#D0312D",
                                     variant: "outlined",
                                     minWidth: "30%",
-                                    //    width: "fit-content",
                                     height: "28px",
-                                    //  paddingLeft: "0px",
-                                    // paddingRight: "0px",
-                                    // marginLeft: "0px",
-                                    // borderLeft: "0px",
-                                    // marginRight: "0px",
-                                    // borderRight: "0px",
                                     "&:hover": {
                                         backgroundColor: '#D0312D'
                                     },
@@ -798,14 +832,14 @@ export default function AddTask() {
                                         fontSize: "10px"
                                     }}
                                 >
-                                    ADD
+                                    {getButtonName()}
                                 </typography>
                                 <DoneIcon fontSize="small" />
                             </Button>
                         }
 
                     </Grid>
-                   
+
                 </Grid>
 
             </FormControl>

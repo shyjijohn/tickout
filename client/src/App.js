@@ -71,7 +71,7 @@ function App() {
             item
             xs={12}>
             <GetTodoListView></GetTodoListView>
-            <AddTask></AddTask>
+            <AddTask isSaveTask = {false}></AddTask>
           </Grid>
         </Grid>
       </Main>

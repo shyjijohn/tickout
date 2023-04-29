@@ -52,6 +52,7 @@ app.get('/task', (req, res) => {
 })
 
 
+
 app.put('/update', (req, res) => {
     console.log('console data', req.body)
     const id = req.body.id;
@@ -59,11 +60,14 @@ app.put('/update', (req, res) => {
     const dialogTaskDescription = req.body.dialogTaskDescription;
     const selectedDateAnyDT = req.body.selectedDate;
     
+    var sqlDateTime = new Date(selectedDateAnyDT).toISOString().slice(0, 19).replace('T', ' ');
+    console.log("sqlDateTime", sqlDateTime);
+
     db.query(
-      `update employees set dialogTaskName='${dialogTaskName}',
-      dialogTaskDescription=${dialogTaskDescription},
-      selectedDateAnyDT='${selectedDate}' where id=${id}`,      
-      [dialogTaskName, dialogTaskDescription, selectedDateAnyDT, id],
+      `update task set dialogTaskName='${dialogTaskName}',
+      dialogTaskDescription='${dialogTaskDescription}',
+      selectedDate='${sqlDateTime}' where id=${id}`,      
+      [dialogTaskName, dialogTaskDescription, sqlDateTime, id],
       (err, result) => {
         if (err) {
           console.log(err)

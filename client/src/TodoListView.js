@@ -29,6 +29,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 
 
 
@@ -47,14 +48,14 @@ export default function GetTodoListView() {
   const [moreItem, setMoreItem] = React.useState();
   const [dataFromDatabase, setDataFromDatabase] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  //const isMobileView = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const [commentOpen, setCommentOpen] = React.useState(false);
-  const [deleteOpen, setDeleteOpen] = React.useState(true);
+  const [commentOpen, setCommentOpen] = React.useState(true);
+  const [deleteOpen, setDeleteOpen] = React.useState(false);
   const [openListView, setOpenListView] = React.useState(true);
   const [listItemClick, setListItemClick] = React.useState();
-  const [radioClick, setRadioClick] = React.useState();
-  
+  const [radioClick, setRadioClick] = React.useState(false);
+
+
 
   //console.log("editItem value", editItem);
   //list view
@@ -185,31 +186,31 @@ export default function GetTodoListView() {
 
   function isListItemHover(data) {
 
-//Edit click
-const handleEditHover = () => {
-  console.log("edit is clicked", data.id);
-  setSelectedEditButtonItemId(data.id);
-};
+    //Edit click
+    const handleEditHover = () => {
+      console.log("edit is clicked", data.id);
+      setSelectedEditButtonItemId(data.id);
+    };
 
-//Date click   
-const handleDateHover = () => {
-  console.log("date is clicked", data.id);
-  setDateItem(data.id);  
-};
+    //Date click   
+    const handleDateHover = () => {
+      console.log("date is clicked", data.id);
+      setDateItem(data.id);
+    };
 
-if (data.id === dateItem) {
-  return (
-  <LocalizationProvider dateAdapter={AdapterDayjs}>
-    {getDatePicker()}
-</LocalizationProvider>
-);
-}
+    if (data.id === dateItem) {
+      return (
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          {getDatePicker()}
+        </LocalizationProvider>
+      );
+    }
 
-//Comment click    
+    //Comment click    
     const handleClickCommentOpen = () => {
       setCommentOpen(true);
     };
-  
+
     const handleCommentClose = () => {
       setCommentOpen(false);
     }
@@ -222,35 +223,32 @@ if (data.id === dateItem) {
     if (data.id === commentItem) {
       return (
         <div>
-             <Button variant="outlined" onClick={handleClickCommentOpen} >
-               Comment
-             </Button>
-             <Dialog open={commentOpen} onClose={handleCommentClose}>
-               <DialogTitle>Title</DialogTitle>
-               <DialogContent>
-                 <DialogContentText>Task Name</DialogContentText>
-                 <DialogContentText> Task Description</DialogContentText>
-                 <TextField
-                  autoFocus
-                  margin="dense"
-                  id="name"
-                  label="Comments"
-                  type="email"
-                  fullWidth
-                  variant="standard"
-                />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleCommentClose}>Cancel</Button>
-                <Button onClick={handleCommentClose}>Save</Button>
-              </DialogActions>
-            </Dialog>
-          </div>
-    );
+          <Dialog open={commentOpen} onClose={handleCommentClose}>
+            <DialogTitle>Title</DialogTitle>
+            <DialogContent>
+              <DialogContentText>Task Name</DialogContentText>
+              <DialogContentText> Task Description</DialogContentText>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="name"
+                label="Comments"
+                type="email"
+                fullWidth
+                variant="standard"
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCommentClose}>Cancel</Button>
+              <Button onClick={handleCommentClose}>Save</Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+      );
     }
 
 
-//Delete click 
+    //Delete click 
     const handleClickDeleteOpen = () => {
       setDeleteOpen(true);
     };
@@ -261,69 +259,30 @@ if (data.id === dateItem) {
 
     const handlemorehover = (e) => {
       console.log("date is clicked", data.id);
-      setMoreItem(data.id);  
+      setMoreItem(data.id);
     };
 
 
     if (data.id === moreItem) {
       return (
         <div>
-        <Button variant="outlined" onClick={handleClickDeleteOpen}><DeleteIcon />
-       Delete
-      </Button>
-      <Dialog open={deleteOpen} onClose={handleDeleteClose}>
-      <DialogContent>
-                 <DialogContentText>Move to Trash ?</DialogContentText>
-                 </DialogContent>
-              <DialogActions>
-                <Button onClick={handleDeleteClose}>Yes</Button>
-                <Button onClick={handleDeleteClose}>No</Button>
-                </DialogActions>
-      </Dialog>
-     </div>
-    );
+          <Button variant="outlined" onClick={handleClickDeleteOpen}><DeleteIcon />
+            Delete
+          </Button>
+          <Dialog open={deleteOpen} onClose={handleDeleteClose}>
+            <DialogContent>
+              <DialogContentText>Are you sure you want to delete the task ?</DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleDeleteClose}>Yes</Button>
+              <Button onClick={handleDeleteClose}>No</Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+      );
     }
 
-//List view   
-const handleClickListViewOpen = () => {
-  setOpenListView(true);
-};
 
-const handleListViewClose = () => {
-  setOpenListView(false);
-}
-
-    if(data.id === listItemClick)
-    {
-      return(
-        <div>
-        <Button variant="outlined" onClick={handleClickListViewOpen} >
-          List Item View
-        </Button>
-        <Dialog fullScreen open={openListView} onClose={handleListViewClose}>
-          <DialogTitle>Title</DialogTitle>
-          <DialogContent>
-            <DialogContentText>Task Name</DialogContentText>
-            <DialogContentText> Task Description</DialogContentText>
-            <TextField
-             autoFocus
-             margin="dense"
-             id="name"
-             label="Comments"
-             type="email"
-             fullWidth
-             variant="standard"
-           />
-         </DialogContent>
-         <DialogActions>
-           <Button onClick={handleListViewClose}>Cancel</Button>
-           <Button onClick={handleListViewClose}>Save</Button>
-         </DialogActions>
-       </Dialog>
-     </div>
-      )
-    }
-  
     return (
       mouseHoveringItemName === data.dialogTaskName ?
         <Stack
@@ -332,18 +291,18 @@ const handleListViewClose = () => {
           position="relative"
           display="inline-flex"
           justifyContent="flex-end"
-          paddingBottom={7}>       
-            <BorderColorIcon
-              onClick={handleEditHover}
-              sx={{
-                color: 'grey', "&:hover": {
-                  bgcolor: '#F5F5F5',
-                  color: 'black',
-                  borderColor: 'black',
-                  borderRadius: '5px'
-                },
-              }} >
-            </BorderColorIcon>         
+          paddingBottom={7}>
+          <BorderColorIcon
+            onClick={handleEditHover}
+            sx={{
+              color: 'grey', "&:hover": {
+                bgcolor: '#F5F5F5',
+                color: 'black',
+                borderColor: 'black',
+                borderRadius: '5px'
+              },
+            }} >
+          </BorderColorIcon>
           &nbsp;&nbsp;
           <EventIcon
             onClick={handleDateHover}
@@ -392,9 +351,7 @@ const handleListViewClose = () => {
   function getDatePicker() {
     //console.log("getting date");
     return (
-      isMobileSchedule ? <MobileDatePicker
-        fullWidth
-        inputFormat="MM/DD/YYYY"
+      isMobileSchedule ? <StaticDatePicker
         value={selectedDate}
         onChange={handleDateChange}
         sx={{
@@ -406,32 +363,9 @@ const handleListViewClose = () => {
             borderColor: '#B2BEB5'
           },
         }}
-        renderInput={(params) => <TextField
-          sx={{
-            "& .MuiInputBase-input": {
-              height: "fit-content",  // Set your height here.
-              backgroundColor: "transparent",
-              color: "grey",
-              borderRadius: "10px",
-              padding: "3.5px",
-              fontSize: "15px",
-              textAlign: "center",
-              borderColor: "#B2BEB5",
-              ':hover':
-              {
-                bgcolor: '#F5F5F5',
-                color: 'black',
-                borderColor: '#B2BEB5'
-              },
-            }
-          }}
-          {...params}
-        />}
       />
         :
-        <DesktopDatePicker
-          fullwidth
-          inputFormat="MM/DD/YYYY"
+        <StaticDatePicker
           value={selectedDate}
           onChange={handleDateChange}
           sx={{
@@ -443,31 +377,8 @@ const handleListViewClose = () => {
               borderColor: '#B2BEB5'
             },
           }}
-          renderInput={(params) => <TextField
-            sx={{
-              "& .MuiInputBase-input": {
-                height: "fit-content",  // Set your height here.
-                borderRadius: "0px",
-                color: "grey",
-                paddingTop: "3.5px",
-                paddingBottom: "3.5px",
-                paddingLeft: "3.5px",
-                fontSize: "13px",
-                textAlign: "right",
-                borderColor: '#B2BEB5',
-                ':hover':
-                {
-                  bgcolor: '#F5F5F5',
-                  color: 'black',
-                  borderColor: '#B2BEB5'
-                },
-              }
-            }}
-            {...params}
-          />}
         >
-        </DesktopDatePicker>
-
+        </StaticDatePicker>
     );
   }
 
@@ -479,6 +390,9 @@ const handleListViewClose = () => {
   }
 
   //console.log("going to call html");
+
+  
+//getTodolistview return fn
   return (
     <div >
 
@@ -507,12 +421,16 @@ const handleListViewClose = () => {
             return null;
 
 
-          console.log("Edit Item selected", selectedEditButtonItemId);
-          console.log("Data", data);
-          console.log("Data id", data.id);
+          //console.log("Edit Item selected", selectedEditButtonItemId);
+          //console.log("Data", data);
+          //console.log("Data id", data.id);
+
+
 
           if (data.id === selectedEditButtonItemId) {
-            return (<AddTask ></AddTask>);
+            return (<AddTask isSaveTask={true}
+              data={data}
+            ></AddTask>);
           }
 
           const handleListItemClick = () => {
@@ -520,18 +438,55 @@ const handleListViewClose = () => {
           }
 
           const radioClickHandler = () => {
-            setRadioClick(data.id)
+            setRadioClick(checked.indexOf(data.dialogTaskName) !== -1)
+            if (radioClick === true) {
+              setRadioClick(false)
+            }
           }
 
-          if(data.id === radioClick) 
-          {
-           
+
+          //List view click  
+          const handleClickListViewOpen = () => {
+            setOpenListView(true);
+          };
+
+          const handleListViewClose = () => {
+            setOpenListView(false);
           }
+
+          if (data.id === listItemClick) {
+            return (
+              <div>
+                <Dialog fullScreen open={openListView} onClose={handleListViewClose}>
+                  <DialogTitle>Title</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText>Task Name</DialogContentText>
+                    <DialogContentText> Task Description</DialogContentText>
+                    <TextField
+                      autoFocus
+                      margin="dense"
+                      id="name"
+                      label="Comments"
+                      type="email"
+                      fullWidth
+                      variant="standard"
+                    />
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleListViewClose}>Cancel</Button>
+                    <Button onClick={handleListViewClose}>Save</Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
+            )
+          }
+
+
           // console.log('value casted to date', new Date(data.date).toDateString());
           //console.log('value not casted', value.date.toDateString());
           // console.log(value.date.toString());
           const labelId = `checkbox-list-label-${data.dialogTaskName}`;
-         
+
           return (
             <ListItem
               sx={{
@@ -542,7 +497,7 @@ const handleListViewClose = () => {
               onMouseOver={() => {
                 // console.log("mouse hover on item!!!!!!!", data.dialogTaskName)
                 setMouseHoveringItemName(data.dialogTaskName);
-                
+
               }}
 
               onMouseOut={() => {
@@ -561,12 +516,13 @@ const handleListViewClose = () => {
                 }}>
                 <ListItemIcon
                   sx={{
+
                     justifyContent: "left ",
                     alignItems: "left "
                   }} >
                   <Radio
                     edge="start"
-                    checked={checked.indexOf(data.dialogTaskName) !== -1}
+                    //checked={checked.indexOf(data.dialogTaskName) !== -1}
                     tabIndex={-1}
                     disableRipple
                     onClick={radioClickHandler}
