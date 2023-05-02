@@ -206,18 +206,16 @@ export default function GetTodoListView() {
       );
     }
 
-    //Comment click    
-    const handleClickCommentOpen = () => {
-      setCommentOpen(true);
-    };
-
+    //Comment click   
     const handleCommentClose = () => {
       setCommentOpen(false);
+      setCommentItem('');
     }
 
     const handlecommenthover = () => {
       console.log("comment is clicked", data.id);
       setCommentItem(data.id);
+      setCommentOpen(true);
     };
 
     if (data.id === commentItem) {
@@ -226,8 +224,8 @@ export default function GetTodoListView() {
           <Dialog open={commentOpen} onClose={handleCommentClose}>
             <DialogTitle>Title</DialogTitle>
             <DialogContent>
-              <DialogContentText>Task Name</DialogContentText>
-              <DialogContentText> Task Description</DialogContentText>
+              <DialogContentText >Task Name : {data.dialogTaskName}</DialogContentText>
+              <DialogContentText> Task Description : {data.dialogTaskDescription}</DialogContentText>
               <TextField
                 autoFocus
                 margin="dense"
@@ -255,6 +253,7 @@ export default function GetTodoListView() {
 
     const handleDeleteClose = () => {
       setDeleteOpen(false);
+      setMoreItem('');
     }
 
     const handlemorehover = (e) => {
@@ -266,7 +265,7 @@ export default function GetTodoListView() {
     if (data.id === moreItem) {
       return (
         <div>
-          <Button variant="outlined" onClick={handleClickDeleteOpen}><DeleteIcon />
+          <Button variant="outlined" onClick={handleClickDeleteOpen} onClose={handleDeleteClose}><DeleteIcon />
             Delete
           </Button>
           <Dialog open={deleteOpen} onClose={handleDeleteClose}>
@@ -346,13 +345,17 @@ export default function GetTodoListView() {
     )
   }
 
-
+  const dateOnClose = () => {
+   // setDeleteOpen(false);
+    setDateItem('');
+  }
 
   function getDatePicker() {
     //console.log("getting date");
     return (
       isMobileSchedule ? <StaticDatePicker
         value={selectedDate}
+        onClose={dateOnClose}
         onChange={handleDateChange}
         sx={{
           borderColor: '#B2BEB5',
@@ -387,6 +390,7 @@ export default function GetTodoListView() {
     //console.log("handlePrioritySelection event: ", event);
     setSelectedDate(event);
     console.log("setSelectedDate event: ", event);
+    selectedDate(event);
   }
 
   //console.log("going to call html");
@@ -395,7 +399,6 @@ export default function GetTodoListView() {
   //getTodolistview return fn
   return (
     <div >
-
       <div>
         <Typography
           paddingLeft={0.5}
@@ -485,7 +488,6 @@ export default function GetTodoListView() {
             )
           }
 
-
           // console.log('value casted to date', new Date(data.date).toDateString());
           //console.log('value not casted', value.date.toDateString());
           // console.log(value.date.toString());
@@ -516,11 +518,9 @@ export default function GetTodoListView() {
                 sx={{
                   boxSizing: "border-box",
                   marginLeft: "-15px",
-
                 }}>
                 <ListItemIcon
                   sx={{
-
                     justifyContent: "left ",
                     alignItems: "left "
                   }} >

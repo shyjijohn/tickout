@@ -326,9 +326,11 @@ export default function AddTask(props) {
 
     const [dialogTaskName, setDialogTaskName] = React.useState(props.isSaveTask ?
         props.data.dialogTaskName : '');
-    const [dialogTaskDescription, setDialogTaskDescription] = React.useState('');
+    const [dialogTaskDescription, setDialogTaskDescription] = React.useState(props.isSaveTask ?
+        props.data.dialogTaskDescription : '');
     const [selectedProject, setSelectedProject] = React.useState(-1);
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedDate, setSelectedDate] = useState(props.isSaveTask ?
+        props.data.selectedDate :new Date());
     const isMobileView = useMediaQuery(theme.breakpoints.down('sm'));
     //const [openCancel, setOpenCancel] = React.useState(true);
     //console.log("shyji bullshit", props.data);
