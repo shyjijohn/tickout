@@ -346,7 +346,9 @@ export default function GetTodoListView() {
   }
 
   const dateOnClose = () => {
-   // setDeleteOpen(false);
+    // setDeleteOpen(false);
+    console.log("dateOnClose", selectedDate)
+    //setDateItem({ selectedDate });
     setDateItem('');
   }
 
@@ -370,9 +372,12 @@ export default function GetTodoListView() {
         :
         <StaticDatePicker
           value={selectedDate}
+          onClose={dateOnClose}
           onChange={handleDateChange}
           sx={{
             borderColor: '#B2BEB5',
+            //height: '200px',
+            //width: '200px',
             ':hover':
             {
               bgcolor: '#F5F5F5',
@@ -441,12 +446,13 @@ export default function GetTodoListView() {
           const handleListItemClick = () => {
 
             //console.log("handleListItemClick")
-           // setListItemClick(data.id)
+            // setListItemClick(data.id)
           }
 
           const radioClickHandler = () => {
-            setRadioClick(checked.indexOf(data.dialogTaskName) !== -1)
-            if (radioClick === true) {
+            checked = (checked.indexOf(data.dialogTaskName) !== -1)
+            setRadioClick(checked)
+            if (checked(data.id) === checked) {
               setRadioClick(false)
             }
           }
@@ -512,7 +518,7 @@ export default function GetTodoListView() {
               }}
               key={data.name}
               disablePadding
-             // onClick={handleListItemClick}
+            // onClick={handleListItemClick}
             >
               <ListItemButton role={undefined} onClick={handleToggle(data.dialogTaskName)} dense
                 sx={{
@@ -569,6 +575,8 @@ export default function GetTodoListView() {
                     />&nbsp;
                     <ListItemText
                       id={labelId}
+                      value={selectedDate} onChange={handleDateChange} 
+                      onClose={dateOnClose}
                       primary={new Date(data.selectedDate).toDateString()}
                       sx={{
                         color: "#D0312D"
