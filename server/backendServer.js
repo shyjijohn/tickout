@@ -14,12 +14,19 @@ const db = mysql.createConnection({
     database: 'todolistapp',
 })
 
+const db1 = mysql.createConnection({
+    user: 'root',
+    host: 'localhost',
+    password: 'mysqldatabase',
+    database: 'projectslist',
+})
+
 app.post('/create', (req, res) => {
     const dialogTaskName = req.body.dialogTaskName;
     const dialogTaskDescription = req.body.dialogTaskDescription;
     const selectedDateAnyDT = req.body.selectedDate;
 
-    console.log("Backend server entered", dialogTaskName, dialogTaskDescription, selectedDateAnyDT);
+    //console.log("Backend server entered", dialogTaskName, dialogTaskDescription, selectedDateAnyDT);
 
     var sqlDateTime = new Date(selectedDateAnyDT).toISOString().slice(0, 19).replace('T', ' ');
     console.log("sqlDateTime", sqlDateTime);
@@ -38,9 +45,43 @@ app.post('/create', (req, res) => {
     )
 })
 
+app.post('/createProject', (req, res) => {
+    const projectName = req.body.projectName;
+
+    console.log("Backend server entered createProject ",  req.body.projectName);
+
+    db1.query(
+        'INSERT INTO projectslist.title (projectName) VALUES (?)',
+        [projectName], (err, result) => {
+            if (err) {
+                console.log(err)
+            }
+            else {
+                console.log("Backend server createProject: Success ")
+                res.send('projectName inserted')
+            }
+        }
+    )
+})
+
+
 app.get('/task', (req, res) => {
     db.query(
         'select * from todolistapp.task' , (err, result) => {
+            if (err) {
+                console.log(err)
+            }
+            else {
+                res.send(result)
+            }
+        }
+    )
+})
+
+
+app.get('/title', (req, res) => {
+    db1.query(
+        'select * from projectslist.title' , (err, result) => {
             if (err) {
                 console.log(err)
             }

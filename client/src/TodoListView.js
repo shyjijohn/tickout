@@ -30,6 +30,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
+import { useEffect } from 'react';
 
 
 
@@ -75,16 +76,25 @@ export default function GetTodoListView() {
     setChecked(newChecked);
   };
 
+  //useEffect(call only once)
+  function CallOnce() {
+    useEffect(() => {
+      showDataFromDatabase();
+     }, [] );
+  }
+
+  //CallOnce();
 
   //from database
   const showDataFromDatabase = () => {
+    //console.log("Calling showDataFromDatabase 11111111")
     axios.get('http://localhost:3002/task').then((response) => {
       setDataFromDatabase(response.data)
     })
   }
   showDataFromDatabase();
 
-
+ 
   const handleUpdate = () => {
 
   }
@@ -405,6 +415,7 @@ export default function GetTodoListView() {
   return (
     <div >
       <div>
+      {/* {showDataFromDatabase()} */}
         <Typography
           paddingLeft={0.5}
           fontWeight="bold"
@@ -418,7 +429,7 @@ export default function GetTodoListView() {
 
       <List sx={{
         boxSizing: "border-box",
-        width: '100%', maxWidth: 800,
+        width: '200%', maxWidth: 800,
         bgcolor: 'background.paper'
       }}>
         {dataFromDatabase.map((data) => {
@@ -516,7 +527,7 @@ export default function GetTodoListView() {
                 setMouseHoveringItemName(null);
                 //   console.log("mouse out of item*********", data.dialogTaskName)    
               }}
-              key={data.name}
+              key={data.dialogTaskName}
               disablePadding
             // onClick={handleListItemClick}
             >
@@ -559,7 +570,7 @@ export default function GetTodoListView() {
                     justifyContent: "left ",
                     alignItems: "left "
                   }} >
-                  <ListItemText
+                  <ListItemText 
                     sx={{ boxSizing: "border-box", display: "flex", flexWrap: "inherit" }}
                     id={labelId}
                     primary={data.dialogTaskName} />

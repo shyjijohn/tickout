@@ -1,12 +1,16 @@
 
 import './App.css';
 import React from 'react';
+import axios from 'axios'
+import { useState } from "react";
+
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import TodayIcon from '@mui/icons-material/Today';
 import UpcomingIcon from '@mui/icons-material/Upcoming';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -23,9 +27,38 @@ import CircleIcon from '@mui/icons-material/Circle';
 import TextField from '@mui/material/TextField';
 import Button from "@mui/material/Button";
 import { Stack } from '@mui/material';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import Collapse from '@mui/material/Collapse';
+//import { useHistory } from 'react-router-dom';
+//import Grid from '@mui/material/Grid';
+
+// const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
+//   ({ theme, open }) => ({
+//     flexGrow: 1,
+//     padding: theme.spacing(3),
+//     transition: theme.transitions.create('margin', {
+//       easing: theme.transitions.easing.sharp,
+//       duration: theme.transitions.duration.leavingScreen,
+//     }),
+//     marginTop: 65,
+//     marginLeft: `-${drawerWidth}px`,
+//     ...(open && {
+//       transition: theme.transitions.create('margin', {
+//         easing: theme.transitions.easing.easeOut,
+//         duration: theme.transitions.duration.enteringScreen,
+//       }),
+//       marginLeft: 0,
+//     }),
+//   }),
+// );
+
+// const drawerWidth = 240;
 
 
 export default function AppDrawer({ drawerWidth, open, handleDrawerClose, theme }) {
+
+  console.log("Rendering drawer")
 
   const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -36,28 +69,16 @@ export default function AppDrawer({ drawerWidth, open, handleDrawerClose, theme 
     justifyContent: 'flex-end',
   }));
 
+  //const history = useHistory();
   const [openProject, setOpenProject] = React.useState(true);
-  const [projectNameCollection, setProjectNameCollection] = React.useState([]);
+  const [projectCollectionFromDb, setProjectCollectionFromDb] = useState([]);
 
 
   const [isTextFieldOpen, setIsTextFieldOpen] = React.useState(false);
   const [textFieldValue, setTextFieldValue] = React.useState('');
 
   const handleClick = () => {
-    //setOpenProject(!openProject);
-    return (
-      <Button></Button>
-      // <Collapse in={openProject} timeout="auto" unmountOnExit>
-      //   <List component="div" disablePadding>
-      //     <ListItemButton sx={{ pl: 8 }}>
-      //       <ListItemIcon>
-      //         <CircleIcon fontSize="10px" />
-      //       </ListItemIcon>
-      //       <ListItemText primary={textFieldValue} />
-      //     </ListItemButton>
-      //   </List>
-      // </Collapse>
-    )
+    setOpenProject(!openProject);
   };
 
   const handleCreateProject = () => {
@@ -70,11 +91,27 @@ export default function AppDrawer({ drawerWidth, open, handleDrawerClose, theme 
 
   const handleTextFieldKeyDown = (event) => {
     if (event.key === 'Enter') {
-      setProjectNameCollection([...projectNameCollection , textFieldValue]);
+      console.log("posting project name ", textFieldValue);
+      axios.post('http://localhost:3002/createProject', {
+        projectName: textFieldValue
+      }).then(() => console.log("Finished pushing project name to database"))
+
+      //setProjectNameCollection([...projectNameCollection, textFieldValue]);
+
       setIsTextFieldOpen(false);
       setTextFieldValue('');
     }
   };
+
+  const showprojectNameFromDb = () => {
+    console.log("Calling showDataFromDatabase")
+    axios.get('http://localhost:3002/title').then((response) => {
+      setProjectCollectionFromDb(response.data)
+      // console.log("get data: ", response.data);
+    })
+  }
+  showprojectNameFromDb();
+
 
   const showTextField = () => {
     if (isTextFieldOpen) {
@@ -89,25 +126,48 @@ export default function AppDrawer({ drawerWidth, open, handleDrawerClose, theme 
     }
   };
 
-  function CreatingNewProjects() {
+  // const openPage = () => {
+  //   //history.push('/new-page');
+  //   return(
+  //   <Main open={open}>
+  //   <Grid
+  //     container>
+  //     <Grid 
+  //       item
+  //       xs={12}>
+  //          </Grid>
+  //       </Grid>
+  //     </Main>
+  //   );
+  // };
+
+
+
+  function GetListOfProjectNames() {
+    console.log("creating new projects ..............");
     return (
       <List>
-        {projectNameCollection.map((projectName, index) => (
-          <ListItem key={projectName} disablePadding>
-          <ListItemButton>
-            <ListItemIcon><CircleIcon sx={{ }}/></ListItemIcon>
-            <ListItemText primary={projectName} />
-          </ListItemButton>
-        </ListItem>
-          ))}
+        {projectCollectionFromDb.map((project, index) => (
+          <ListItem key={project.id} disablePadding>
+            <ListItemButton >
+              <ListItemIcon><CircleIcon sx={{ height: '10px', width: '10px' }} /></ListItemIcon>
+              <ListItemText primary={project.projectName} />
+              <ListItemIcon>
+                <MoreHorizIcon sx={{
+                  color: 'grey', "&:hover": {
+                    bgcolor: '#F5F5F5',
+                    color: 'black',
+                    borderColor: 'black',
+                    borderRadius: '5px'
+                  },
+                }} /></ListItemIcon>
+            </ListItemButton>
+          </ListItem>
+        ))}
       </List>
     );
   }
 
-
-  const expandMoreFn = (event) => {
-    console.log("222222", event.target.value)
-  }
 
   return (
     <Drawer
@@ -156,40 +216,37 @@ export default function AppDrawer({ drawerWidth, open, handleDrawerClose, theme 
         ))}
       </List>
 
-
       <Stack direction="column">
         <Stack direction="row" spacing={3}>
           <AccountTreeIcon sx={{ marginLeft: '15px', color: 'grey' }} />
           <Typography >Projects</Typography>
-          <AddCircleIcon sx={{
-            color: 'grey', "&:hover": {
-              bgcolor: '#F5F5F5',
-              color: 'black',
-              borderColor: 'black',
-              borderRadius: '5px'
-            },
-          }}
-            onClick={handleCreateProject} />
+          <AddCircleIcon
+            onClick={handleCreateProject}
+            sx={{
+              color: 'grey', "&:hover": {
+                bgcolor: '#F5F5F5',
+                color: 'black',
+                borderColor: 'black',
+                borderRadius: '5px'
+              },
+            }}
+          />
+          <IconButton onClick={handleClick}>
+            {openProject ? <ExpandLess /> : <ExpandMore />}
+          </IconButton>
         </Stack>
+
         {showTextField()}
-       {CreatingNewProjects()}
+        <Collapse in={openProject} timeout="auto" unmountOnExit>  
+            {GetListOfProjectNames()}      
+        </Collapse>
+       
       </Stack>
-
-
-      
-          {/* {openProject ?
-                <ExpandMore
-                  onClick={expandMoreFn}
-                  value={textFieldValue}
-                ></ExpandMore>
-                : <ExpandLess
-                  onClick={expandMoreFn}
-                  value={textFieldValue}
-
-                ></ExpandLess>
-              } */}
-
     </Drawer>
   );
 }
+
+
+
+
 

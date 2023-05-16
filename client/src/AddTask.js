@@ -28,6 +28,7 @@ import LabelIcon from '@mui/icons-material/Label';
 import ExtensionIcon from '@mui/icons-material/Extension';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import axios from 'axios'
+import AppDrawer from './AppDrawer';
 
 
 
@@ -663,8 +664,8 @@ export default function AddTask(props) {
 
                     <Grid item xs={4.5} md={2}>
                         <Tooltip title="Select a project">
-                            <button></button>
-                            {/* 
+                            {/* <Button></Button> */}
+                            
                             <Select
                                 displayEmpty
                                 fullWidth={true}
@@ -718,15 +719,7 @@ export default function AddTask(props) {
                                     else {
                                         return (
                                             <Stack direction="row" spacing={0.5}>
-                                                <EmojiFlagsIcon color={priorities[selectedIndex].color} />
-                                                <Box
-                                                    sx=
-                                                    {{
-                                                        typography: 'body1',
-                                                        paddingTop: "5px"
-                                                    }}>
-                                                    {priorities[selectedIndex].name}
-                                                </Box>
+                                               
                                             </Stack>
                                         )
                                     }
@@ -734,7 +727,7 @@ export default function AddTask(props) {
 
                             >
 
-                            </Select> */}
+                            </Select>
                         </Tooltip>
 
                     </Grid>
