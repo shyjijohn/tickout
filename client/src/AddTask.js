@@ -30,6 +30,13 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import axios from 'axios'
 import AppDrawer from './AppDrawer';
 
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import CircleIcon from '@mui/icons-material/Circle';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 
 function PrioritiesButton() {
@@ -329,12 +336,16 @@ export default function AddTask(props) {
         props.data.dialogTaskName : '');
     const [dialogTaskDescription, setDialogTaskDescription] = React.useState(props.isSaveTask ?
         props.data.dialogTaskDescription : '');
-    const [selectedProject, setSelectedProject] = React.useState(-1);
+    const [selectedProject, setSelectedProject] = React.useState();
     const [selectedDate, setSelectedDate] = useState(props.isSaveTask ?
-        props.data.selectedDate :new Date());
+        props.data.selectedDate : new Date());
     const isMobileView = useMediaQuery(theme.breakpoints.down('sm'));
     //const [openCancel, setOpenCancel] = React.useState(true);
     //console.log("shyji bullshit", props.data);
+    const [projectCollectionFromDb, setProjectCollectionFromDb] = useState([]);
+    const [titleID, setTitleID] = useState([]);
+    const [currentTitleID, setCurrentTitleID] = useState([]);
+
 
     const handleAdd = () => {
         console.log("handleAdd");
@@ -346,7 +357,8 @@ export default function AddTask(props) {
                 id: props.data.id,
                 dialogTaskName: dialogTaskName,
                 dialogTaskDescription: dialogTaskDescription,
-                selectedDate: selectedDate
+                selectedDate: selectedDate,
+                titleID: currentTitleID
             }).then(() => console.log("Finished updating to database"))
             setDialogTaskName("")
             setDialogTaskDescription("")
@@ -357,11 +369,12 @@ export default function AddTask(props) {
             axios.post('http://localhost:3002/create', {
                 dialogTaskName: dialogTaskName,
                 dialogTaskDescription: dialogTaskDescription,
-                selectedDate: selectedDate
+                selectedDate: selectedDate,
+                titleID: currentTitleID
             }).then(() => console.log("Finished pushing to database"))
             setDialogTaskName("")
             setDialogTaskDescription("")
-           // handleCancelClick();
+            // handleCancelClick();
         }
         // handleCancelClick();    
     };
@@ -558,6 +571,33 @@ export default function AddTask(props) {
 
     }
 
+    // const ProjectSelectionOnChange =(event) => {
+    //     var selIndex2 = project.indexOf(project.find(o => o.name === event.target.value));
+    //     setSelectedProject(selIndex2);
+    //     console.log(selIndex2);
+    // }
+
+    const ProjectSelectionOnChange = (event) => {
+        setCurrentTitleID(event.target.value);
+        console.log("projectselection on change", event.target.value);
+    };
+
+
+    const showprojectNameFromDb = () => {
+        //console.log("Calling showDataFromDatabase")
+        axios.get('http://localhost:3002/title').then((response) => {
+            setProjectCollectionFromDb(response.data)
+            // console.log("get data: ", response.data);
+        })
+    }
+    showprojectNameFromDb();
+
+    const check = () => {
+        console.log("projectdatadatabase")
+
+
+    }
+
     const getButtonName = () => {
         return props.isSaveTask ? "Save" : "Add";
     };
@@ -637,16 +677,16 @@ export default function AddTask(props) {
                     </Grid>
 
                     <Grid item xs={5.8} md={1.7} >
-                        <Tooltip title="Add Reminders">
-                            <CustomButton
-                                aria-label="more"
-                                id="long-button"
-                                variant='outlined'
-                                fullWidth
-                            ><AccessAlarmIcon />
-                                Reminders
-                            </CustomButton>
-                        </Tooltip>
+                        {/* <Tooltip title="Add Reminders"> */}
+                        <CustomButton
+                            aria-label="more"
+                            id="long-button"
+                            variant='outlined'
+                            fullWidth
+                        ><AccessAlarmIcon />
+                            Reminders
+                        </CustomButton>
+                        {/* </Tooltip> */}
 
 
                     </Grid>
@@ -664,24 +704,20 @@ export default function AddTask(props) {
 
                     <Grid item xs={4.5} md={2}>
                         <Tooltip title="Select a project">
-                            {/* <Button></Button> */}
-                            
+
                             <Select
                                 displayEmpty
                                 fullWidth={true}
-                                value={selectedProject}
-                                label={"Inbox"}
+                                label="Inbox"
                                 margin="none"
-                                paddingTop="10px"
+                                paddingtop="10px"
                                 bgcolor='blue'
                                 variant="standard"
-                                textAlign="right"
                                 justifycontent="center"
                                 size="small"
-                                borderRadius='10px'
-                                disableUnderline='true '
+                                // disableUnderline='true '
 
-                                onChange={handleProjectSelection}
+                                onChange={ProjectSelectionOnChange}
                                 sx={{
                                     borderRadius: '10px',
                                     fontSize: '12px',
@@ -692,41 +728,25 @@ export default function AddTask(props) {
                                         borderColor: 'black',
                                         borderRadius: '5px'
                                     },
-                                }}
-                                renderValue={(selectedIndex) => {
+                                }}>
+                                <Stack direction="row" spacing={0.5}>
+                                    <AccountTreeIcon sx={{ paddingTop: "5px", paddingLeft: "5px" }} />
+                                    &nbsp;&nbsp;&nbsp;
+                                    <Box sx={{ typography: 'body1', paddingTop: "8px", borderRadius: '5px', fontWeight: 'bold' }}>
+                                        Projects
+                                    </Box>
+                                </Stack>
 
-                                    if (selectedIndex === -1) {
-                                        return (
-                                            <Stack direction="row" spacing={0.5}>
-                                                <AccountTreeIcon
-                                                    sx={{
-                                                        paddingTop: "5px",
-                                                        paddingLeft: "5px",
-                                                    }} />
-                                                &nbsp;
-                                                <Box
-                                                    sx=
-                                                    {{
-                                                        typography: 'body1',
-                                                        paddingTop: "8px",
-                                                        borderRadius: '5px'
-                                                    }}>
-                                                    Project 1
-                                                </Box>
-                                            </Stack>
-                                        )
-                                    }
-                                    else {
-                                        return (
-                                            <Stack direction="row" spacing={0.5}>
-                                               
-                                            </Stack>
-                                        )
-                                    }
-                                }}
+                                {projectCollectionFromDb.map((project, titleID) => (
 
-                            >
-
+                                    <MenuItem
+                                        key={project.titleID}
+                                        value={project.titleID}
+                                    ><CircleIcon sx={{ height: '10px', width: '10px' }} />
+                                        &nbsp;&nbsp;&nbsp;
+                                        {project.projectName}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </Tooltip>
 
@@ -757,7 +777,7 @@ export default function AddTask(props) {
                             </Button>
 
                             : <Button
-                            onClick={handleCancelClick}
+                                onClick={handleCancelClick}
                                 sx={{
                                     color: "black",
                                     bgcolor: "#BDBDBD",
@@ -775,7 +795,7 @@ export default function AddTask(props) {
                                 }}
                             >
                                 <ClearIcon fontSize="small" />
-                                    CANCEL
+                                CANCEL
                             </Button>
                         }
                     </Grid>
@@ -817,9 +837,9 @@ export default function AddTask(props) {
                                     },
                                 }}
                             >
-                                
-                                    {getButtonName()}
-                                
+
+                                {getButtonName()}
+
                                 <DoneIcon fontSize="small" />
                             </Button>
                         }

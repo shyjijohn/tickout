@@ -25,15 +25,16 @@ app.post('/create', (req, res) => {
     const dialogTaskName = req.body.dialogTaskName;
     const dialogTaskDescription = req.body.dialogTaskDescription;
     const selectedDateAnyDT = req.body.selectedDate;
-
+    const titleID = req.body.titleID;
+    
     //console.log("Backend server entered", dialogTaskName, dialogTaskDescription, selectedDateAnyDT);
 
     var sqlDateTime = new Date(selectedDateAnyDT).toISOString().slice(0, 19).replace('T', ' ');
     console.log("sqlDateTime", sqlDateTime);
 
     db.query(
-        'INSERT INTO todolistapp.task (dialogTaskName, dialogTaskDescription, selectedDate) VALUES (?,?,?)',
-        [dialogTaskName, dialogTaskDescription, sqlDateTime], (err, result) => {
+        'INSERT INTO todolistapp.task (dialogTaskName, dialogTaskDescription, selectedDate, titleID) VALUES (?,?,?,?)',
+        [dialogTaskName, dialogTaskDescription, sqlDateTime, titleID], (err, result) => {
             if (err) {
                 console.log(err)
             }
@@ -47,12 +48,13 @@ app.post('/create', (req, res) => {
 
 app.post('/createProject', (req, res) => {
     const projectName = req.body.projectName;
+    const titleID = req.body.titleID;
 
     console.log("Backend server entered createProject ",  req.body.projectName);
 
     db1.query(
-        'INSERT INTO projectslist.title (projectName) VALUES (?)',
-        [projectName], (err, result) => {
+        'INSERT INTO projectslist.title (projectName, titleID) VALUES (?, ?)',
+        [projectName, titleID], (err, result) => {
             if (err) {
                 console.log(err)
             }

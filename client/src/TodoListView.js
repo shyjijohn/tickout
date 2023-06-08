@@ -378,6 +378,27 @@ export default function GetTodoListView() {
             borderColor: '#B2BEB5'
           },
         }}
+        renderInput={(params) => <TextField
+          sx={{
+              "& .MuiInputBase-input": {
+                  height: "fit-content",  // Set your height here.
+                  backgroundColor: "transparent",
+                  color: "grey",
+                  borderRadius: "10px",
+                  padding: "3.5px",
+                  fontSize: "15px",
+                  textAlign: "center",
+                  borderColor: "#B2BEB5",
+                  ':hover':
+                  {
+                      bgcolor: '#F5F5F5',
+                      color: 'black',
+                      borderColor: '#B2BEB5'
+                  },
+              }
+          }}
+          {...params}
+      />}
       />
         :
         <StaticDatePicker
@@ -396,6 +417,27 @@ export default function GetTodoListView() {
             },
           }}
         >
+          renderInput={(params) => <TextField
+                    sx={{
+                        "& .MuiInputBase-input": {
+                            height: "fit-content",  // Set your height here.
+                            backgroundColor: "transparent",
+                            color: "grey",
+                            borderRadius: "10px",
+                            padding: "3.5px",
+                            fontSize: "15px",
+                            textAlign: "center",
+                            borderColor: "#B2BEB5",
+                            ':hover':
+                            {
+                                bgcolor: '#F5F5F5',
+                                color: 'black',
+                                borderColor: '#B2BEB5'
+                            },
+                        }
+                    }}
+                    {...params}
+                />}
         </StaticDatePicker>
     );
   }
@@ -421,7 +463,7 @@ export default function GetTodoListView() {
           fontWeight="bold"
           fontSize="20px"
         >
-          Schedule
+          dog
         </Typography>
         <div>{schedule()}</div>
       </div>
@@ -449,16 +491,13 @@ export default function GetTodoListView() {
           }
           if (data.id === selectedEditButtonItemId) {
             return (<AddTask isSaveTask={true}
+              key={data.id}
               data={data}
               endSave={closeSaveTask}
             ></AddTask>);
           }
 
-          const handleListItemClick = () => {
-
-            //console.log("handleListItemClick")
-            // setListItemClick(data.id)
-          }
+          
 
           const radioClickHandler = () => {
             checked = (checked.indexOf(data.dialogTaskName) !== -1)
@@ -468,8 +507,16 @@ export default function GetTodoListView() {
             }
           }
 
+          
 
           //List view click  
+
+          const handleListItemClick = () => {
+
+            //console.log("handleListItemClick")
+             setListItemClick(data.id)
+          }
+
           const handleClickListViewOpen = () => {
             setOpenListView(true);
           };
@@ -529,7 +576,7 @@ export default function GetTodoListView() {
               }}
               key={data.dialogTaskName}
               disablePadding
-            // onClick={handleListItemClick}
+             //onClick={handleListItemClick}
             >
               <ListItemButton role={undefined} onClick={handleToggle(data.dialogTaskName)} dense
                 sx={{

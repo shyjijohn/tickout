@@ -3,6 +3,7 @@ import './App.css';
 import React from 'react';
 import axios from 'axios'
 import { useState } from "react";
+import AddTask from './AddTask';
 
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import TodayIcon from '@mui/icons-material/Today';
@@ -58,7 +59,7 @@ import Collapse from '@mui/material/Collapse';
 
 export default function AppDrawer({ drawerWidth, open, handleDrawerClose, theme }) {
 
-  console.log("Rendering drawer")
+  //console.log("Rendering drawer")
 
   const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -96,15 +97,13 @@ export default function AppDrawer({ drawerWidth, open, handleDrawerClose, theme 
         projectName: textFieldValue
       }).then(() => console.log("Finished pushing project name to database"))
 
-      //setProjectNameCollection([...projectNameCollection, textFieldValue]);
-
       setIsTextFieldOpen(false);
       setTextFieldValue('');
     }
   };
 
   const showprojectNameFromDb = () => {
-    console.log("Calling showDataFromDatabase")
+    //console.log("Calling showDataFromDatabase")
     axios.get('http://localhost:3002/title').then((response) => {
       setProjectCollectionFromDb(response.data)
       // console.log("get data: ", response.data);
@@ -126,29 +125,15 @@ export default function AppDrawer({ drawerWidth, open, handleDrawerClose, theme 
     }
   };
 
-  // const openPage = () => {
-  //   //history.push('/new-page');
-  //   return(
-  //   <Main open={open}>
-  //   <Grid
-  //     container>
-  //     <Grid 
-  //       item
-  //       xs={12}>
-  //          </Grid>
-  //       </Grid>
-  //     </Main>
-  //   );
-  // };
 
-
+  // function ShowProjectNamesOnTop
 
   function GetListOfProjectNames() {
-    console.log("creating new projects ..............");
+    //console.log("creating new projects ..............");
     return (
       <List>
         {projectCollectionFromDb.map((project, index) => (
-          <ListItem key={project.id} disablePadding>
+          <ListItem key={index} disablePadding>
             <ListItemButton >
               <ListItemIcon><CircleIcon sx={{ height: '10px', width: '10px' }} /></ListItemIcon>
               <ListItemText primary={project.projectName} />
@@ -167,6 +152,9 @@ export default function AppDrawer({ drawerWidth, open, handleDrawerClose, theme 
       </List>
     );
   }
+
+
+ 
 
 
   return (
@@ -192,7 +180,7 @@ export default function AppDrawer({ drawerWidth, open, handleDrawerClose, theme 
 
       <List>
         {['Today', 'Upcoming'].map((textValue, index) => (
-          <ListItem key={textValue} disablePadding>
+          <ListItem key={index} disablePadding>
             <ListItemButton>
               <ListItemIcon>
                 {index === 0 ? <TodayIcon /> : <UpcomingIcon />}
@@ -205,7 +193,7 @@ export default function AppDrawer({ drawerWidth, open, handleDrawerClose, theme 
 
       <List>
         {['Calendar View', 'Board View'].map((text, index) => (
-          <ListItem key={text} disablePadding>
+          <ListItem key={index} disablePadding>
             <ListItemButton>
               <ListItemIcon>
                 {index % 2 === 0 ? <CalendarMonthIcon /> : <DashboardIcon />}
