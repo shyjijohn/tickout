@@ -343,8 +343,8 @@ export default function AddTask(props) {
     //const [openCancel, setOpenCancel] = React.useState(true);
     //console.log("shyji bullshit", props.data);
     const [projectCollectionFromDb, setProjectCollectionFromDb] = useState([]);
-    const [titleID, setTitleID] = useState([]);
-    const [currentTitleID, setCurrentTitleID] = useState([]);
+    const [projectID, setProjectID] = useState([]);
+    const [currentProjectID, setCurrentProjectID] = useState([]);
 
 
     const handleAdd = () => {
@@ -358,7 +358,7 @@ export default function AddTask(props) {
                 dialogTaskName: dialogTaskName,
                 dialogTaskDescription: dialogTaskDescription,
                 selectedDate: selectedDate,
-                titleID: currentTitleID
+                projectID: currentProjectID
             }).then(() => console.log("Finished updating to database"))
             setDialogTaskName("")
             setDialogTaskDescription("")
@@ -370,7 +370,7 @@ export default function AddTask(props) {
                 dialogTaskName: dialogTaskName,
                 dialogTaskDescription: dialogTaskDescription,
                 selectedDate: selectedDate,
-                titleID: currentTitleID
+                projectID: currentProjectID
             }).then(() => console.log("Finished pushing to database"))
             setDialogTaskName("")
             setDialogTaskDescription("")
@@ -578,14 +578,14 @@ export default function AddTask(props) {
     // }
 
     const ProjectSelectionOnChange = (event) => {
-        setCurrentTitleID(event.target.value);
-        console.log("projectselection on change", event.target.value);
+        setCurrentProjectID(event.target.value);
+        console.log("project selection on change", event.target.value);
     };
 
 
     const showprojectNameFromDb = () => {
         //console.log("Calling showDataFromDatabase")
-        axios.get('http://localhost:3002/title').then((response) => {
+        axios.get('http://localhost:3002/project').then((response) => {
             setProjectCollectionFromDb(response.data)
             // console.log("get data: ", response.data);
         })
@@ -737,11 +737,11 @@ export default function AddTask(props) {
                                     </Box>
                                 </Stack>
 
-                                {projectCollectionFromDb.map((project, titleID) => (
+                                {projectCollectionFromDb.map((project, projectID) => (
 
                                     <MenuItem
-                                        key={project.titleID}
-                                        value={project.titleID}
+                                        key={project.projectID}
+                                        value={project.projectID}
                                     ><CircleIcon sx={{ height: '10px', width: '10px' }} />
                                         &nbsp;&nbsp;&nbsp;
                                         {project.projectName}

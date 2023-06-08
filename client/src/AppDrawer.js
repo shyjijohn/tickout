@@ -104,7 +104,7 @@ export default function AppDrawer({ drawerWidth, open, handleDrawerClose, theme 
 
   const showprojectNameFromDb = () => {
     //console.log("Calling showDataFromDatabase")
-    axios.get('http://localhost:3002/title').then((response) => {
+    axios.get('http://localhost:3002/project').then((response) => {
       setProjectCollectionFromDb(response.data)
       // console.log("get data: ", response.data);
     })

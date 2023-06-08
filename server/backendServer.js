@@ -14,18 +14,12 @@ const db = mysql.createConnection({
     database: 'todolistapp',
 })
 
-const db1 = mysql.createConnection({
-    user: 'root',
-    host: 'localhost',
-    password: 'mysqldatabase',
-    database: 'projectslist',
-})
 
 app.post('/create', (req, res) => {
     const dialogTaskName = req.body.dialogTaskName;
     const dialogTaskDescription = req.body.dialogTaskDescription;
     const selectedDateAnyDT = req.body.selectedDate;
-    const titleID = req.body.titleID;
+    const projectID = req.body.projectID;
     
     //console.log("Backend server entered", dialogTaskName, dialogTaskDescription, selectedDateAnyDT);
 
@@ -33,8 +27,8 @@ app.post('/create', (req, res) => {
     console.log("sqlDateTime", sqlDateTime);
 
     db.query(
-        'INSERT INTO todolistapp.task (dialogTaskName, dialogTaskDescription, selectedDate, titleID) VALUES (?,?,?,?)',
-        [dialogTaskName, dialogTaskDescription, sqlDateTime, titleID], (err, result) => {
+        'INSERT INTO todolistapp.task (dialogTaskName, dialogTaskDescription, selectedDate, projectID) VALUES (?,?,?,?)',
+        [dialogTaskName, dialogTaskDescription, sqlDateTime, projectID], (err, result) => {
             if (err) {
                 console.log(err)
             }
@@ -48,13 +42,13 @@ app.post('/create', (req, res) => {
 
 app.post('/createProject', (req, res) => {
     const projectName = req.body.projectName;
-    const titleID = req.body.titleID;
+    const projectID = req.body.projectID;
 
     console.log("Backend server entered createProject ",  req.body.projectName);
 
-    db1.query(
-        'INSERT INTO projectslist.title (projectName, titleID) VALUES (?, ?)',
-        [projectName, titleID], (err, result) => {
+    db.query(
+        'INSERT INTO todolistapp.project (projectName, projectID) VALUES (?, ?)',
+        [projectName, projectID], (err, result) => {
             if (err) {
                 console.log(err)
             }
@@ -81,9 +75,9 @@ app.get('/task', (req, res) => {
 })
 
 
-app.get('/title', (req, res) => {
-    db1.query(
-        'select * from projectslist.title' , (err, result) => {
+app.get('/project', (req, res) => {
+    db.query(
+        'select * from todolistapp.project' , (err, result) => {
             if (err) {
                 console.log(err)
             }
