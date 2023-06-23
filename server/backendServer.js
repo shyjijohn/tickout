@@ -89,6 +89,21 @@ app.get('/project', (req, res) => {
 })
 
 
+app.get('/taskBasedOnID', (req, res) => {
+    const projectID = req.body.projectID;
+    console.log("taskBasedOnID", projectID);
+    db.query(
+        `SELECT * FROM task WHERE projectID = '${projectID}'`, (err, result) => {
+            if (err) {
+                console.log(err)
+            }
+            else {
+                res.send(result)
+            }
+        }
+    )
+})
+
 
 app.put('/update', (req, res) => {
     console.log('console data', req.body)
@@ -96,15 +111,16 @@ app.put('/update', (req, res) => {
     const dialogTaskName = req.body.dialogTaskName;
     const dialogTaskDescription = req.body.dialogTaskDescription;
     const selectedDateAnyDT = req.body.selectedDate;
-    
+    const projectID = req.body.projectID;
+
     var sqlDateTime = new Date(selectedDateAnyDT).toISOString().slice(0, 19).replace('T', ' ');
     console.log("sqlDateTime", sqlDateTime);
 
     db.query(
       `update task set dialogTaskName='${dialogTaskName}',
       dialogTaskDescription='${dialogTaskDescription}',
-      selectedDate='${sqlDateTime}' where id=${id}`,      
-      [dialogTaskName, dialogTaskDescription, sqlDateTime, id],
+      selectedDate='${sqlDateTime}', projectID='${projectID}' where id=${id}`,      
+      [dialogTaskName, dialogTaskDescription, sqlDateTime, projectID, id],
       (err, result) => {
         if (err) {
           console.log(err)
@@ -116,6 +132,20 @@ app.put('/update', (req, res) => {
   })
 
   
+app.delete('/delete/:id', (req, res) => {
+    console.log(req.params.id)
+    const id = req.params.id;
+    
+    db.query(`DELETE FROM todolistapp.task WHERE id= '${id}'`, (err, result) => {
+      if (err) {
+        console.log(err)
+      } else {
+        res.send(result)
+      }
+    })
+  })
+  
+
 app.listen(3002, () => {
     console.log('Hey Shyji!! --   Backend server is running')
 })

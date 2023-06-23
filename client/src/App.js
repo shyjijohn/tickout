@@ -38,7 +38,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
 const drawerWidth = 240;
 
 function App() {
-
+  console.log("Rendering App")
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 

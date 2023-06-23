@@ -328,7 +328,7 @@ function MoreOptionsButton() {
 
 export default function AddTask(props) {
 
-    //console.log("isSaveTask ", props.isSaveTask, props);
+    //console.log("Rendering AddTask")
 
     const theme = useTheme();
 
@@ -346,8 +346,14 @@ export default function AddTask(props) {
     const [projectID, setProjectID] = useState([]);
     const [currentProjectID, setCurrentProjectID] = useState([]);
 
+    const [name, setName] = useState('');
 
     const handleAdd = () => {
+
+        console.log("Before Setting Name")
+        //setName("Frank")
+        console.log("After Setting Name")
+
         console.log("handleAdd");
         if (dialogTaskName === '')
             return;

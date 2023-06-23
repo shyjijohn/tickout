@@ -34,14 +34,15 @@ import { useEffect } from 'react';
 
 
 
-export default function GetTodoListView() {
+export default function GetTodoListView(props) {
 
+  //console.log("Rendering GetTodoListView")
 
 
   //database get items
 
   //console.log("GetTodoListView start");
-  const [checked, setChecked] = React.useState([0]);
+  const [checkedRadio, setCheckedRadio] = React.useState([0]);
   const [mouseHoveringItemName, setMouseHoveringItemName] = React.useState();
   const [selectedEditButtonItemId, setSelectedEditButtonItemId] = React.useState();
   const [dateItem, setDateItem] = React.useState();
@@ -52,10 +53,13 @@ export default function GetTodoListView() {
 
   const [commentOpen, setCommentOpen] = React.useState(true);
   const [deleteOpen, setDeleteOpen] = React.useState(false);
-  const [openListView, setOpenListView] = React.useState(true);
+  const [openListView, setOpenListView] = React.useState(false);
   const [listItemClick, setListItemClick] = React.useState();
   const [radioClick, setRadioClick] = React.useState(false);
+  const [textFieldValue, setTextFieldValue] = React.useState(false);
+  //const [projectID, setProjectID] = React.useState(false);
 
+  const [deleteId, setDeleteId] = React.useState(false);
 
 
   //console.log("editItem value", editItem);
@@ -63,38 +67,72 @@ export default function GetTodoListView() {
   const handleToggle = (nameAsValue) => () => {
 
     console.log('handleToggle value', nameAsValue);
-    const currentIndex = checked.indexOf(nameAsValue);
-    const newChecked = [...checked]; //copy to new array
+    const currentIndex = checkedRadio.indexOf(nameAsValue);
+    const newChecked = [...checkedRadio]; //copy to new array
 
     console.log('newChecked', newChecked);
 
     if (currentIndex === -1) {
       newChecked.push(nameAsValue);
+      console.log("Push", newChecked);
+
+     // console.log("Before setting setCheckedRadio")
+      setCheckedRadio(newChecked);
+     // console.log("After setting setCheckedRadio")
     } else {
       newChecked.splice(currentIndex, 1);
+      console.log("splice", newChecked);
+      setCheckedRadio(newChecked);
     }
-    setChecked(newChecked);
+    //setChecked(newChecked);
   };
 
+
+// const handleToggle1 = (event) => {
+//   setChecked(event.target.checked)
+// }
+
   //useEffect(call only once)
-  function CallOnce() {
-    useEffect(() => {
-      showDataFromDatabase();
-     }, [] );
-  }
+  // function CallOnce() {
+  //   useEffect(() => {
+  //     showDataFromDatabase();
+  //    }, [] );
+  // }
 
   //CallOnce();
 
   //from database
   const showDataFromDatabase = () => {
+
     //console.log("Calling showDataFromDatabase 11111111")
-    axios.get('http://localhost:3002/task').then((response) => {
+    axios.get('http://localhost:3002/task', {
+      projectName: textFieldValue
+    }).then((response) => 
+    {
+      //console.log("Before setting setDataFromDatabase")
+      //console.log("dataFromDatabasetask", response.data);
       setDataFromDatabase(response.data)
+      //console.log("After setting setDataFromDatabase")
     })
   }
+  
   showDataFromDatabase();
 
- 
+  //console.log("Executing here")
+
+  // const showDataFromDatabase = () => {
+
+  //   //console.log("Calling showDataFromDatabase 11111111")
+  //   axios.get('http://localhost:3002/task', {
+  //     projectID: projectID
+  //   }).then((response) => {
+  //     setDataFromDatabase(response.data)
+  //   })
+  // }
+  // showDataFromDatabase();
+
+
+
   const handleUpdate = () => {
 
   }
@@ -261,7 +299,21 @@ export default function GetTodoListView() {
       setDeleteOpen(true);
     };
 
-    const handleDeleteClose = () => {
+    const handleDeleteYes = (id) => {
+      console.log("Before deleting", data.id);
+      axios.delete(`http://localhost:3002/delete/${data.id}`)
+      .then((response) => {
+
+        //showDataFromDatabase();
+
+        // console.log("After deleting", response);
+
+        // setDataFromDatabase(response.data)
+        // console.log("After deleting", response.data.id);
+      })
+  }
+
+  const handleDeleteClose = () => {
       setDeleteOpen(false);
       setMoreItem('');
     }
@@ -283,7 +335,7 @@ export default function GetTodoListView() {
               <DialogContentText>Are you sure you want to delete the task ?</DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleDeleteClose}>Yes</Button>
+              <Button onClick={handleDeleteYes}>Yes</Button>
               <Button onClick={handleDeleteClose}>No</Button>
             </DialogActions>
           </Dialog>
@@ -380,25 +432,25 @@ export default function GetTodoListView() {
         }}
         renderInput={(params) => <TextField
           sx={{
-              "& .MuiInputBase-input": {
-                  height: "fit-content",  // Set your height here.
-                  backgroundColor: "transparent",
-                  color: "grey",
-                  borderRadius: "10px",
-                  padding: "3.5px",
-                  fontSize: "15px",
-                  textAlign: "center",
-                  borderColor: "#B2BEB5",
-                  ':hover':
-                  {
-                      bgcolor: '#F5F5F5',
-                      color: 'black',
-                      borderColor: '#B2BEB5'
-                  },
-              }
+            "& .MuiInputBase-input": {
+              height: "fit-content",  // Set your height here.
+              backgroundColor: "transparent",
+              color: "grey",
+              borderRadius: "10px",
+              padding: "3.5px",
+              fontSize: "15px",
+              textAlign: "center",
+              borderColor: "#B2BEB5",
+              ':hover':
+              {
+                bgcolor: '#F5F5F5',
+                color: 'black',
+                borderColor: '#B2BEB5'
+              },
+            }
           }}
           {...params}
-      />}
+        />}
       />
         :
         <StaticDatePicker
@@ -418,26 +470,26 @@ export default function GetTodoListView() {
           }}
         >
           renderInput={(params) => <TextField
-                    sx={{
-                        "& .MuiInputBase-input": {
-                            height: "fit-content",  // Set your height here.
-                            backgroundColor: "transparent",
-                            color: "grey",
-                            borderRadius: "10px",
-                            padding: "3.5px",
-                            fontSize: "15px",
-                            textAlign: "center",
-                            borderColor: "#B2BEB5",
-                            ':hover':
-                            {
-                                bgcolor: '#F5F5F5',
-                                color: 'black',
-                                borderColor: '#B2BEB5'
-                            },
-                        }
-                    }}
-                    {...params}
-                />}
+            sx={{
+              "& .MuiInputBase-input": {
+                height: "fit-content",  // Set your height here.
+                backgroundColor: "transparent",
+                color: "grey",
+                borderRadius: "10px",
+                padding: "3.5px",
+                fontSize: "15px",
+                textAlign: "center",
+                borderColor: "#B2BEB5",
+                ':hover':
+                {
+                  bgcolor: '#F5F5F5',
+                  color: 'black',
+                  borderColor: '#B2BEB5'
+                },
+              }
+            }}
+            {...params}
+          />}
         </StaticDatePicker>
     );
   }
@@ -450,14 +502,14 @@ export default function GetTodoListView() {
     selectedDate(event);
   }
 
-  //console.log("going to call html");
+  //console.log("dataFromDatabase", dataFromDatabase);
 
 
   //getTodolistview return fn
   return (
     <div >
       <div>
-      {/* {showDataFromDatabase()} */}
+        {/* {showDataFromDatabase()} */}
         <Typography
           paddingLeft={0.5}
           fontWeight="bold"
@@ -497,38 +549,36 @@ export default function GetTodoListView() {
             ></AddTask>);
           }
 
-          
 
-          const radioClickHandler = () => {
-            checked = (checked.indexOf(data.dialogTaskName) !== -1)
-            setRadioClick(checked)
-            if (checked(data.id) === checked) {
-              setRadioClick(false)
-            }
-          }
 
-          
+          // const radioClickHandler = () => {
+          //   checked = (checked.indexOf(data.dialogTaskName) !== -1)
+          //   setRadioClick(checked)
+          //   if (checked(data.id) === checked) {
+          //     console.log("Radio clicked");
+          //     setRadioClick(false)
+          //   }
+          // }
+
+
 
           //List view click  
 
           const handleListItemClick = () => {
 
             //console.log("handleListItemClick")
-             setListItemClick(data.id)
-          }
-
-          const handleClickListViewOpen = () => {
+            setListItemClick(data.dialogTaskName)
             setOpenListView(true);
-          };
+          }
 
           const handleListViewClose = () => {
             setOpenListView(false);
           }
 
-          if (data.id === listItemClick) {
+          if (data.dialogTaskName === listItemClick) {
             return (
               <div>
-                <Dialog fullScreen open={openListView} onClose={handleListViewClose}>
+                <Dialog fullScreen open={openListView} onClose={handleListViewClose} key={data.dialogTaskName}>
                   <DialogTitle>Title</DialogTitle>
                   <DialogContent>
                     <DialogContentText>Task Name</DialogContentText>
@@ -576,9 +626,9 @@ export default function GetTodoListView() {
               }}
               key={data.dialogTaskName}
               disablePadding
-             //onClick={handleListItemClick}
+            
             >
-              <ListItemButton role={undefined} onClick={handleToggle(data.dialogTaskName)} dense
+              <ListItemButton role={undefined} dense
                 sx={{
                   boxSizing: "border-box",
                   marginLeft: "-15px",
@@ -593,7 +643,7 @@ export default function GetTodoListView() {
                     //checked={checked.indexOf(data.dialogTaskName) !== -1}
                     tabIndex={-1}
                     disableRipple
-                    onClick={radioClickHandler}
+                    onClick={handleToggle(data.dialogTaskName)}
                     inputProps={{ 'aria-labelledby': labelId }}
                     sx={{
                       justifyContent: "left ",
@@ -610,14 +660,15 @@ export default function GetTodoListView() {
                   </Radio>
 
                 </ListItemIcon>
-                <Stack name="label1" direction="column"
+                <ListItemText onClick={handleListItemClick}>
+                <Stack name="label1" direction="column" 
                   sx={{
                     display: "block",
                     boxSizing: "border-box",
                     justifyContent: "left ",
                     alignItems: "left "
                   }} >
-                  <ListItemText 
+                  <ListItemText
                     sx={{ boxSizing: "border-box", display: "flex", flexWrap: "inherit" }}
                     id={labelId}
                     primary={data.dialogTaskName} />
@@ -633,7 +684,7 @@ export default function GetTodoListView() {
                     />&nbsp;
                     <ListItemText
                       id={labelId}
-                      value={selectedDate} onChange={handleDateChange} 
+                      value={selectedDate} onChange={handleDateChange}
                       onClose={dateOnClose}
                       primary={new Date(data.selectedDate).toDateString()}
                       sx={{
@@ -642,6 +693,7 @@ export default function GetTodoListView() {
                   </Stack>
                   <Divider sx={{ width: '550%' }} />
                 </Stack>
+                </ListItemText>
               </ListItemButton>
               <Stack sx={{
                 boxSizing: "border-box",

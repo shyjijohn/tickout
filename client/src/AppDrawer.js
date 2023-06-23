@@ -5,6 +5,8 @@ import axios from 'axios'
 import { useState } from "react";
 import AddTask from './AddTask';
 
+import BorderColorIcon from '@mui/icons-material/BorderColor';
+import DeleteIcon from '@mui/icons-material/Delete';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import TodayIcon from '@mui/icons-material/Today';
 import UpcomingIcon from '@mui/icons-material/Upcoming';
@@ -31,6 +33,13 @@ import { Stack } from '@mui/material';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+
+
 //import { useHistory } from 'react-router-dom';
 //import Grid from '@mui/material/Grid';
 
@@ -57,7 +66,7 @@ import Collapse from '@mui/material/Collapse';
 // const drawerWidth = 240;
 
 
-export default function AppDrawer({ drawerWidth, open, handleDrawerClose, theme }) {
+export default function AppDrawer({ drawerWidth, open, handleDrawerClose, theme, props }) {
 
   //console.log("Rendering drawer")
 
@@ -73,10 +82,12 @@ export default function AppDrawer({ drawerWidth, open, handleDrawerClose, theme 
   //const history = useHistory();
   const [openProject, setOpenProject] = React.useState(true);
   const [projectCollectionFromDb, setProjectCollectionFromDb] = useState([]);
-
+  const [projectID, setProjectID] = React.useState();
 
   const [isTextFieldOpen, setIsTextFieldOpen] = React.useState(false);
   const [textFieldValue, setTextFieldValue] = React.useState('');
+  const [deleteOpen, setDeleteOpen] = React.useState(false);
+  const [moreItem, setMoreItem] = React.useState();
 
   const handleClick = () => {
     setOpenProject(!openProject);
@@ -126,26 +137,92 @@ export default function AppDrawer({ drawerWidth, open, handleDrawerClose, theme 
   };
 
 
+  const handleProjectNames = (event) => {
+    setProjectID(event.currentTarget.id)
+    console.log("handleProjectNames", event);
+    console.log("handleProjectNames", event.currentTarget.id);
+  }
+
+
+
+  //Delete click 
+  const handleClickDeleteOpen = () => {
+    setDeleteOpen(true);
+  };
+
+  const handleDeleteYes = (id) => {
+    console.log("Before deleting");
+
+  }
+
+  const handleDeleteClose = () => {
+    setDeleteOpen(false);
+    setMoreItem('');
+  }
+
+  const clickhandlermore = () => {
+    console.log("EXECUTING MORE ICON");
+    return (
+      <div>
+        {/* <BorderColorIcon />
+<DeleteIcon /> */}
+
+
+        <Stack direction="column" spacing={2}>
+          <Button variant="outlined" startIcon={<DeleteIcon />} >
+            Delete
+          </Button>
+          <Button variant="outlined" endIcon={<DeleteIcon />}>
+            Delete
+          </Button>
+        </Stack>
+      </div>
+    )
+  }
+
+  {/* <Button variant="outlined" onClick={handleClickDeleteOpen} onClose={handleDeleteClose}><DeleteIcon />
+            Delete
+          </Button>
+          <Dialog open={deleteOpen} onClose={handleDeleteClose}>
+            <DialogContent>
+              <DialogContentText>Are you sure you want to delete the task ?</DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleDeleteYes}>Yes</Button>
+              <Button onClick={handleDeleteClose}>No</Button>
+            </DialogActions>
+          </Dialog> */}
+
+
+
   // function ShowProjectNamesOnTop
 
   function GetListOfProjectNames() {
     //console.log("creating new projects ..............");
     return (
       <List>
-        {projectCollectionFromDb.map((project, index) => (
-          <ListItem key={index} disablePadding>
-            <ListItemButton >
+        {projectCollectionFromDb.map((project, projectID) => (
+          <ListItem key={projectID} disablePadding >
+
+
+
+            {/* onClick={handleProjectNames} */}
+
+
+            <ListItemButton>
               <ListItemIcon><CircleIcon sx={{ height: '10px', width: '10px' }} /></ListItemIcon>
               <ListItemText primary={project.projectName} />
               <ListItemIcon>
-                <MoreHorizIcon sx={{
-                  color: 'grey', "&:hover": {
-                    bgcolor: '#F5F5F5',
-                    color: 'black',
-                    borderColor: 'black',
-                    borderRadius: '5px'
-                  },
-                }} /></ListItemIcon>
+                <MoreHorizIcon
+                  onClick={clickhandlermore}
+                  sx={{
+                    color: 'grey', "&:hover": {
+                      bgcolor: '#F5F5F5',
+                      color: 'black',
+                      borderColor: 'black',
+                      borderRadius: '5px'
+                    },
+                  }} /></ListItemIcon>
             </ListItemButton>
           </ListItem>
         ))}
@@ -153,8 +230,6 @@ export default function AppDrawer({ drawerWidth, open, handleDrawerClose, theme 
     );
   }
 
-
- 
 
 
   return (
@@ -225,10 +300,10 @@ export default function AppDrawer({ drawerWidth, open, handleDrawerClose, theme 
         </Stack>
 
         {showTextField()}
-        <Collapse in={openProject} timeout="auto" unmountOnExit>  
-            {GetListOfProjectNames()}      
+        <Collapse in={openProject} timeout="auto" unmountOnExit>
+          {GetListOfProjectNames()}
         </Collapse>
-       
+
       </Stack>
     </Drawer>
   );
