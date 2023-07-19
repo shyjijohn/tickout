@@ -57,7 +57,7 @@ export default function GetTodoListView(props) {
   const [listItemClick, setListItemClick] = React.useState();
   const [radioClick, setRadioClick] = React.useState(false);
   const [textFieldValue, setTextFieldValue] = React.useState(false);
-  //const [projectID, setProjectID] = React.useState(false);
+  const [projectID, setProjectID] = React.useState(false);
 
   const [deleteId, setDeleteId] = React.useState(false);
 
@@ -319,7 +319,7 @@ export default function GetTodoListView(props) {
     }
 
     const handlemorehover = (e) => {
-      console.log("date is clicked", data.id);
+      console.log("delete is clicked", data.id);
       setMoreItem(data.id);
     };
 
@@ -515,7 +515,7 @@ export default function GetTodoListView(props) {
           fontWeight="bold"
           fontSize="20px"
         >
-          dog
+          {props.project.projectName}
         </Typography>
         <div>{schedule()}</div>
       </div>

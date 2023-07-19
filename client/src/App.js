@@ -1,5 +1,6 @@
 import './App.css';
 import * as React from 'react';
+import { useCallback, useEffect } from 'react';
 import SaveIcon from '@mui/icons-material/Save';
 import ShareIcon from '@mui/icons-material/Share';
 import CommentIcon from '@mui/icons-material/Comment';
@@ -41,14 +42,42 @@ function App() {
   console.log("Rendering App")
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [activeProject, setActiveProject] = React.useState(
+    {
+    projectID: 0,
+    projectName : "Inbox"      
+    });
+
+  // const handleDrawerOpen = useCallback(() => {
+  //   setOpen(true);
+  //   console.log("Open drawer execution");
+  // }, [open]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
+    console.log("open drawer execution");
+  //  handleDrawerClose();
   };
 
   const handleDrawerClose = () => {
     setOpen(false);
+    console.log("close drawer execution");
   };
+
+  // useEffect(() => {
+  //   setOpen()
+
+  //   console.log("useEffect called");
+  // }, [open])
+
+
+
+   const OnActiveProjectChangedInParent = (activeProjectFromAppDrawer) => {
+    console.log("Called OnActiveProjectChangedInParent") 
+    setActiveProject(activeProjectFromAppDrawer);
+    console.log("activeProjectFromAppDrawer", activeProjectFromAppDrawer);
+   };
+
 
   const actions = [
     { icon: <CommentIcon />, name: 'Comment' },
@@ -61,17 +90,23 @@ function App() {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar drawerWidth={drawerWidth} open={open} handleDrawerOpen={handleDrawerOpen} />
-      <AppDrawer drawerWidth={drawerWidth} open={open} handleDrawerClose={handleDrawerClose} theme={theme} />
+      <AppDrawer 
+      drawerWidth={drawerWidth} 
+      open={open} 
+      handleDrawerClose={handleDrawerClose} 
+      OnActiveProjectChanged = {OnActiveProjectChangedInParent}
+      theme={theme} 
+      />
 
 
       <Main open={open}>
         <Grid
           container>
-          <Grid 
+          <Grid
             item
             xs={12}>
-            <GetTodoListView></GetTodoListView>
-            <AddTask isSaveTask = {false}></AddTask>
+            <GetTodoListView project = {activeProject}></GetTodoListView>
+            <AddTask isSaveTask={false}></AddTask>
           </Grid>
         </Grid>
       </Main>

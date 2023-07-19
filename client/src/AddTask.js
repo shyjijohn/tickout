@@ -653,7 +653,7 @@ export default function AddTask(props) {
                             value={dialogTaskDescription}
                             onChange={handleDialogTaskDescription}
                             autoFocus
-                            id="name"
+                            id="description"
                             placeholder='Description'
                             type="email"
                             margin="none"
