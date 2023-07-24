@@ -25,6 +25,8 @@ app.post('/create', (req, res) => {
 
     var sqlDateTime = new Date(selectedDateAnyDT).toISOString().slice(0, 19).replace('T', ' ');
     console.log("sqlDateTime", sqlDateTime);
+    console.log("dialogTaskName", dialogTaskName);
+    console.log("dialogTaskDescription", dialogTaskDescription);
 
     db.query(
         'INSERT INTO todolistapp.task (dialogTaskName, dialogTaskDescription, selectedDate, projectID) VALUES (?,?,?,?)',
@@ -62,8 +64,17 @@ app.post('/createProject', (req, res) => {
 
 
 app.get('/task', (req, res) => {
+    const projectID = req.query.projectID;
+  //  const projectName = req.body.textFieldValue;
+
+  //console.log("task query", req.query);
+   // console.log("task req", req);
+   // console.log("task res", res);
+    console.log("task", projectID);
+    //console.log("task", projectName, req.body.textFieldValue);
+
     db.query(
-        'select * from todolistapp.task' , (err, result) => {
+        `select * from todolistapp.task where task.projectID = '${projectID}'` , (err, result) => {
             if (err) {
                 console.log(err)
             }
@@ -91,7 +102,7 @@ app.get('/project', (req, res) => {
 
 app.get('/taskBasedOnID', (req, res) => {
     const projectID = req.body.projectID;
-    console.log("taskBasedOnID", projectID);
+    console.log("taskBasedOnID", projectID );
     db.query(
         `SELECT * FROM task WHERE projectID = '${projectID}'`, (err, result) => {
             if (err) {

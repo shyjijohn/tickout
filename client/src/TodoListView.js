@@ -30,13 +30,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 
 
 export default function GetTodoListView(props) {
 
-  //console.log("Rendering GetTodoListView")
+  console.log("Rendering GetTodoListView")
 
 
   //database get items
@@ -62,6 +62,17 @@ export default function GetTodoListView(props) {
   const [deleteId, setDeleteId] = React.useState(false);
 
 
+  // isCurrentProject = props.project;
+  //  console.log("isCurrentProject", isCurrentProject);
+
+  // const isCurrentProject = useMemo(() => {
+  //   isCurrentProject = props.project;
+  //   console.log("isCurrentProject", isCurrentProject);
+  //   console.log("OnActiveProjectChanged", props.OnActiveProjectChanged);
+  //   console.log("project", props.OnActiveProjectChanged);
+
+  // }, [mouseHoveringItemName])
+
   //console.log("editItem value", editItem);
   //list view
   const handleToggle = (nameAsValue) => () => {
@@ -76,9 +87,9 @@ export default function GetTodoListView(props) {
       newChecked.push(nameAsValue);
       console.log("Push", newChecked);
 
-     // console.log("Before setting setCheckedRadio")
+      // console.log("Before setting setCheckedRadio")
       setCheckedRadio(newChecked);
-     // console.log("After setting setCheckedRadio")
+      // console.log("After setting setCheckedRadio")
     } else {
       newChecked.splice(currentIndex, 1);
       console.log("splice", newChecked);
@@ -88,9 +99,9 @@ export default function GetTodoListView(props) {
   };
 
 
-// const handleToggle1 = (event) => {
-//   setChecked(event.target.checked)
-// }
+  // const handleToggle1 = (event) => {
+  //   setChecked(event.target.checked)
+  // }
 
   //useEffect(call only once)
   // function CallOnce() {
@@ -103,20 +114,34 @@ export default function GetTodoListView(props) {
 
   //from database
   const showDataFromDatabase = () => {
+    console.log("Request", props.project.projectID);
+    console.log("Request2", projectID);
 
     //console.log("Calling showDataFromDatabase 11111111")
-    axios.get('http://localhost:3002/task', {
-      projectName: textFieldValue
-    }).then((response) => 
-    {
+    axios.get(`http://localhost:3002/task`, {
+      params: {
+        projectID: props.project.projectID
+      }
+    }).then((response) => {
+      console.log("useEffect2", props.project.projectID);
+      console.log("useEffect2...", props.project.projectID);
+
       //console.log("Before setting setDataFromDatabase")
       //console.log("dataFromDatabasetask", response.data);
       setDataFromDatabase(response.data)
+      console.log("useEffect3", props.project.projectID);
+      console.log("useEffect3...", props.project.projectID);
+
       //console.log("After setting setDataFromDatabase")
     })
   }
-  
-  showDataFromDatabase();
+
+  useEffect(() => {
+    console.log("useEffect1", props.project.projectID);
+    console.log("useEffect1...", props.project.projectID);
+
+    showDataFromDatabase();
+  }, [props.project.projectID]);
 
   //console.log("Executing here")
 
@@ -130,7 +155,6 @@ export default function GetTodoListView(props) {
   //   })
   // }
   // showDataFromDatabase();
-
 
 
   const handleUpdate = () => {
@@ -302,18 +326,18 @@ export default function GetTodoListView(props) {
     const handleDeleteYes = (id) => {
       console.log("Before deleting", data.id);
       axios.delete(`http://localhost:3002/delete/${data.id}`)
-      .then((response) => {
+        .then((response) => {
 
-        //showDataFromDatabase();
+          //showDataFromDatabase();
 
-        // console.log("After deleting", response);
+          // console.log("After deleting", response);
 
-        // setDataFromDatabase(response.data)
-        // console.log("After deleting", response.data.id);
-      })
-  }
+          // setDataFromDatabase(response.data)
+          // console.log("After deleting", response.data.id);
+        })
+    }
 
-  const handleDeleteClose = () => {
+    const handleDeleteClose = () => {
       setDeleteOpen(false);
       setMoreItem('');
     }
@@ -502,6 +526,8 @@ export default function GetTodoListView(props) {
     selectedDate(event);
   }
 
+
+
   //console.log("dataFromDatabase", dataFromDatabase);
 
 
@@ -559,7 +585,6 @@ export default function GetTodoListView(props) {
           //     setRadioClick(false)
           //   }
           // }
-
 
 
           //List view click  
@@ -626,7 +651,7 @@ export default function GetTodoListView(props) {
               }}
               key={data.dialogTaskName}
               disablePadding
-            
+
             >
               <ListItemButton role={undefined} dense
                 sx={{
@@ -661,38 +686,38 @@ export default function GetTodoListView(props) {
 
                 </ListItemIcon>
                 <ListItemText onClick={handleListItemClick}>
-                <Stack name="label1" direction="column" 
-                  sx={{
-                    display: "block",
-                    boxSizing: "border-box",
-                    justifyContent: "left ",
-                    alignItems: "left "
-                  }} >
-                  <ListItemText
-                    sx={{ boxSizing: "border-box", display: "flex", flexWrap: "inherit" }}
-                    id={labelId}
-                    primary={data.dialogTaskName} />
-                  <ListItemText
-                    sx={{ boxSizing: "border-box", display: "flex", flexWrap: "inherit" }}
-                    id={labelId}
-                    primary={data.dialogTaskDescription} />
-                  <Stack direction="row">
-                    <EventIcon
-                      sx={{
-                        color: "#D0312D"
-                      }}
-                    />&nbsp;
+                  <Stack name="label1" direction="column"
+                    sx={{
+                      display: "block",
+                      boxSizing: "border-box",
+                      justifyContent: "left ",
+                      alignItems: "left "
+                    }} >
                     <ListItemText
+                      sx={{ boxSizing: "border-box", display: "flex", flexWrap: "inherit" }}
                       id={labelId}
-                      value={selectedDate} onChange={handleDateChange}
-                      onClose={dateOnClose}
-                      primary={new Date(data.selectedDate).toDateString()}
-                      sx={{
-                        color: "#D0312D"
-                      }} />
+                      primary={data.dialogTaskName} />
+                    <ListItemText
+                      sx={{ boxSizing: "border-box", display: "flex", flexWrap: "inherit" }}
+                      id={labelId}
+                      primary={data.dialogTaskDescription} />
+                    <Stack direction="row">
+                      <EventIcon
+                        sx={{
+                          color: "#D0312D"
+                        }}
+                      />&nbsp;
+                      <ListItemText
+                        id={labelId}
+                        value={selectedDate} onChange={handleDateChange}
+                        onClose={dateOnClose}
+                        primary={new Date(data.selectedDate).toDateString()}
+                        sx={{
+                          color: "#D0312D"
+                        }} />
+                    </Stack>
+                    <Divider sx={{ width: '550%' }} />
                   </Stack>
-                  <Divider sx={{ width: '550%' }} />
-                </Stack>
                 </ListItemText>
               </ListItemButton>
               <Stack sx={{

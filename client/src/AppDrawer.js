@@ -153,128 +153,73 @@ export default function AppDrawer(props) {
     }
   };
 
-  //Delete click 
-  const handleClickDeleteOpen = () => {
-    setDeleteOpen(true);
-    console.log("delete open1",);
-  };
-
-  const handleDeleteYes = (id) => {
-    console.log("Before deleting", props.data.id);
-    console.log("delete yes1",);
-  }
-
-  const handleDeleteClose = () => {
-    setDeleteOpen(false);
-    setMoreItem('');
-    console.log("delete close1",);
-
-  }
-
-  const clickhandlermore = (projectID) => {
-    //console.log("EXECUTING MORE ICON", projectCollectionFromDb);
-    console.log("EXECUTING MORE ICON", projectID);
-
-    setMoreItem(projectID)
-    console.log("EXECUTING MORE ICON", moreItem);
-
-    // console.log("EXECUTING MORE ICON");
-    // if(projectCollectionFromDb.id === projectID)
-
-    if (projectID === moreItem) {
-      console.log("projectID === moreItem");
-      return (
-        <>
-          <Button variant="outlined" startIcon={<DeleteIcon />}>
-            Delete
-          </Button>
-        </>
-        // <div>
-        //   <Button variant="outlined" onClick={handleClickDeleteOpen} onClose={handleDeleteClose}><DeleteIcon />
-        //     Delete
-        //   </Button>
-        //   <Dialog open={deleteOpen} onClose={handleDeleteClose}>
-        //     <DialogContent>
-        //       <DialogContentText>Are you sure you want to delete the task ?</DialogContentText>
-        //     </DialogContent>
-        //     <DialogActions>
-        //       <Button onClick={handleDeleteYes}>Yes</Button>
-        //       <Button onClick={handleDeleteClose}>No</Button>
-        //     </DialogActions>
-        //   </Dialog>
-        // </div>
-      )
-    }
-  }
-
-
-
-  function deleteProject() {
-    console.log("delete project");
-    return (
-      <>
-        <DeleteIcon />
-      </>
-    )
-  }
-  //     return (
-
-
-
-  // <div>
-  //   <Button>more</Button>
-  //           {/* <Button variant="outlined" onClick={handleClickDeleteOpen} onClose={handleDeleteClose}><DeleteIcon />
-  //             Delete
-  //           </Button>
-  //           <Dialog open={deleteOpen} onClose={handleDeleteClose}>
-  //             <DialogContent>
-  //               <DialogContentText>Are you sure you want to delete the task ?</DialogContentText>
-  //             </DialogContent>
-  //             <DialogActions>
-  //               <Button onClick={handleDeleteYes}>Yes</Button>
-  //               <Button onClick={handleDeleteClose}>No</Button>
-  //             </DialogActions>
-  //           </Dialog> */}
-  //         </div>
-
-
-
-
-  // //       <div>
-  // //         {/* <BorderColorIcon />
-  // // <DeleteIcon /> */}
-
-
-  // //         <Stack direction="column" spacing={2}>
-  // //           <Button variant="outlined" startIcon={<DeleteIcon />} >
-  // //             Delete
-  // //           </Button>
-  // //           <Button variant="outlined" endIcon={<DeleteIcon />}>
-  // //             Delete
-  // //           </Button>
-  // //         </Stack>
-  // //       </div>
-  //     )
-  //   }
-
-  {/* <Button variant="outlined" onClick={handleClickDeleteOpen} onClose={handleDeleteClose}><DeleteIcon />
-            Delete
-          </Button>
-          <Dialog open={deleteOpen} onClose={handleDeleteClose}>
-            <DialogContent>
-              <DialogContentText>Are you sure you want to delete the task ?</DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleDeleteYes}>Yes</Button>
-              <Button onClick={handleDeleteClose}>No</Button>
-            </DialogActions>
-          </Dialog> */}
-
-
+  
 
   // function ShowProjectNamesOnTop
 
   function GetListOfProjectNames() {
+
+//Delete click 
+// const handleClickDeleteOpen = () => {
+//   setDeleteOpen(true);
+//   console.log("delete open1",);
+// };
+
+// const handleDeleteYes = (id) => {
+//   console.log("Before deleting", props.data.id);
+//   console.log("delete yes1",);
+// }
+
+// const handleDeleteClose = () => {
+//   setDeleteOpen(false);
+//   setMoreItem('');
+//   console.log("delete close1",);
+
+// }
+
+const clickhandlermore = (projectID) => {
+  //console.log("EXECUTING MORE ICON", projectCollectionFromDb);
+  console.log("EXECUTING MORE ICON", projectID);
+
+  setMoreItem(projectID)
+  console.log("EXECUTING MORE ICON", moreItem);
+
+  // console.log("EXECUTING MORE ICON");
+  // if(projectCollectionFromDb.id === projectID)
+} 
+
+//   if (projectID === moreItem) {
+//     // console.log("projectID === moreItem");
+//     // deleteProject();
+//     return (
+//       <div>
+//         <Button variant="outlined" onClick={handleClickDeleteOpen} onClose={handleDeleteClose}><DeleteIcon />
+//           Delete
+//         </Button>
+//         <Dialog open={deleteOpen} onClose={handleDeleteClose}>
+//           <DialogContent>
+//             <DialogContentText>Are you sure you want to delete the task ?</DialogContentText>
+//           </DialogContent>
+//           <DialogActions>
+//             <Button onClick={handleDeleteYes}>Yes</Button>
+//             <Button onClick={handleDeleteClose}>No</Button>
+//           </DialogActions>
+//         </Dialog>
+//       </div>
+//     )
+//   }
+
+// function deleteProject() {
+//   console.log("delete project");
+//   return (
+//     <>
+//       <DeleteIcon />
+//     </>
+//   )
+// }
+
+
+
     //console.log("creating new projects ..............");
     return (
       <List>

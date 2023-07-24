@@ -105,7 +105,10 @@ function App() {
           <Grid
             item
             xs={12}>
-            <GetTodoListView project = {activeProject}></GetTodoListView>
+            <GetTodoListView 
+            project = {activeProject}
+            OnActiveProjectChanged = {OnActiveProjectChangedInParent}
+            ></GetTodoListView>
             <AddTask isSaveTask={false}></AddTask>
           </Grid>
         </Grid>
